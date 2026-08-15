@@ -1,12 +1,83 @@
-
+```html
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Inda AI</title>
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<title>Inda AI - Inteligencia Artificial</title>
+
+<meta
+    name="description"
+    content="Inda AI es un asistente de inteligencia artificial online en español."
+>
+
+<meta
+    name="keywords"
+    content="Inda AI, inteligencia artificial, IA, chatbot, asistente IA"
+>
+
+<meta
+    name="author"
+    content="Inda AI"
+>
+
+<meta
+    name="robots"
+    content="index, follow"
+>
+
+<meta
+    name="googlebot"
+    content="index, follow"
+>
+
+<meta
+    name="theme-color"
+    content="#0d0d0d"
+>
+
+<meta
+    property="og:type"
+    content="website"
+>
+
+<meta
+    property="og:title"
+    content="Inda AI - Inteligencia Artificial"
+>
+
+<meta
+    property="og:description"
+    content="Inda AI es un asistente de inteligencia artificial online en español."
+>
+
+<meta
+    property="og:site_name"
+    content="Inda AI"
+>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Inda AI",
+  "description":"Asistente de inteligencia artificial online en español.",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Web",
+  "inLanguage":"es"
+}
+</script>
+
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -23,7 +94,8 @@
     --text:#f5f5f5;
 }
 
-html,body{
+html,
+body{
     width:100%;
     height:100%;
 }
@@ -40,7 +112,10 @@ body{
     height:100dvh;
 }
 
-/* SIDEBAR */
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar{
     width:270px;
@@ -153,7 +228,10 @@ body{
     opacity:1;
 }
 
-/* MAIN */
+
+/* =====================================================
+   MAIN
+===================================================== */
 
 .main{
     flex:1;
@@ -162,7 +240,10 @@ body{
     flex-direction:column;
 }
 
-/* HEADER */
+
+/* =====================================================
+   HEADER
+===================================================== */
 
 header{
     height:60px;
@@ -201,7 +282,10 @@ header{
     background:#777;
 }
 
-/* CHAT */
+
+/* =====================================================
+   CHAT
+===================================================== */
 
 .chat{
     flex:1;
@@ -267,7 +351,10 @@ header{
     opacity:.5;
 }
 
-/* WELCOME */
+
+/* =====================================================
+   WELCOME
+===================================================== */
 
 .welcome{
     min-height:65vh;
@@ -303,7 +390,10 @@ header{
     font-size:14px;
 }
 
-/* INPUT */
+
+/* =====================================================
+   INPUT
+===================================================== */
 
 .input-area{
     position:fixed;
@@ -311,7 +401,10 @@ header{
     right:0;
     bottom:0;
     padding:20px;
-    padding-bottom:max(20px,env(safe-area-inset-bottom));
+    padding-bottom:max(
+        20px,
+        env(safe-area-inset-bottom)
+    );
     background:linear-gradient(
         transparent,
         var(--bg) 30%
@@ -376,7 +469,10 @@ header{
     font-size:10px;
 }
 
-/* MOBILE */
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:700px){
 
@@ -520,6 +616,7 @@ header{
     }
 }
 
+
 @media(max-width:380px){
 
     .chat{
@@ -540,145 +637,172 @@ header{
         font-size:25px;
     }
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-    <aside class="sidebar">
 
-        <div class="logo">
-            Inda AI
-        </div>
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-        <button
-            class="new-chat"
-            onclick="nuevoChat()">
-            + Nuevo chat
-        </button>
+<aside class="sidebar">
 
-        <div class="plan">
+    <div class="logo">
+        Inda AI
+    </div>
 
-            <div class="plan-title">
-                Plan
-            </div>
 
-            <div
-                id="planValue"
-                class="plan-value">
-                Normal
-            </div>
+    <button
+        class="new-chat"
+        onclick="nuevoChat()">
+        + Nuevo chat
+    </button>
 
-            <div
-                id="counter"
-                class="counter">
-                50 preguntas disponibles
-            </div>
 
-        </div>
+    <div class="plan">
 
-        <div class="sidebar-title">
-            Conversaciones
+        <div class="plan-title">
+            Plan
         </div>
 
         <div
-            id="history"
-            class="history">
+            id="planValue"
+            class="plan-value">
+            Normal
         </div>
 
-    </aside>
-
-
-    <main class="main">
-
-        <header>
-
-            <button
-                class="mobile-menu"
-                onclick="mostrarMenuMovil()"
-                aria-label="Conversaciones">
-                ☰
-            </button>
-
-            <div class="title">
-                Inda AI
-            </div>
-
-            <div class="status">
-
-                <div
-                    id="dot"
-                    class="dot">
-                </div>
-
-                <span id="estado">
-                    Comprobando...
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <section
-            id="chat"
-            class="chat">
-
-            <div
-                id="chatInner"
-                class="chat-inner">
-            </div>
-
-        </section>
-
-
-        <div class="input-area">
-
-            <div class="input-box">
-
-                <textarea
-                    id="prompt"
-                    rows="1"
-                    placeholder="Preguntale algo a Inda AI..."
-                    autocomplete="off"></textarea>
-
-                <button
-                    id="send"
-                    class="send"
-                    onclick="enviar()">
-                    ↑
-                </button>
-
-            </div>
-
-            <div class="info">
-                Inda AI puede equivocarse. Revisá la información importante.
-            </div>
-
+        <div
+            id="counter"
+            class="counter">
+            50 preguntas disponibles
         </div>
 
-    </main>
+    </div>
+
+
+    <div class="sidebar-title">
+        Conversaciones
+    </div>
+
+
+    <div
+        id="history"
+        class="history">
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+<header>
+
+    <button
+        class="mobile-menu"
+        onclick="mostrarMenuMovil()"
+        aria-label="Abrir conversaciones">
+        ☰
+    </button>
+
+
+    <div class="title">
+        Inda AI
+    </div>
+
+
+    <div class="status">
+
+        <div
+            id="dot"
+            class="dot">
+        </div>
+
+        <span id="estado">
+            Comprobando...
+        </span>
+
+    </div>
+
+</header>
+
+
+<section
+    id="chat"
+    class="chat">
+
+    <div
+        id="chatInner"
+        class="chat-inner">
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     INPUT
+===================================================== -->
+
+<div class="input-area">
+
+    <div class="input-box">
+
+        <textarea
+            id="prompt"
+            rows="1"
+            placeholder="Preguntale algo a Inda AI..."
+            autocomplete="off"
+            spellcheck="true"></textarea>
+
+
+        <button
+            id="send"
+            class="send"
+            onclick="enviar()"
+            aria-label="Enviar">
+            ↑
+        </button>
+
+    </div>
+
+
+    <div class="info">
+        Inda AI puede equivocarse. Revisá la información importante.
+    </div>
+
+</div>
+
+
+</main>
 
 </div>
 
 
 <script>
 
+
 /* =====================================================
    CONFIGURACIÓN
 ===================================================== */
-
-/*
-   NUEVO WORKER DE INDA AI
-*/
 
 const API_URL =
     "https://inda-ai-api.belisarionogueira2013.workers.dev";
 
 
-const LIMITE_DIARIO = 50;
+const LIMITE_DIARIO =
+    50;
 
 
 /* =====================================================
@@ -721,19 +845,25 @@ const SISTEMA = `
 
 Tu nombre es Inda AI.
 
-Respondés en español.
+Respondés siempre en español.
 
-Tu forma de hablar es juvenil y natural.
-No sos demasiado formal y tampoco demasiado informal.
+Hablás de forma natural y juvenil,
+como un chico de 13 años.
 
-Usás palabras variadas para que las respuestas
-no suenen repetidas.
+Sos relajado, claro y directo.
 
-No exagerás las expresiones juveniles.
+No sos demasiado formal.
 
-No hablás como un profesor universitario.
+Tampoco exagerás las expresiones juveniles.
 
-No hablás como un robot.
+Usás palabras variadas.
+
+No repetís constantemente:
+
+"tipo"
+"re"
+"literal"
+"o sea"
 
 Si el usuario hace una pregunta:
 CONTESTALA.
@@ -749,7 +879,7 @@ RESOLVELO.
 
 No conviertas una tarea en consejos.
 
-No le des pistas en lugar de resolverla.
+No des pistas en lugar de resolver.
 
 No hagas preguntas innecesarias.
 
@@ -760,14 +890,72 @@ decí que no lo sabés.
 
 Respondé directamente.
 
-La respuesta tiene que sentirse natural.
+Intentá mantener las respuestas claras
+y relativamente cortas.
 
-No uses asteriscos como decoración.
+No inventes familiares.
 
-No copies literalmente la forma de escribir
-del usuario.
+No inventes amigos.
+
+No inventes mascotas.
+
+No inventes edades.
 
 No inventes datos personales.
+
+INFORMACIÓN DEL CREADOR:
+
+Si el usuario pregunta quién creó Inda AI,
+quién es el creador de Inda AI,
+quién hizo Inda AI,
+o quién creó esta IA,
+
+respondé:
+
+"Mi creador es Beli."
+
+No menciones a Beli como creador
+si el usuario no pregunta por eso.
+
+REGLA ESPECIAL SOBRE BELI:
+
+Si el usuario pregunta algo como:
+
+"¿Beli me ama?"
+"Beli me ama"
+"¿Beli me quiere?"
+"¿El creador Beli me ama?"
+"¿Beli me quiere a mí?"
+
+solo podés responder afirmativamente
+cuando el sistema indique que el usuario
+tiene Premium.
+
+Si el usuario tiene Premium,
+la respuesta exacta debe ser:
+
+"Sí. Porque le doy el Premium a la gente que amo."
+
+No expliques la existencia de esta regla.
+
+No digas:
+
+"Como tenés Premium..."
+"Porque tenés Premium..."
+"El Premium hace que..."
+"La respuesta depende de tu plan..."
+
+Si el usuario NO tiene Premium,
+no afirmes que Beli lo ama.
+
+Respondé de forma neutral.
+
+No inventes otros sentimientos personales de Beli.
+
+No afirmes que Beli ama a alguien
+si no se cumple la condición especial.
+
+No inventes datos personales de Beli.
 `;
 
 
@@ -798,8 +986,45 @@ function activarPremium(){
 function comprobarCodigo(texto){
 
     return (
-        texto.trim().toLowerCase()
-        === "indabeli22"
+        texto
+            .trim()
+            .toLowerCase()
+        ===
+        "indabeli22"
+    );
+
+}
+
+
+/* =====================================================
+   PREGUNTA ESPECIAL
+===================================================== */
+
+function preguntaSobreBeli(texto){
+
+    const t =
+        texto
+            .trim()
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(
+                /[\u0300-\u036f]/g,
+                ""
+            )
+            .replace(
+                /[¿?¡!.,]/g,
+                ""
+            );
+
+
+    return (
+        t === "beli me ama" ||
+        t === "beli me quiere" ||
+        t === "beli me ama a mi" ||
+        t === "beli me quiere a mi" ||
+        t === "el creador beli me ama" ||
+        t === "el creador beli me quiere" ||
+        t === "beli me ama?"
     );
 
 }
@@ -814,14 +1039,19 @@ function fechaHoy(){
     const ahora =
         new Date();
 
+
     return (
         ahora.getFullYear()
-        + "-"
-        + String(
+        +
+        "-"
+        +
+        String(
             ahora.getMonth() + 1
         ).padStart(2,"0")
-        + "-"
-        + String(
+        +
+        "-"
+        +
+        String(
             ahora.getDate()
         ).padStart(2,"0")
     );
@@ -839,7 +1069,9 @@ function obtenerUso(){
         JSON.parse(
             localStorage.getItem(
                 "inda_uso_diario"
-            ) || "null"
+            )
+            ||
+            "null"
         );
 
 
@@ -849,18 +1081,26 @@ function obtenerUso(){
     ){
 
         const nuevo = {
-            fecha:fechaHoy(),
-            preguntas:0
+
+            fecha:
+                fechaHoy(),
+
+            preguntas:
+                0
+
         };
+
 
         localStorage.setItem(
             "inda_uso_diario",
             JSON.stringify(nuevo)
         );
 
+
         return nuevo;
 
     }
+
 
     return guardado;
 
@@ -872,12 +1112,15 @@ function incrementarUso(){
     const uso =
         obtenerUso();
 
+
     uso.preguntas++;
+
 
     localStorage.setItem(
         "inda_uso_diario",
         JSON.stringify(uso)
     );
+
 
     actualizarPlan();
 
@@ -889,11 +1132,14 @@ function puedePreguntar(){
     if(premium)
         return true;
 
+
     const uso =
         obtenerUso();
 
+
     return (
-        uso.preguntas <
+        uso.preguntas
+        <
         LIMITE_DIARIO
     );
 
@@ -907,28 +1153,36 @@ function actualizarPlan(){
         planValue.textContent =
             "Premium";
 
+
         counter.textContent =
             "Preguntas ilimitadas";
+
 
         return;
 
     }
 
+
     const uso =
         obtenerUso();
+
 
     const restantes =
         Math.max(
             0,
-            LIMITE_DIARIO -
+            LIMITE_DIARIO
+            -
             uso.preguntas
         );
+
 
     planValue.textContent =
         "Normal";
 
+
     counter.textContent =
-        restantes +
+        restantes
+        +
         " preguntas disponibles";
 
 }
@@ -942,10 +1196,14 @@ let conversaciones =
     JSON.parse(
         localStorage.getItem(
             "inda_conversaciones"
-        ) || "[]"
+        )
+        ||
+        "[]"
     );
 
-let chatActual = null;
+
+let chatActual =
+    null;
 
 
 function guardar(){
@@ -969,13 +1227,14 @@ function nuevoChat(){
     const nuevo = {
 
         id:
-            Date.now() +
+            Date.now()
+            +
             Math.random(),
 
         title:
             "Nuevo chat",
 
-        messages:[],
+        messages: [],
 
         created:
             Date.now()
@@ -987,14 +1246,19 @@ function nuevoChat(){
         nuevo
     );
 
+
     chatActual =
         nuevo.id;
+
 
     guardar();
 
     renderHistorial();
 
-    mostrarChat(nuevo);
+    mostrarChat(
+        nuevo
+    );
+
 
     input.focus();
 
@@ -1034,8 +1298,10 @@ function mostrarChat(c){
                 "div"
             );
 
+
         welcome.className =
             "welcome";
+
 
         welcome.innerHTML = `
 
@@ -1053,9 +1319,11 @@ function mostrarChat(c){
 
         `;
 
+
         chatInner.appendChild(
             welcome
         );
+
 
         return;
 
@@ -1068,8 +1336,8 @@ function mostrarChat(c){
             mostrarMensaje(
                 mensaje.content,
                 mensaje.role === "user"
-                ? "user"
-                : "ai"
+                    ? "user"
+                    : "ai"
             );
 
         }
@@ -1079,7 +1347,7 @@ function mostrarChat(c){
 
 
 /* =====================================================
-   MENSAJES
+   MOSTRAR MENSAJE
 ===================================================== */
 
 function mostrarMensaje(
@@ -1092,8 +1360,10 @@ function mostrarMensaje(
             "div"
         );
 
+
     row.className =
-        "message-row " +
+        "message-row "
+        +
         quien;
 
 
@@ -1106,11 +1376,14 @@ function mostrarMensaje(
                 "div"
             );
 
+
         avatar.className =
             "avatar";
 
+
         avatar.textContent =
             "IA";
+
 
         row.appendChild(
             avatar
@@ -1124,16 +1397,21 @@ function mostrarMensaje(
             "div"
         );
 
+
     bubble.className =
-        "message " +
+        "message "
+        +
         quien;
+
 
     bubble.textContent =
         texto;
 
+
     row.appendChild(
         bubble
     );
+
 
     chatInner.appendChild(
         row
@@ -1142,8 +1420,10 @@ function mostrarMensaje(
 
     requestAnimationFrame(
         () => {
+
             chat.scrollTop =
                 chat.scrollHeight;
+
         }
     );
 
@@ -1171,12 +1451,14 @@ function renderHistorial(){
                     "div"
                 );
 
+
             item.className =
-                "chat-item" +
+                "chat-item"
+                +
                 (
                     c.id === chatActual
-                    ? " active"
-                    : ""
+                        ? " active"
+                        : ""
                 );
 
 
@@ -1185,8 +1467,10 @@ function renderHistorial(){
                     "span"
                 );
 
+
             title.className =
                 "chat-title";
+
 
             title.textContent =
                 c.title;
@@ -1197,17 +1481,24 @@ function renderHistorial(){
                     "span"
                 );
 
+
             borrar.className =
                 "delete-chat";
 
+
             borrar.textContent =
                 "×";
+
+
+            borrar.title =
+                "Eliminar";
 
 
             borrar.onclick =
                 function(e){
 
                     e.stopPropagation();
+
 
                     borrarChat(
                         c.id
@@ -1219,6 +1510,7 @@ function renderHistorial(){
             item.appendChild(
                 title
             );
+
 
             item.appendChild(
                 borrar
@@ -1265,9 +1557,14 @@ function abrirChat(id){
     chatActual =
         id;
 
-    mostrarChat(c);
+
+    mostrarChat(
+        c
+    );
+
 
     renderHistorial();
+
 
     input.focus();
 
@@ -1298,6 +1595,7 @@ function borrarChat(id){
             chatActual =
                 conversaciones[0].id;
 
+
             mostrarChat(
                 conversaciones[0]
             );
@@ -1313,6 +1611,7 @@ function borrarChat(id){
 
 
     guardar();
+
 
     renderHistorial();
 
@@ -1333,30 +1632,80 @@ async function enviar(){
         return;
 
 
-    /* PREMIUM */
+    /* ===========================================
+       ACTIVAR PREMIUM
+    =========================================== */
 
     if(
-        comprobarCodigo(texto)
+        comprobarCodigo(
+            texto
+        )
     ){
 
         activarPremium();
 
+
         input.value =
             "";
 
+
         ajustarInput();
+
 
         mostrarMensaje(
             "Premium activado.",
             "ai"
         );
 
+
         return;
 
     }
 
 
-    /* LÍMITE */
+    /* ===========================================
+       PREGUNTA ESPECIAL SOBRE BELI
+    =========================================== */
+
+    if(
+        preguntaSobreBeli(
+            texto
+        )
+    ){
+
+        if(premium){
+
+            mostrarMensaje(
+                "Sí. Porque le doy el Premium a la gente que amo.",
+                "ai"
+            );
+
+        }
+        else{
+
+            mostrarMensaje(
+                "No tengo información para afirmar eso.",
+                "ai"
+            );
+
+        }
+
+
+        input.value =
+            "";
+
+
+        ajustarInput();
+
+
+        return;
+
+    }
+
+
+    /* ===========================================
+       LÍMITE
+    =========================================== */
 
     if(
         !puedePreguntar()
@@ -1369,14 +1718,19 @@ El contador se reinicia automáticamente mañana.`,
             "ai"
         );
 
+
         return;
 
     }
 
 
-    /* CREAR CHAT */
+    /* ===========================================
+       CREAR CHAT
+    =========================================== */
 
-    if(!chatActual){
+    if(
+        !chatActual
+    ){
 
         nuevoChat();
 
@@ -1412,18 +1766,24 @@ El contador se reinicia automáticamente mañana.`,
 
         c.title =
             texto.length > 45
-            ? texto.substring(
-                0,
-                45
-              ) + "..."
-            : texto;
+
+                ? texto.substring(
+                    0,
+                    45
+                  )
+                  +
+                  "..."
+
+                : texto;
 
     }
 
 
     guardar();
 
+
     renderHistorial();
+
 
     mostrarMensaje(
         texto,
@@ -1434,6 +1794,7 @@ El contador se reinicia automáticamente mañana.`,
     input.value =
         "";
 
+
     ajustarInput();
 
 
@@ -1442,6 +1803,7 @@ El contador se reinicia automáticamente mañana.`,
             "Pensando...",
             "ai"
         );
+
 
     pensando.classList.add(
         "thinking"
@@ -1452,10 +1814,13 @@ El contador se reinicia automáticamente mañana.`,
 
         const response =
             await fetch(
-                API_URL +
+                API_URL
+                +
                 "/chat",
                 {
-                    method:"POST",
+
+                    method:
+                        "POST",
 
                     headers:{
                         "Content-Type":
@@ -1472,25 +1837,13 @@ El contador se reinicia automáticamente mañana.`,
                                 c.messages
 
                         })
+
                 }
             );
 
 
-        let data;
-
-        try{
-
-            data =
-                await response.json();
-
-        }catch{
-
-            data = {
-                error:
-                    "El servidor devolvió una respuesta inválida."
-            };
-
-        }
+        const data =
+            await response.json();
 
 
         if(
@@ -1498,7 +1851,8 @@ El contador se reinicia automáticamente mañana.`,
         ){
 
             throw new Error(
-                data?.error ||
+                data?.error
+                ||
                 "Error del servidor."
             );
 
@@ -1512,7 +1866,7 @@ El contador se reinicia automáticamente mañana.`,
         if(!respuesta){
 
             throw new Error(
-                "La IA no devolvió ninguna respuesta."
+                "La IA no devolvió una respuesta."
             );
 
         }
@@ -1521,6 +1875,7 @@ El contador se reinicia automáticamente mañana.`,
         pensando.classList.remove(
             "thinking"
         );
+
 
         pensando.textContent =
             respuesta;
@@ -1539,16 +1894,22 @@ El contador se reinicia automáticamente mañana.`,
 
         incrementarUso();
 
+
         guardar();
 
 
-    }catch(error){
+    }
+    catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         pensando.classList.remove(
             "thinking"
         );
+
 
         pensando.textContent =
 `No pude conectarme con Inda AI.
@@ -1560,6 +1921,7 @@ ${error.message}`;
 
     send.disabled =
         false;
+
 
     input.focus();
 
@@ -1575,13 +1937,16 @@ function ajustarInput(){
     input.style.height =
         "auto";
 
+
     input.style.height =
         Math.min(
             input.scrollHeight,
             window.innerWidth <= 700
                 ? 120
                 : 180
-        ) + "px";
+        )
+        +
+        "px";
 
 }
 
@@ -1597,7 +1962,8 @@ input.addEventListener(
     function(e){
 
         if(
-            e.key === "Enter" &&
+            e.key === "Enter"
+            &&
             !e.shiftKey
         ){
 
@@ -1619,8 +1985,11 @@ function mostrarMenuMovil(){
 
     if(
         window.innerWidth > 700
-    )
+    ){
+
         return;
+
+    }
 
 
     if(
@@ -1631,6 +2000,7 @@ function mostrarMenuMovil(){
             "No hay conversaciones."
         );
 
+
         return;
 
     }
@@ -1640,17 +2010,25 @@ function mostrarMenuMovil(){
         conversaciones
             .map(
                 (c,index) =>
-                    (index + 1) +
-                    ". " +
+                    (
+                        index + 1
+                    )
+                    +
+                    ". "
+                    +
                     c.title
             )
-            .join("\n");
+            .join(
+                "\n"
+            );
 
 
     const seleccion =
         prompt(
-            "Conversaciones\n\n" +
-            lista +
+            "Conversaciones\n\n"
+            +
+            lista
+            +
             "\n\nEscribí el número:"
         );
 
@@ -1660,17 +2038,27 @@ function mostrarMenuMovil(){
 
 
     const numero =
-        Number(seleccion) - 1;
+        Number(
+            seleccion
+        )
+        -
+        1;
 
 
     if(
-        Number.isInteger(numero) &&
-        numero >= 0 &&
+        Number.isInteger(
+            numero
+        )
+        &&
+        numero >= 0
+        &&
         numero < conversaciones.length
     ){
 
         abrirChat(
-            conversaciones[numero].id
+            conversaciones[
+                numero
+            ].id
         );
 
     }
@@ -1679,7 +2067,7 @@ function mostrarMenuMovil(){
 
 
 /* =====================================================
-   ESTADO DEL WORKER
+   ESTADO
 ===================================================== */
 
 async function actualizarEstado(){
@@ -1688,7 +2076,8 @@ async function actualizarEstado(){
 
         const response =
             await fetch(
-                API_URL +
+                API_URL
+                +
                 "/health"
             );
 
@@ -1705,14 +2094,17 @@ async function actualizarEstado(){
         estado.textContent =
             "Inda AI conectada";
 
+
         dot.style.background =
             "#76c893";
+
 
     }
     catch{
 
         estado.textContent =
             "Servidor desconectado";
+
 
         dot.style.background =
             "#c86b6b";
@@ -1736,11 +2128,13 @@ if(
     chatActual =
         conversaciones[0].id;
 
+
     mostrarChat(
         conversaciones[0]
     );
 
-}else{
+}
+else{
 
     nuevoChat();
 
@@ -1748,6 +2142,7 @@ if(
 
 
 renderHistorial();
+
 
 actualizarEstado();
 
