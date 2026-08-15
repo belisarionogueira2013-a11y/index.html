@@ -1,12 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
 <title>Inda AI</title>
 
 <style>
+/* =====================================================
+   RESET
+===================================================== */
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -18,10 +22,14 @@
     --bg:#0d0d0d;
     --sidebar:#111111;
     --panel:#191919;
+    --panel2:#1b1b1b;
     --hover:#242424;
     --border:#2b2b2b;
+    --border2:#303030;
     --text:#f5f5f5;
     --muted:#858585;
+    --muted2:#666;
+    --white:#ffffff;
 }
 
 html,
@@ -36,8 +44,13 @@ body{
     color:var(--text);
 }
 
+/* =====================================================
+   APP
+===================================================== */
+
 .app{
     display:flex;
+    width:100%;
     height:100dvh;
 }
 
@@ -47,12 +60,12 @@ body{
 
 .sidebar{
     width:270px;
+    min-width:270px;
     background:var(--sidebar);
     border-right:1px solid var(--border);
     padding:14px;
     display:flex;
     flex-direction:column;
-    flex-shrink:0;
 }
 
 .logo{
@@ -70,9 +83,10 @@ body{
     border:1px solid #333;
     border-radius:10px;
     background:#191919;
-    color:white;
+    color:#fff;
     cursor:pointer;
     font-size:14px;
+    transition:.15s;
 }
 
 .new-chat:hover{
@@ -115,18 +129,19 @@ body{
 .history{
     flex:1;
     overflow-y:auto;
+    padding-right:2px;
 }
 
 .chat-item{
+    display:flex;
+    align-items:center;
+    gap:7px;
     padding:10px;
     border-radius:9px;
     margin-bottom:4px;
     color:#ccc;
     font-size:13px;
     cursor:pointer;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
 }
 
 .chat-item:hover{
@@ -135,18 +150,27 @@ body{
 
 .chat-item.active{
     background:#282828;
-    color:white;
+    color:#fff;
+}
+
+.chat-title{
+    min-width:0;
+    flex:1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .delete-chat{
-    float:right;
     color:#777;
-    display:none;
     cursor:pointer;
+    font-size:15px;
+    opacity:0;
+    flex-shrink:0;
 }
 
 .chat-item:hover .delete-chat{
-    display:block;
+    opacity:1;
 }
 
 /* =====================================================
@@ -160,14 +184,20 @@ body{
     flex-direction:column;
 }
 
+/* =====================================================
+   HEADER
+===================================================== */
+
 header{
     height:60px;
+    min-height:60px;
     border-bottom:1px solid var(--border);
     display:flex;
     align-items:center;
     justify-content:center;
     position:relative;
-    flex-shrink:0;
+    background:var(--bg);
+    z-index:10;
 }
 
 .title{
@@ -203,7 +233,7 @@ header{
 .chat{
     flex:1;
     overflow-y:auto;
-    padding:30px 20px 140px;
+    padding:30px 20px 150px;
     scroll-behavior:smooth;
 }
 
@@ -213,9 +243,14 @@ header{
     margin:auto;
 }
 
+/* =====================================================
+   MESSAGES
+===================================================== */
+
 .message-row{
     display:flex;
     margin:18px 0;
+    width:100%;
 }
 
 .message-row.user{
@@ -260,6 +295,14 @@ header{
 }
 
 /* =====================================================
+   THINKING
+===================================================== */
+
+.thinking{
+    opacity:.5;
+}
+
+/* =====================================================
    WELCOME
 ===================================================== */
 
@@ -270,6 +313,7 @@ header{
     align-items:center;
     justify-content:center;
     text-align:center;
+    padding:30px;
 }
 
 .welcome-logo{
@@ -297,7 +341,7 @@ header{
 }
 
 /* =====================================================
-   INPUT
+   INPUT AREA
 ===================================================== */
 
 .input-area{
@@ -319,10 +363,11 @@ header{
     margin:auto;
     display:flex;
     align-items:flex-end;
-    background:#1b1b1b;
-    border:1px solid #303030;
+    background:var(--panel2);
+    border:1px solid var(--border2);
     border-radius:17px;
     padding:8px;
+    transition:border-color .15s;
 }
 
 .input-box:focus-within{
@@ -337,7 +382,7 @@ header{
     border:0;
     outline:0;
     background:transparent;
-    color:white;
+    color:#fff;
     padding:11px 12px;
     font-size:15px;
     line-height:1.4;
@@ -352,15 +397,22 @@ header{
     height:40px;
     border:0;
     border-radius:11px;
-    background:white;
+    background:#fff;
     color:#111;
     cursor:pointer;
     font-size:19px;
     flex-shrink:0;
+    transition:.15s;
+}
+
+.send:hover{
+    transform:translateY(-1px);
 }
 
 .send:disabled{
     opacity:.4;
+    cursor:default;
+    transform:none;
 }
 
 .info{
@@ -391,6 +443,7 @@ header{
 
     .main{
         width:100%;
+        min-width:0;
     }
 
     header{
@@ -399,7 +452,6 @@ header{
         justify-content:flex-start;
         padding:0 14px;
         border-bottom:1px solid #202020;
-        background:#0d0d0d;
     }
 
     .title{
@@ -410,9 +462,9 @@ header{
     .mobile-menu{
         display:flex;
         position:absolute;
-        left:12px;
-        width:30px;
-        height:30px;
+        left:10px;
+        width:32px;
+        height:32px;
         border:0;
         background:transparent;
         color:#ddd;
@@ -435,12 +487,11 @@ header{
     }
 
     .chat-inner{
-        width:100%;
         max-width:none;
     }
 
     .message-row{
-        margin:14px 0;
+        margin:13px 0;
     }
 
     .message-row.user{
@@ -578,118 +629,136 @@ header{
 
 <div class="app">
 
-<aside class="sidebar">
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
 
-    <div class="logo">
-        Inda AI
-    </div>
+    <aside class="sidebar">
 
-    <button
-        class="new-chat"
-        onclick="nuevoChat()">
-        + Nuevo chat
-    </button>
-
-    <div class="plan">
-
-        <div class="plan-title">
-            Plan
+        <div class="logo">
+            Inda AI
         </div>
-
-        <div
-            id="planValue"
-            class="plan-value">
-            Normal
-        </div>
-
-        <div
-            id="counter"
-            class="counter">
-            50 preguntas disponibles
-        </div>
-
-    </div>
-
-    <div class="sidebar-title">
-        Conversaciones
-    </div>
-
-    <div
-        id="history"
-        class="history">
-    </div>
-
-</aside>
-
-<main class="main">
-
-<header>
-
-    <button
-        class="mobile-menu"
-        onclick="mostrarMenuMovil()"
-        aria-label="Abrir menú">
-        ☰
-    </button>
-
-    <div class="title">
-        Inda AI
-    </div>
-
-    <div class="status">
-
-        <div
-            id="dot"
-            class="dot">
-        </div>
-
-        <span id="estado">
-            Comprobando...
-        </span>
-
-    </div>
-
-</header>
-
-<section
-    id="chat"
-    class="chat">
-
-    <div
-        id="chatInner"
-        class="chat-inner">
-    </div>
-
-</section>
-
-<div class="input-area">
-
-    <div class="input-box">
-
-        <textarea
-            id="prompt"
-            rows="1"
-            placeholder="Preguntale algo a Inda AI...">
-        </textarea>
 
         <button
-            id="send"
-            class="send"
-            onclick="enviar()">
-            ↑
+            class="new-chat"
+            onclick="nuevoChat()">
+            + Nuevo chat
         </button>
 
-    </div>
+        <div class="plan">
 
-    <div class="info">
-        Inda AI puede equivocarse. Revisá la información importante.
-    </div>
+            <div class="plan-title">
+                Plan
+            </div>
+
+            <div
+                id="planValue"
+                class="plan-value">
+                Normal
+            </div>
+
+            <div
+                id="counter"
+                class="counter">
+                50 preguntas disponibles
+            </div>
+
+        </div>
+
+        <div class="sidebar-title">
+            Conversaciones
+        </div>
+
+        <div
+            id="history"
+            class="history">
+        </div>
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN
+    ================================================== -->
+
+    <main class="main">
+
+        <header>
+
+            <button
+                class="mobile-menu"
+                onclick="mostrarMenuMovil()"
+                aria-label="Abrir conversaciones">
+                ☰
+            </button>
+
+            <div class="title">
+                Inda AI
+            </div>
+
+            <div class="status">
+
+                <div
+                    id="dot"
+                    class="dot">
+                </div>
+
+                <span id="estado">
+                    Comprobando...
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <section
+            id="chat"
+            class="chat">
+
+            <div
+                id="chatInner"
+                class="chat-inner">
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             INPUT
+        ================================================== -->
+
+        <div class="input-area">
+
+            <div class="input-box">
+
+                <textarea
+                    id="prompt"
+                    rows="1"
+                    placeholder="Preguntale algo a Inda AI..."
+                    autocomplete="off"
+                    spellcheck="true"></textarea>
+
+                <button
+                    id="send"
+                    class="send"
+                    onclick="enviar()"
+                    aria-label="Enviar">
+                    ↑
+                </button>
+
+            </div>
+
+            <div class="info">
+                Inda AI puede equivocarse. Revisá la información importante.
+            </div>
+
+        </div>
+
+    </main>
 
 </div>
 
-</main>
-
-</div>
 
 <script>
 
@@ -698,7 +767,7 @@ header{
 ===================================================== */
 
 const API_URL =
-    "PEGAR_AQUI_LA_URL_DE_TU_WORKER";
+    "https://index-html.belisarionogueira2013.workers.dev";
 
 const LIMITE_DIARIO = 50;
 
@@ -819,7 +888,7 @@ function comprobarCodigo(texto){
 
 
 /* =====================================================
-   CONTADOR
+   CONTADOR DIARIO
 ===================================================== */
 
 function fechaHoy(){
@@ -919,7 +988,6 @@ function actualizarPlan(){
 
     }
 
-
     const uso =
         obtenerUso();
 
@@ -929,7 +997,6 @@ function actualizarPlan(){
             LIMITE_DIARIO -
             uso.preguntas
         );
-
 
     planValue.textContent =
         "Normal";
@@ -989,7 +1056,6 @@ function nuevoChat(){
 
     };
 
-
     conversaciones.unshift(
         nuevo
     );
@@ -1030,7 +1096,6 @@ function mostrarChat(c){
 
     chatInner.innerHTML = "";
 
-
     if(
         c.messages.length === 0
     ){
@@ -1064,7 +1129,6 @@ function mostrarChat(c){
         return;
 
     }
-
 
     c.messages.forEach(
         mensaje => {
@@ -1143,8 +1207,14 @@ function mostrarMensaje(
         row
     );
 
-    chat.scrollTop =
-        chat.scrollHeight;
+    requestAnimationFrame(
+        () => {
+
+            chat.scrollTop =
+                chat.scrollHeight;
+
+        }
+    );
 
     return bubble;
 
@@ -1182,6 +1252,9 @@ function renderHistorial(){
                     "span"
                 );
 
+            title.className =
+                "chat-title";
+
             title.textContent =
                 c.title;
 
@@ -1196,6 +1269,9 @@ function renderHistorial(){
 
             borrar.textContent =
                 "×";
+
+            borrar.title =
+                "Eliminar";
 
 
             borrar.onclick =
@@ -1251,10 +1327,8 @@ function abrirChat(id){
                 x.id === id
         );
 
-
     if(!c)
         return;
-
 
     chatActual =
         id;
@@ -1296,15 +1370,13 @@ function borrarChat(id){
                 conversaciones[0]
             );
 
-        }
-        else{
+        }else{
 
             nuevoChat();
 
         }
 
     }
-
 
     guardar();
 
@@ -1327,6 +1399,10 @@ async function enviar(){
         return;
 
 
+    /* ---------------------------------------------
+       PREMIUM
+    --------------------------------------------- */
+
     if(
         comprobarCodigo(texto)
     ){
@@ -1347,6 +1423,10 @@ async function enviar(){
     }
 
 
+    /* ---------------------------------------------
+       LÍMITE
+    --------------------------------------------- */
+
     if(
         !puedePreguntar()
     ){
@@ -1363,25 +1443,9 @@ El contador se reinicia automáticamente mañana.`,
     }
 
 
-    if(
-        API_URL.includes(
-            "PEGAR_AQUI"
-        )
-    ){
-
-        mostrarMensaje(
-`La página está configurada correctamente,
-pero todavía falta conectar el servidor de Inda AI.
-
-Tenés que pegar la URL de tu Cloudflare Worker
-en la variable API_URL del código.`,
-            "ai"
-        );
-
-        return;
-
-    }
-
+    /* ---------------------------------------------
+       CHAT
+    --------------------------------------------- */
 
     if(!chatActual){
 
@@ -1449,17 +1513,16 @@ en la variable API_URL del código.`,
             "ai"
         );
 
-
-    pensando.style.opacity =
-        ".5";
+    pensando.classList.add(
+        "thinking"
+    );
 
 
     try{
 
         const response =
             await fetch(
-                API_URL +
-                "/chat",
+                API_URL + "/chat",
                 {
 
                     method:
@@ -1485,8 +1548,21 @@ en la variable API_URL del código.`,
             );
 
 
-        const data =
-            await response.json();
+        let data = null;
+
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            data = {
+                error:
+                    "El servidor devolvió una respuesta inválida."
+            };
+
+        }
 
 
         if(
@@ -1508,14 +1584,15 @@ en la variable API_URL del código.`,
         if(!respuesta){
 
             throw new Error(
-                "Respuesta vacía."
+                "La IA no devolvió ninguna respuesta."
             );
 
         }
 
 
-        pensando.style.opacity =
-            "1";
+        pensando.classList.remove(
+            "thinking"
+        );
 
         pensando.textContent =
             respuesta;
@@ -1540,10 +1617,14 @@ en la variable API_URL del código.`,
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
-        pensando.style.opacity =
-            "1";
+
+        pensando.classList.remove(
+            "thinking"
+        );
 
         pensando.textContent =
 `No pude conectarme con Inda AI.
@@ -1573,7 +1654,9 @@ function ajustarInput(){
     input.style.height =
         Math.min(
             input.scrollHeight,
-            180
+            window.innerWidth <= 700
+            ? 120
+            : 180
         ) + "px";
 
 }
@@ -1605,34 +1688,88 @@ input.addEventListener(
 
 
 /* =====================================================
-   ESTADO
+   MENÚ MÓVIL
 ===================================================== */
 
-async function actualizarEstado(){
+function mostrarMenuMovil(){
 
     if(
-        API_URL.includes(
-            "PEGAR_AQUI"
-        )
+        window.innerWidth > 700
     ){
-
-        estado.textContent =
-            "API sin configurar";
-
-        dot.style.background =
-            "#c86b6b";
 
         return;
 
     }
 
 
+    if(
+        !conversaciones.length
+    ){
+
+        alert(
+            "No hay conversaciones."
+        );
+
+        return;
+
+    }
+
+
+    const opciones =
+        conversaciones
+            .map(
+                (c, index) =>
+                    (index + 1) +
+                    ". " +
+                    c.title
+            )
+            .join("\n");
+
+
+    const resultado =
+        prompt(
+            "Escribí el número de la conversación:\n\n"
+            + opciones
+        );
+
+
+    if(!resultado)
+        return;
+
+
+    const indice =
+        Number(resultado) - 1;
+
+
+    if(
+        Number.isInteger(indice) &&
+        indice >= 0 &&
+        indice < conversaciones.length
+    ){
+
+        abrirChat(
+            conversaciones[indice].id
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ESTADO DEL WORKER
+===================================================== */
+
+async function actualizarEstado(){
+
     try{
 
         const response =
             await fetch(
-                API_URL +
-                "/health"
+                API_URL + "/health",
+                {
+                    method:"GET"
+                }
             );
 
 
@@ -1651,6 +1788,7 @@ async function actualizarEstado(){
         dot.style.background =
             "#76c893";
 
+
     }
     catch{
 
@@ -1661,42 +1799,6 @@ async function actualizarEstado(){
             "#c86b6b";
 
     }
-
-}
-
-
-/* =====================================================
-   MENÚ MÓVIL
-===================================================== */
-
-function mostrarMenuMovil(){
-
-    /*
-      En móvil mostramos una lista sencilla
-      de conversaciones sin cambiar el funcionamiento
-      del historial de escritorio.
-    */
-
-    if(
-        window.innerWidth > 700
-    ){
-        return;
-    }
-
-    const nombres =
-        conversaciones.length
-        ? conversaciones
-            .map(
-                c =>
-                    "• " + c.title
-            )
-            .join("\n")
-        : "No hay conversaciones.";
-
-    alert(
-        "Conversaciones\n\n" +
-        nombres
-    );
 
 }
 
@@ -1731,13 +1833,23 @@ renderHistorial();
 
 actualizarEstado();
 
+
 setInterval(
     actualizarEstado,
     7000
+);
+
+
+/* =====================================================
+   CAMBIOS DE TAMAÑO
+===================================================== */
+
+window.addEventListener(
+    "resize",
+    ajustarInput
 );
 
 </script>
 
 </body>
 </html>
-```
