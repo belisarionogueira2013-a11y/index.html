@@ -29,6 +29,10 @@
 
 <style>
 
+/* =====================================================
+   BASE
+===================================================== */
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -40,6 +44,7 @@
     --bg:#0d0d0d;
     --sidebar:#111111;
     --panel:#171717;
+    --panel2:#1c1c1c;
     --hover:#242424;
     --border:#2b2b2b;
     --text:#f5f5f5;
@@ -77,7 +82,7 @@ button{
 
 
 /* =====================================================
-   AUTH
+   LOGIN / REGISTRO
 ===================================================== */
 
 .auth-screen{
@@ -353,6 +358,11 @@ button{
     display:flex;
     flex-direction:column;
 }
+
+
+/* =====================================================
+   HEADER
+===================================================== */
 
 header{
     height:60px;
@@ -909,13 +919,14 @@ header{
 }
 
 </style>
+
 </head>
 
 <body>
 
 
 <!-- =====================================================
-     LOGIN / REGISTRO
+     LOGIN
 ===================================================== -->
 
 <div
@@ -1150,6 +1161,7 @@ header{
 
 
 <main class="main">
+
 
 <header>
 
@@ -1434,17 +1446,17 @@ header{
 <script>
 
 /* =====================================================
-   CONFIG
+   CONFIGURACIÓN
 ===================================================== */
 
 const API_URL =
     "https://inda-ai-api2-0.belisarionogueira2013.workers.dev";
 
 const USERS_KEY =
-    "inda_users_final_v2";
+    "inda_users_final_v3";
 
 const SESSION_KEY =
-    "inda_session_final_v2";
+    "inda_session_final_v3";
 
 const LIMITE_DIARIO =
     50;
@@ -1562,6 +1574,7 @@ function getUsers(){
 
 }
 
+
 function saveUsers(users){
 
     localStorage.setItem(
@@ -1650,7 +1663,8 @@ function crearCuenta(event){
 
 
     if(
-        username.length < 3 ||
+        username.length < 3
+        ||
         password.length < 6
     ){
 
@@ -1698,9 +1712,16 @@ function crearCuenta(event){
 
         username,
         password,
-        plan:"Normal",
-        premium:false,
-        role:"Usuario",
+
+        plan:
+            "Normal",
+
+        premium:
+            false,
+
+        role:
+            "Usuario",
+
         createdAt:
             new Date().toISOString()
 
@@ -1749,9 +1770,7 @@ function iniciarSesion(event){
 
 
     /*
-      Cuenta especial de prueba.
-      En producción no conviene guardar
-      credenciales directamente en el HTML.
+       Cuenta especial de prueba.
     */
 
     if(
@@ -1766,13 +1785,17 @@ function iniciarSesion(event){
 
         usuarioActual = {
 
-            username:"beligmail",
+            username:
+                "beligmail",
 
-            plan:"Premium",
+            plan:
+                "Premium",
 
-            premium:true,
+            premium:
+                true,
 
-            role:"CEO"
+            role:
+                "CEO"
 
         };
 
@@ -1786,6 +1809,7 @@ function iniciarSesion(event){
 
 
         mostrarAplicacion();
+
 
         return;
 
@@ -1803,7 +1827,8 @@ function iniciarSesion(event){
 
 
     if(
-        !user ||
+        !user
+        ||
         user.password !== password
     ){
 
@@ -1861,6 +1886,7 @@ function cerrarSesion(){
 
     app.style.display = "none";
 
+
     authScreen.classList.remove(
         "hidden"
     );
@@ -1904,7 +1930,9 @@ function mostrarAplicacion(){
 
 
     if(
-        usuarioActual.role === "CEO"
+        usuarioActual.role
+        ===
+        "CEO"
     ){
 
         ceoSection.classList.add(
@@ -1954,9 +1982,11 @@ function comprobarCodigoPremium(texto){
 
 function activarPremiumLocal(){
 
-    usuarioActual.premium = true;
+    usuarioActual.premium =
+        true;
 
-    usuarioActual.plan = "Premium";
+    usuarioActual.plan =
+        "Premium";
 
 
     localStorage.setItem(
@@ -1992,12 +2022,16 @@ function renderCEO(){
 
 
     const keys =
-        Object.keys(users);
+        Object.keys(
+            users
+        );
 
 
-    let premiumCount = 0;
+    let premiumCount =
+        0;
 
-    let totalChats = 0;
+    let totalChats =
+        0;
 
 
     keys.forEach(
@@ -2007,8 +2041,12 @@ function renderCEO(){
                 users[key];
 
 
-            if(user.premium){
+            if(
+                user.premium
+            ){
+
                 premiumCount++;
+
             }
 
 
@@ -2026,7 +2064,8 @@ function renderCEO(){
                     );
 
 
-                totalChats += chats.length;
+                totalChats +=
+                    chats.length;
 
             }catch{}
 
@@ -2035,13 +2074,21 @@ function renderCEO(){
 
 
     statUsers.textContent =
-        String(keys.length);
+        String(
+            keys.length
+        );
+
 
     statPremium.textContent =
-        String(premiumCount);
+        String(
+            premiumCount
+        );
+
 
     statChats.textContent =
-        String(totalChats);
+        String(
+            totalChats
+        );
 
 
     userList.innerHTML =
@@ -2090,7 +2137,8 @@ function renderCEO(){
 
 
             plan.textContent =
-                user.plan ||
+                user.plan
+                ||
                 "Normal";
 
 
@@ -2105,7 +2153,8 @@ function renderCEO(){
 
 
             role.textContent =
-                user.role ||
+                user.role
+                ||
                 "Usuario";
 
 
@@ -2121,8 +2170,8 @@ function renderCEO(){
 
             button.textContent =
                 user.premium
-                    ? "Quitar Premium"
-                    : "Dar Premium";
+                ? "Quitar Premium"
+                : "Dar Premium";
 
 
             button.onclick =
@@ -2149,8 +2198,8 @@ function renderCEO(){
 
                     target.plan =
                         target.premium
-                            ? "Premium"
-                            : "Normal";
+                        ? "Premium"
+                        : "Normal";
 
 
                     saveUsers(
@@ -2193,7 +2242,9 @@ function cargarIdioma(){
 
 
     languageSelect.value =
-        localStorage.getItem(key)
+        localStorage.getItem(
+            key
+        )
         ||
         "auto";
 
@@ -2215,7 +2266,9 @@ function cambiarIdioma(){
 function instruccionIdioma(){
 
     if(
-        languageSelect.value === "es"
+        languageSelect.value
+        ===
+        "es"
     ){
 
         return `
@@ -2226,7 +2279,9 @@ Respondé exclusivamente en español.
 
 
     if(
-        languageSelect.value === "en"
+        languageSelect.value
+        ===
+        "en"
     ){
 
         return `
@@ -2237,7 +2292,9 @@ Answer exclusively in English.
 
 
     if(
-        languageSelect.value === "fr"
+        languageSelect.value
+        ===
+        "fr"
     ){
 
         return `
@@ -2256,12 +2313,12 @@ que utilice el usuario.
 
 
 /* =====================================================
-   SISTEMA
+   SISTEMA IA
 ===================================================== */
 
 function obtenerSistema(){
 
-    const nivel =
+    const plan =
         usuarioActual?.premium
 
         ? `
@@ -2338,7 +2395,7 @@ respondé:
 
 No menciones esto si no preguntan.
 
-${nivel}
+${plan}
 
 ${instruccionIdioma()}
 
@@ -2455,6 +2512,8 @@ function nuevoChat(){
         nuevo
     );
 
+    input.focus();
+
 }
 
 
@@ -2493,6 +2552,7 @@ function mostrarChat(c){
 
 
         welcome.innerHTML = `
+
             <div class="welcome-logo">
                 IA
             </div>
@@ -2504,6 +2564,7 @@ function mostrarChat(c){
             <p>
                 Preguntame lo que quieras.
             </p>
+
         `;
 
 
@@ -2521,7 +2582,9 @@ function mostrarChat(c){
         message => {
 
             if(
-                message.type === "image"
+                message.type
+                ===
+                "image"
             ){
 
                 mostrarImagen(
@@ -2534,8 +2597,8 @@ function mostrarChat(c){
                 mostrarMensaje(
                     message.content,
                     message.role === "user"
-                        ? "user"
-                        : "ai"
+                    ? "user"
+                    : "ai"
                 );
 
             }
@@ -2547,7 +2610,7 @@ function mostrarChat(c){
 
 
 /* =====================================================
-   MENSAJES
+   MENSAJE
 ===================================================== */
 
 function mostrarMensaje(
@@ -2620,8 +2683,10 @@ function mostrarMensaje(
 
     requestAnimationFrame(
         () => {
+
             chat.scrollTop =
                 chat.scrollHeight;
+
         }
     );
 
@@ -2632,7 +2697,7 @@ function mostrarMensaje(
 
 
 /* =====================================================
-   MOSTRAR IMAGEN
+   IMAGEN
 ===================================================== */
 
 function mostrarImagen(
@@ -2728,8 +2793,10 @@ function mostrarImagen(
 
     requestAnimationFrame(
         () => {
+
             chat.scrollTop =
                 chat.scrollHeight;
+
         }
     );
 
@@ -2759,9 +2826,11 @@ function renderHistorial(){
                 "chat-item"
                 +
                 (
-                    conversation.id === chatActual
-                        ? " active"
-                        : ""
+                    conversation.id
+                    ===
+                    chatActual
+                    ? " active"
+                    : ""
                 );
 
 
@@ -2798,7 +2867,6 @@ function renderHistorial(){
 
                     event.stopPropagation();
 
-
                     borrarChat(
                         conversation.id
                     );
@@ -2813,13 +2881,17 @@ function renderHistorial(){
 
             item.onclick =
                 () => {
+
                     abrirChat(
                         conversation.id
                     );
+
                 };
 
 
-            history.appendChild(item);
+            history.appendChild(
+                item
+            );
 
         }
     );
@@ -2844,9 +2916,13 @@ function abrirChat(id){
         id;
 
 
-    mostrarChat(conversation);
+    mostrarChat(
+        conversation
+    );
+
 
     renderHistorial();
+
 
     input.focus();
 
@@ -2962,7 +3038,9 @@ function incrementarUso(){
     localStorage.setItem(
         usoKey(),
         String(
-            obtenerUso() + 1
+            obtenerUso()
+            +
+            1
         )
     );
 
@@ -3049,7 +3127,7 @@ function actualizarPlan(){
 
 
 /* =====================================================
-   DETECCIÓN DE IMÁGENES
+   DETECTAR IMAGEN
 ===================================================== */
 
 function esPedidoDeImagen(texto){
@@ -3071,6 +3149,7 @@ function esPedidoDeImagen(texto){
         "generame una imagen",
         "genera imagen",
         "generame imagen",
+
         "genera una foto",
         "generame una foto",
         "genera foto",
@@ -3133,7 +3212,7 @@ function esPedidoDeImagen(texto){
 
 
 /* =====================================================
-   LIMPIAR PROMPT
+   LIMPIAR PROMPT DE IMAGEN
 ===================================================== */
 
 function limpiarPromptImagen(texto){
@@ -3186,7 +3265,7 @@ function limpiarPromptImagen(texto){
 
 
 /* =====================================================
-   ENVIAR
+   ENVIAR TEXTO
 ===================================================== */
 
 async function enviar(){
@@ -3199,19 +3278,21 @@ async function enviar(){
         return;
 
 
-    /*
-      Activar Premium
-    */
+    /* -----------------------------
+       PREMIUM
+    ----------------------------- */
 
     if(
-        comprobarCodigoPremium(texto)
+        comprobarCodigoPremium(
+            texto
+        )
     ){
-
-        activarPremiumLocal();
 
         input.value = "";
 
         ajustarInput();
+
+        activarPremiumLocal();
 
         mostrarMensaje(
             "Premium activado.",
@@ -3223,16 +3304,28 @@ async function enviar(){
     }
 
 
-    /*
-      DETECCIÓN DE IMAGEN
-    */
+    /* -----------------------------
+       PEDIDO DE IMAGEN
+    ----------------------------- */
 
     if(
         esPedidoDeImagen(texto)
     ){
 
+        /*
+         * LIMPIAMOS EL CUADRO
+         * ANTES DE GENERAR.
+         */
+
+        input.value = "";
+
+        ajustarInput();
+
+
         const promptImagen =
-            limpiarPromptImagen(texto);
+            limpiarPromptImagen(
+                texto
+            );
 
 
         await generarImagen(
@@ -3245,9 +3338,9 @@ async function enviar(){
     }
 
 
-    /*
-      Regla Beli
-    */
+    /* -----------------------------
+       REGLA BELI
+    ----------------------------- */
 
     const normalizada =
         texto
@@ -3260,10 +3353,19 @@ async function enviar(){
 
 
     if(
-        normalizada.includes("beli me ama")
+        normalizada.includes(
+            "beli me ama"
+        )
         ||
-        normalizada.includes("beli me quiere")
+        normalizada.includes(
+            "beli me quiere"
+        )
     ){
+
+        input.value = "";
+
+        ajustarInput();
+
 
         if(
             usuarioActual.premium
@@ -3284,22 +3386,23 @@ async function enviar(){
         }
 
 
-        input.value = "";
-
-        ajustarInput();
-
         return;
 
     }
 
 
-    /*
-      Límite
-    */
+    /* -----------------------------
+       LÍMITE
+    ----------------------------- */
 
     if(
         !puedePreguntar()
     ){
+
+        input.value = "";
+
+        ajustarInput();
+
 
         mostrarMensaje(
 `Llegaste al límite de 50 preguntas de hoy.
@@ -3307,6 +3410,7 @@ async function enviar(){
 El contador se reinicia automáticamente mañana.`,
             "ai"
         );
+
 
         return;
 
@@ -3328,26 +3432,45 @@ El contador se reinicia automáticamente mañana.`,
         return;
 
 
+    /* -----------------------------
+       LIMPIAR CUADRO
+       INMEDIATAMENTE
+    ----------------------------- */
+
+    input.value = "";
+
+    ajustarInput();
+
+
     send.disabled = true;
 
 
     conversation.messages.push({
 
-        role:"user",
+        role:
+            "user",
 
-        content:texto
+        content:
+            texto
 
     });
 
 
     if(
-        conversation.title === "Nuevo chat"
+        conversation.title
+        ===
+        "Nuevo chat"
     ){
 
         conversation.title =
             texto.length > 45
-                ? texto.substring(0,45) + "..."
-                : texto;
+            ? texto.substring(
+                0,
+                45
+              )
+              +
+              "..."
+            : texto;
 
     }
 
@@ -3361,11 +3484,6 @@ El contador se reinicia automáticamente mañana.`,
         texto,
         "user"
     );
-
-
-    input.value = "";
-
-    ajustarInput();
 
 
     const thinking =
@@ -3384,9 +3502,12 @@ El contador se reinicia automáticamente mañana.`,
 
         const response =
             await fetch(
-                API_URL + "/chat",
+                API_URL +
+                "/chat",
                 {
-                    method:"POST",
+
+                    method:
+                        "POST",
 
                     headers:{
                         "Content-Type":
@@ -3403,6 +3524,7 @@ El contador se reinicia automáticamente mañana.`,
                                 conversation.messages
 
                         })
+
                 }
             );
 
@@ -3416,7 +3538,8 @@ El contador se reinicia automáticamente mañana.`,
         ){
 
             throw new Error(
-                data?.error ||
+                data?.error
+                ||
                 "Error del servidor."
             );
 
@@ -3447,9 +3570,11 @@ El contador se reinicia automáticamente mañana.`,
 
         conversation.messages.push({
 
-            role:"assistant",
+            role:
+                "assistant",
 
-            content:answer
+            content:
+                answer
 
         });
 
@@ -3472,7 +3597,9 @@ El contador se reinicia automáticamente mañana.`,
 ${error.message}`;
 
 
-        console.error(error);
+        console.error(
+            error
+        );
 
     }
 
@@ -3503,13 +3630,17 @@ async function generarImagen(
 
 
     /*
-      Las imágenes están habilitadas
-      solamente para Premium.
-    */
+     * SOLO PREMIUM
+     */
 
     if(
-        !usuarioActual.premium
+        !usuarioActual?.premium
     ){
+
+        input.value = "";
+
+        ajustarInput();
+
 
         mostrarMensaje(
             "La generación de imágenes está disponible en Premium.",
@@ -3520,6 +3651,15 @@ async function generarImagen(
         return;
 
     }
+
+
+    /*
+     * LIMPIAR SIEMPRE EL CUADRO
+     */
+
+    input.value = "";
+
+    ajustarInput();
 
 
     imageButton.disabled = true;
@@ -3538,22 +3678,15 @@ async function generarImagen(
         obtenerActual();
 
 
+    /*
+     * MOSTRAR EL PEDIDO
+     * SOLO EN EL CHAT
+     */
+
     mostrarMensaje(
         "Crear imagen: " + prompt,
         "user"
     );
-
-
-    if(
-        !promptForzado
-    ){
-
-        input.value = "";
-
-    }
-
-
-    ajustarInput();
 
 
     const thinking =
@@ -3572,10 +3705,12 @@ async function generarImagen(
 
         const response =
             await fetch(
-                API_URL + "/image",
+                API_URL +
+                "/image",
                 {
 
-                    method:"POST",
+                    method:
+                        "POST",
 
                     headers:{
                         "Content-Type":
@@ -3584,7 +3719,8 @@ async function generarImagen(
 
                     body:
                         JSON.stringify({
-                            prompt:prompt
+                            prompt:
+                                prompt
                         })
 
                 }
@@ -3595,7 +3731,7 @@ async function generarImagen(
             !response.ok
         ){
 
-            let message =
+            let errorMessage =
                 "No se pudo generar la imagen.";
 
 
@@ -3605,15 +3741,16 @@ async function generarImagen(
                     await response.json();
 
 
-                message =
-                    data?.error ||
-                    message;
+                errorMessage =
+                    data?.error
+                    ||
+                    errorMessage;
 
             }catch{}
 
 
             throw new Error(
-                message
+                errorMessage
             );
 
         }
@@ -3651,11 +3788,14 @@ async function generarImagen(
 
         conversation.messages.push({
 
-            type:"image",
+            type:
+                "image",
 
-            src:imageURL,
+            src:
+                imageURL,
 
-            prompt:prompt
+            prompt:
+                prompt
 
         });
 
@@ -3818,7 +3958,7 @@ function mostrarMenuMovil(){
             .join("\n");
 
 
-    const selected =
+    const seleccion =
         prompt(
             "Conversaciones\n\n"
             +
@@ -3828,12 +3968,14 @@ function mostrarMenuMovil(){
         );
 
 
-    if(!selected)
+    if(!seleccion)
         return;
 
 
     const index =
-        Number(selected) - 1;
+        Number(
+            seleccion
+        ) - 1;
 
 
     if(
@@ -3863,7 +4005,8 @@ async function actualizarEstado(){
 
         const response =
             await fetch(
-                API_URL + "/health"
+                API_URL +
+                "/health"
             );
 
 
@@ -3917,7 +4060,9 @@ function restaurarSesion(){
 
 
         const session =
-            JSON.parse(saved);
+            JSON.parse(
+                saved
+            );
 
 
         if(
