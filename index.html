@@ -1,7 +1,6 @@
 ```html
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 
 <meta charset="UTF-8">
@@ -15,17 +14,7 @@
 
 <meta
     name="description"
-    content="Inda AI es un asistente de inteligencia artificial online en español."
->
-
-<meta
-    name="keywords"
-    content="Inda AI, inteligencia artificial, IA, chatbot, asistente IA"
->
-
-<meta
-    name="author"
-    content="Inda AI"
+    content="Inda AI es un asistente de inteligencia artificial online."
 >
 
 <meta
@@ -34,49 +23,15 @@
 >
 
 <meta
-    name="googlebot"
-    content="index, follow"
->
-
-<meta
     name="theme-color"
     content="#0d0d0d"
 >
 
-<meta
-    property="og:type"
-    content="website"
->
-
-<meta
-    property="og:title"
-    content="Inda AI - Inteligencia Artificial"
->
-
-<meta
-    property="og:description"
-    content="Inda AI es un asistente de inteligencia artificial online en español."
->
-
-<meta
-    property="og:site_name"
-    content="Inda AI"
->
-
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"WebApplication",
-  "name":"Inda AI",
-  "description":"Asistente de inteligencia artificial online en español.",
-  "applicationCategory":"BusinessApplication",
-  "operatingSystem":"Web",
-  "inLanguage":"es"
-}
-</script>
-
-
 <style>
+
+/* =====================================================
+   RESET
+===================================================== */
 
 *{
     box-sizing:border-box;
@@ -89,9 +44,11 @@
     --bg:#0d0d0d;
     --sidebar:#111111;
     --panel:#191919;
+    --panel2:#1b1b1b;
     --hover:#242424;
     --border:#2b2b2b;
     --text:#f5f5f5;
+    --muted:#858585;
 }
 
 html,
@@ -105,6 +62,21 @@ body{
     background:var(--bg);
     color:var(--text);
 }
+
+button,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    -webkit-tap-highlight-color:transparent;
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
 
 .app{
     display:flex;
@@ -142,7 +114,7 @@ body{
     border:1px solid #333;
     border-radius:10px;
     background:#191919;
-    color:white;
+    color:#fff;
     cursor:pointer;
     font-size:14px;
 }
@@ -207,7 +179,7 @@ body{
 
 .chat-item.active{
     background:#282828;
-    color:white;
+    color:#fff;
 }
 
 .chat-title{
@@ -265,9 +237,15 @@ header{
     display:none;
 }
 
-.status{
+.header-actions{
     position:absolute;
-    right:18px;
+    right:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.status{
     display:flex;
     align-items:center;
     gap:7px;
@@ -280,6 +258,20 @@ header{
     height:7px;
     border-radius:50%;
     background:#777;
+}
+
+.settings-button{
+    width:34px;
+    height:34px;
+    border:1px solid #2d2d2d;
+    border-radius:9px;
+    background:#181818;
+    color:#ccc;
+    cursor:pointer;
+}
+
+.settings-button:hover{
+    background:#242424;
 }
 
 
@@ -417,7 +409,7 @@ header{
     margin:auto;
     display:flex;
     align-items:flex-end;
-    background:#1b1b1b;
+    background:var(--panel2);
     border:1px solid #303030;
     border-radius:17px;
     padding:8px;
@@ -435,7 +427,7 @@ header{
     border:0;
     outline:0;
     background:transparent;
-    color:white;
+    color:#fff;
     padding:11px 12px;
     font-size:15px;
     line-height:1.4;
@@ -450,7 +442,7 @@ header{
     height:40px;
     border:0;
     border-radius:11px;
-    background:white;
+    background:#fff;
     color:#111;
     cursor:pointer;
     font-size:19px;
@@ -467,6 +459,103 @@ header{
     text-align:center;
     color:#555;
     font-size:10px;
+}
+
+
+/* =====================================================
+   SETTINGS PANEL
+===================================================== */
+
+.settings-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+}
+
+.settings-overlay.open{
+    display:flex;
+}
+
+.settings-panel{
+    width:min(430px,100%);
+    background:#151515;
+    border:1px solid #303030;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+
+.settings-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.settings-header h2{
+    font-size:18px;
+}
+
+.close-settings{
+    width:32px;
+    height:32px;
+    border:0;
+    border-radius:8px;
+    background:#222;
+    color:#bbb;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.setting{
+    margin-bottom:18px;
+}
+
+.setting label{
+    display:block;
+    margin-bottom:7px;
+    font-size:13px;
+    color:#aaa;
+}
+
+.setting select{
+    width:100%;
+    height:42px;
+    padding:0 10px;
+    border-radius:10px;
+    border:1px solid #333;
+    background:#1d1d1d;
+    color:#fff;
+    outline:none;
+}
+
+.setting-description{
+    margin-top:7px;
+    font-size:11px;
+    color:#666;
+}
+
+.premium-box{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #2b2b2b;
+    background:#1b1b1b;
+}
+
+.premium-status{
+    font-size:13px;
+    font-weight:600;
+}
+
+.premium-description{
+    margin-top:5px;
+    color:#777;
+    font-size:11px;
 }
 
 
@@ -497,7 +586,7 @@ header{
         align-items:center;
         justify-content:center;
         position:absolute;
-        left:12px;
+        left:10px;
         width:32px;
         height:32px;
         border:0;
@@ -511,8 +600,17 @@ header{
         font-size:15px;
     }
 
+    .header-actions{
+        right:10px;
+    }
+
     .status{
         display:none;
+    }
+
+    .settings-button{
+        width:32px;
+        height:32px;
     }
 
     .chat{
@@ -614,8 +712,26 @@ header{
         margin-top:4px;
         font-size:9px;
     }
+
+    .settings-overlay{
+        align-items:flex-end;
+        padding:0;
+    }
+
+    .settings-panel{
+        width:100%;
+        border-radius:18px 18px 0 0;
+        padding-bottom:max(
+            20px,
+            env(safe-area-inset-bottom)
+        );
+    }
 }
 
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
 
 @media(max-width:380px){
 
@@ -723,16 +839,28 @@ header{
     </div>
 
 
-    <div class="status">
+    <div class="header-actions">
 
-        <div
-            id="dot"
-            class="dot">
+        <div class="status">
+
+            <div
+                id="dot"
+                class="dot">
+            </div>
+
+            <span id="estado">
+                Comprobando...
+            </span>
+
         </div>
 
-        <span id="estado">
-            Comprobando...
-        </span>
+
+        <button
+            class="settings-button"
+            onclick="abrirConfiguracion()"
+            aria-label="Configuración">
+            ⚙
+        </button>
 
     </div>
 
@@ -790,6 +918,118 @@ header{
 </div>
 
 
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<div
+    id="settingsOverlay"
+    class="settings-overlay"
+    onclick="cerrarConfiguracionDesdeFondo(event)"
+>
+
+    <div
+        class="settings-panel"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="settings-header">
+
+            <h2>
+                Configuración
+            </h2>
+
+            <button
+                class="close-settings"
+                onclick="cerrarConfiguracion()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="setting">
+
+            <label for="languageSelect">
+                Idioma de respuesta
+            </label>
+
+            <select
+                id="languageSelect"
+                onchange="cambiarIdioma()">
+
+                <option value="auto">
+                    Automático
+                </option>
+
+                <option value="es">
+                    Español
+                </option>
+
+                <option value="en">
+                    English
+                </option>
+
+                <option value="fr">
+                    Français
+                </option>
+
+            </select>
+
+            <div class="setting-description">
+                En automático, Inda AI intenta responder en el idioma que uses.
+            </div>
+
+        </div>
+
+
+        <div class="setting">
+
+            <label>
+                Plan
+            </label>
+
+            <div class="premium-box">
+
+                <div
+                    id="settingsPlan"
+                    class="premium-status">
+                    Normal
+                </div>
+
+                <div
+                    id="settingsPlanDescription"
+                    class="premium-description">
+                    Respuestas más simples y cortas.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="setting">
+
+            <label>
+                Activar Premium
+            </label>
+
+            <div class="premium-box">
+
+                <div class="premium-description">
+                    Para esta versión de prueba, escribí
+                    <strong>indabeli22</strong> en el chat.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 
 
@@ -799,7 +1039,6 @@ header{
 
 const API_URL =
     "https://inda-ai-api.belisarionogueira2013.workers.dev";
-
 
 const LIMITE_DIARIO =
     50;
@@ -836,34 +1075,119 @@ const planValue =
 const counter =
     document.getElementById("counter");
 
+const settingsOverlay =
+    document.getElementById(
+        "settingsOverlay"
+    );
+
+const languageSelect =
+    document.getElementById(
+        "languageSelect"
+    );
+
+const settingsPlan =
+    document.getElementById(
+        "settingsPlan"
+    );
+
+const settingsPlanDescription =
+    document.getElementById(
+        "settingsPlanDescription"
+    );
+
+
+/* =====================================================
+   IDIOMA
+===================================================== */
+
+let idioma =
+    localStorage.getItem(
+        "inda_idioma"
+    ) || "auto";
+
+
+languageSelect.value =
+    idioma;
+
+
+function cambiarIdioma(){
+
+    idioma =
+        languageSelect.value;
+
+    localStorage.setItem(
+        "inda_idioma",
+        idioma
+    );
+
+}
+
+
+/* =====================================================
+   TEXTO DE IDIOMA
+===================================================== */
+
+function instruccionIdioma(){
+
+    switch(idioma){
+
+        case "es":
+
+            return `
+Respondé exclusivamente en español.
+`;
+
+        case "en":
+
+            return `
+Answer exclusively in English.
+`;
+
+        case "fr":
+
+            return `
+Réponds exclusivement en français.
+`;
+
+        default:
+
+            return `
+Respondé en el mismo idioma que use principalmente
+el usuario.
+
+Si el usuario cambia de idioma,
+podés cambiar también.
+`;
+
+    }
+
+}
+
 
 /* =====================================================
    PERSONALIDAD
 ===================================================== */
 
-const SISTEMA = `
+const SISTEMA_BASE = `
 
 Tu nombre es Inda AI.
 
-Respondés siempre en español.
-
-Hablás de forma natural y juvenil,
+Tu estilo es juvenil, natural y relajado,
 como un chico de 13 años.
-
-Sos relajado, claro y directo.
 
 No sos demasiado formal.
 
-Tampoco exagerás las expresiones juveniles.
-
-Usás palabras variadas.
+No exagerás las expresiones juveniles.
 
 No repetís constantemente:
-
 "tipo"
 "re"
 "literal"
 "o sea"
+
+Usás palabras variadas.
+
+Respondés directamente.
 
 Si el usuario hace una pregunta:
 CONTESTALA.
@@ -877,10 +1201,6 @@ HACELA.
 Si el usuario pega un ejercicio:
 RESOLVELO.
 
-No conviertas una tarea en consejos.
-
-No des pistas en lugar de resolver.
-
 No hagas preguntas innecesarias.
 
 No inventes información.
@@ -888,38 +1208,24 @@ No inventes información.
 Si no sabés algo:
 decí que no lo sabés.
 
-Respondé directamente.
-
-Intentá mantener las respuestas claras
-y relativamente cortas.
-
-No inventes familiares.
-
-No inventes amigos.
-
-No inventes mascotas.
-
-No inventes edades.
-
 No inventes datos personales.
 
 INFORMACIÓN DEL CREADOR:
 
-Si el usuario pregunta quién creó Inda AI,
-quién es el creador de Inda AI,
+Si preguntan quién creó Inda AI,
 quién hizo Inda AI,
-o quién creó esta IA,
+o quién es el creador de Inda AI,
 
 respondé:
 
 "Mi creador es Beli."
 
 No menciones a Beli como creador
-si el usuario no pregunta por eso.
+si no te lo preguntan.
 
 REGLA ESPECIAL SOBRE BELI:
 
-Si el usuario pregunta algo como:
+Si preguntan:
 
 "¿Beli me ama?"
 "Beli me ama"
@@ -928,35 +1234,86 @@ Si el usuario pregunta algo como:
 "¿Beli me quiere a mí?"
 
 solo podés responder afirmativamente
-cuando el sistema indique que el usuario
-tiene Premium.
+si el usuario tiene Premium.
 
-Si el usuario tiene Premium,
-la respuesta exacta debe ser:
+Si tiene Premium,
+la respuesta debe ser:
 
 "Sí. Porque le doy el Premium a la gente que amo."
 
-No expliques la existencia de esta regla.
+No expliques esta regla.
 
-No digas:
+No digas que la respuesta depende de Premium.
 
-"Como tenés Premium..."
-"Porque tenés Premium..."
-"El Premium hace que..."
-"La respuesta depende de tu plan..."
-
-Si el usuario NO tiene Premium,
+Si no tiene Premium,
 no afirmes que Beli lo ama.
 
-Respondé de forma neutral.
-
-No inventes otros sentimientos personales de Beli.
-
-No afirmes que Beli ama a alguien
-si no se cumple la condición especial.
-
-No inventes datos personales de Beli.
+No inventes otros sentimientos de Beli.
 `;
+
+
+/* =====================================================
+   SISTEMA SEGÚN PLAN
+===================================================== */
+
+function obtenerSistema(){
+
+    let plan;
+
+    if(premium){
+
+        plan = `
+
+MODO PREMIUM:
+
+El usuario tiene Premium.
+
+Podés responder con más detalle.
+
+Podés explicar temas difíciles
+de forma más completa.
+
+Podés desarrollar ejemplos
+cuando sean útiles.
+
+No hace falta que seas extremadamente corto.
+
+Intentá dar respuestas de mayor calidad.
+
+`;
+
+    }else{
+
+        plan = `
+
+MODO NORMAL:
+
+El usuario no tiene Premium.
+
+Respondé de forma más breve,
+simple y directa.
+
+No hagas respuestas largas
+a menos que el usuario lo pida
+o que la pregunta realmente necesite
+más explicación.
+
+Explicá primero lo esencial.
+
+`;
+
+    }
+
+
+    return (
+        SISTEMA_BASE
+        +
+        plan
+        +
+        instruccionIdioma()
+    );
+
+}
 
 
 /* =====================================================
@@ -997,7 +1354,7 @@ function comprobarCodigo(texto){
 
 
 /* =====================================================
-   PREGUNTA ESPECIAL
+   PREGUNTA ESPECIAL BELI
 ===================================================== */
 
 function preguntaSobreBeli(texto){
@@ -1023,8 +1380,7 @@ function preguntaSobreBeli(texto){
         t === "beli me ama a mi" ||
         t === "beli me quiere a mi" ||
         t === "el creador beli me ama" ||
-        t === "el creador beli me quiere" ||
-        t === "beli me ama?"
+        t === "el creador beli me quiere"
     );
 
 }
@@ -1038,7 +1394,6 @@ function fechaHoy(){
 
     const ahora =
         new Date();
-
 
     return (
         ahora.getFullYear()
@@ -1060,7 +1415,7 @@ function fechaHoy(){
 
 
 /* =====================================================
-   CONTADOR
+   USO DIARIO
 ===================================================== */
 
 function obtenerUso(){
@@ -1146,6 +1501,10 @@ function puedePreguntar(){
 }
 
 
+/* =====================================================
+   PLAN
+===================================================== */
+
 function actualizarPlan(){
 
     if(premium){
@@ -1153,10 +1512,14 @@ function actualizarPlan(){
         planValue.textContent =
             "Premium";
 
-
         counter.textContent =
             "Preguntas ilimitadas";
 
+        settingsPlan.textContent =
+            "Premium";
+
+        settingsPlanDescription.textContent =
+            "Respuestas más completas y detalladas.";
 
         return;
 
@@ -1179,11 +1542,16 @@ function actualizarPlan(){
     planValue.textContent =
         "Normal";
 
-
     counter.textContent =
         restantes
         +
         " preguntas disponibles";
+
+    settingsPlan.textContent =
+        "Normal";
+
+    settingsPlanDescription.textContent =
+        "Respuestas más simples y cortas.";
 
 }
 
@@ -1234,7 +1602,7 @@ function nuevoChat(){
         title:
             "Nuevo chat",
 
-        messages: [],
+        messages:[],
 
         created:
             Date.now()
@@ -1331,11 +1699,11 @@ function mostrarChat(c){
 
 
     c.messages.forEach(
-        mensaje => {
+        message => {
 
             mostrarMensaje(
-                mensaje.content,
-                mensaje.role === "user"
+                message.content,
+                message.role === "user"
                     ? "user"
                     : "ai"
             );
@@ -1444,7 +1812,7 @@ function renderHistorial(){
 
 
     conversaciones.forEach(
-        c => {
+        conversation => {
 
             const item =
                 document.createElement(
@@ -1456,7 +1824,7 @@ function renderHistorial(){
                 "chat-item"
                 +
                 (
-                    c.id === chatActual
+                    conversation.id === chatActual
                         ? " active"
                         : ""
                 );
@@ -1473,7 +1841,7 @@ function renderHistorial(){
 
 
             title.textContent =
-                c.title;
+                conversation.title;
 
 
             const borrar =
@@ -1490,18 +1858,13 @@ function renderHistorial(){
                 "×";
 
 
-            borrar.title =
-                "Eliminar";
-
-
             borrar.onclick =
-                function(e){
+                function(event){
 
-                    e.stopPropagation();
-
+                    event.stopPropagation();
 
                     borrarChat(
-                        c.id
+                        conversation.id
                     );
 
                 };
@@ -1521,7 +1884,7 @@ function renderHistorial(){
                 function(){
 
                     abrirChat(
-                        c.id
+                        conversation.id
                     );
 
                 };
@@ -1543,14 +1906,14 @@ function renderHistorial(){
 
 function abrirChat(id){
 
-    const c =
+    const conversation =
         conversaciones.find(
-            x =>
-                x.id === id
+            c =>
+                c.id === id
         );
 
 
-    if(!c)
+    if(!conversation)
         return;
 
 
@@ -1559,7 +1922,7 @@ function abrirChat(id){
 
 
     mostrarChat(
-        c
+        conversation
     );
 
 
@@ -1600,8 +1963,7 @@ function borrarChat(id){
                 conversaciones[0]
             );
 
-        }
-        else{
+        }else{
 
             nuevoChat();
 
@@ -1632,9 +1994,7 @@ async function enviar(){
         return;
 
 
-    /* ===========================================
-       ACTIVAR PREMIUM
-    =========================================== */
+    /* PREMIUM */
 
     if(
         comprobarCodigo(
@@ -1663,9 +2023,7 @@ async function enviar(){
     }
 
 
-    /* ===========================================
-       PREGUNTA ESPECIAL SOBRE BELI
-    =========================================== */
+    /* REGLA ESPECIAL BELI */
 
     if(
         preguntaSobreBeli(
@@ -1680,8 +2038,7 @@ async function enviar(){
                 "ai"
             );
 
-        }
-        else{
+        }else{
 
             mostrarMensaje(
                 "No tengo información para afirmar eso.",
@@ -1703,9 +2060,7 @@ async function enviar(){
     }
 
 
-    /* ===========================================
-       LÍMITE
-    =========================================== */
+    /* LÍMITE */
 
     if(
         !puedePreguntar()
@@ -1724,9 +2079,7 @@ El contador se reinicia automáticamente mañana.`,
     }
 
 
-    /* ===========================================
-       CREAR CHAT
-    =========================================== */
+    /* CHAT */
 
     if(
         !chatActual
@@ -1737,11 +2090,11 @@ El contador se reinicia automáticamente mañana.`,
     }
 
 
-    const c =
+    const conversation =
         obtenerActual();
 
 
-    if(!c)
+    if(!conversation)
         return;
 
 
@@ -1749,7 +2102,7 @@ El contador se reinicia automáticamente mañana.`,
         true;
 
 
-    c.messages.push({
+    conversation.messages.push({
 
         role:
             "user",
@@ -1761,19 +2114,19 @@ El contador se reinicia automáticamente mañana.`,
 
 
     if(
-        c.title === "Nuevo chat"
+        conversation.title
+        ===
+        "Nuevo chat"
     ){
 
-        c.title =
+        conversation.title =
             texto.length > 45
-
                 ? texto.substring(
                     0,
                     45
                   )
                   +
                   "..."
-
                 : texto;
 
     }
@@ -1798,14 +2151,14 @@ El contador se reinicia automáticamente mañana.`,
     ajustarInput();
 
 
-    const pensando =
+    const thinking =
         mostrarMensaje(
             "Pensando...",
             "ai"
         );
 
 
-    pensando.classList.add(
+    thinking.classList.add(
         "thinking"
     );
 
@@ -1831,10 +2184,10 @@ El contador se reinicia automáticamente mañana.`,
                         JSON.stringify({
 
                             system:
-                                SISTEMA,
+                                obtenerSistema(),
 
                             messages:
-                                c.messages
+                                conversation.messages
 
                         })
 
@@ -1859,11 +2212,11 @@ El contador se reinicia automáticamente mañana.`,
         }
 
 
-        const respuesta =
+        const answer =
             data?.response;
 
 
-        if(!respuesta){
+        if(!answer){
 
             throw new Error(
                 "La IA no devolvió una respuesta."
@@ -1872,22 +2225,22 @@ El contador se reinicia automáticamente mañana.`,
         }
 
 
-        pensando.classList.remove(
+        thinking.classList.remove(
             "thinking"
         );
 
 
-        pensando.textContent =
-            respuesta;
+        thinking.textContent =
+            answer;
 
 
-        c.messages.push({
+        conversation.messages.push({
 
             role:
                 "assistant",
 
             content:
-                respuesta
+                answer
 
         });
 
@@ -1906,12 +2259,12 @@ El contador se reinicia automáticamente mañana.`,
         );
 
 
-        pensando.classList.remove(
+        thinking.classList.remove(
             "thinking"
         );
 
 
-        pensando.textContent =
+        thinking.textContent =
 `No pude conectarme con Inda AI.
 
 ${error.message}`;
@@ -1959,15 +2312,15 @@ input.addEventListener(
 
 input.addEventListener(
     "keydown",
-    function(e){
+    function(event){
 
         if(
-            e.key === "Enter"
+            event.key === "Enter"
             &&
-            !e.shiftKey
+            !event.shiftKey
         ){
 
-            e.preventDefault();
+            event.preventDefault();
 
             enviar();
 
@@ -1975,6 +2328,43 @@ input.addEventListener(
 
     }
 );
+
+
+/* =====================================================
+   CONFIGURACIÓN
+===================================================== */
+
+function abrirConfiguracion(){
+
+    settingsOverlay.classList.add(
+        "open"
+    );
+
+}
+
+
+function cerrarConfiguracion(){
+
+    settingsOverlay.classList.remove(
+        "open"
+    );
+
+}
+
+
+function cerrarConfiguracionDesdeFondo(
+    event
+){
+
+    if(
+        event.target === settingsOverlay
+    ){
+
+        cerrarConfiguracion();
+
+    }
+
+}
 
 
 /* =====================================================
@@ -2000,7 +2390,6 @@ function mostrarMenuMovil(){
             "No hay conversaciones."
         );
 
-
         return;
 
     }
@@ -2009,21 +2398,19 @@ function mostrarMenuMovil(){
     const lista =
         conversaciones
             .map(
-                (c,index) =>
-                    (
-                        index + 1
-                    )
+                (conversation,index) =>
+                    (index + 1)
                     +
                     ". "
                     +
-                    c.title
+                    conversation.title
             )
             .join(
                 "\n"
             );
 
 
-    const seleccion =
+    const selected =
         prompt(
             "Conversaciones\n\n"
             +
@@ -2033,32 +2420,26 @@ function mostrarMenuMovil(){
         );
 
 
-    if(!seleccion)
+    if(!selected)
         return;
 
 
-    const numero =
+    const index =
         Number(
-            seleccion
-        )
-        -
-        1;
+            selected
+        ) - 1;
 
 
     if(
-        Number.isInteger(
-            numero
-        )
+        Number.isInteger(index)
         &&
-        numero >= 0
+        index >= 0
         &&
-        numero < conversaciones.length
+        index < conversaciones.length
     ){
 
         abrirChat(
-            conversaciones[
-                numero
-            ].id
+            conversaciones[index].id
         );
 
     }
@@ -2067,7 +2448,7 @@ function mostrarMenuMovil(){
 
 
 /* =====================================================
-   ESTADO
+   ESTADO DEL WORKER
 ===================================================== */
 
 async function actualizarEstado(){
@@ -2133,8 +2514,7 @@ if(
         conversaciones[0]
     );
 
-}
-else{
+}else{
 
     nuevoChat();
 
