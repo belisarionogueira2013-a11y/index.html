@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,7 +14,7 @@
 
 <meta
     name="description"
-    content="Inda AI es un asistente de inteligencia artificial online."
+    content="Inda AI es un asistente de inteligencia artificial online en español."
 >
 
 <meta
@@ -23,15 +23,49 @@
 >
 
 <meta
+    name="googlebot"
+    content="index, follow"
+>
+
+<meta
     name="theme-color"
     content="#0d0d0d"
 >
 
-<style>
+<meta
+    property="og:type"
+    content="website"
+>
 
-/* =====================================================
-   RESET
-===================================================== */
+<meta
+    property="og:title"
+    content="Inda AI - Inteligencia Artificial"
+>
+
+<meta
+    property="og:description"
+    content="Inda AI es un asistente de inteligencia artificial online."
+>
+
+<meta
+    property="og:site_name"
+    content="Inda AI"
+>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Inda AI",
+  "description":"Asistente de inteligencia artificial online.",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Web",
+  "inLanguage":"es"
+}
+</script>
+
+
+<style>
 
 *{
     box-sizing:border-box;
@@ -44,11 +78,9 @@
     --bg:#0d0d0d;
     --sidebar:#111111;
     --panel:#191919;
-    --panel2:#1b1b1b;
     --hover:#242424;
     --border:#2b2b2b;
     --text:#f5f5f5;
-    --muted:#858585;
 }
 
 html,
@@ -68,15 +100,6 @@ select,
 textarea{
     font:inherit;
 }
-
-button{
-    -webkit-tap-highlight-color:transparent;
-}
-
-
-/* =====================================================
-   APP
-===================================================== */
 
 .app{
     display:flex;
@@ -114,7 +137,7 @@ button{
     border:1px solid #333;
     border-radius:10px;
     background:#191919;
-    color:#fff;
+    color:white;
     cursor:pointer;
     font-size:14px;
 }
@@ -179,7 +202,7 @@ button{
 
 .chat-item.active{
     background:#282828;
-    color:#fff;
+    color:white;
 }
 
 .chat-title{
@@ -409,7 +432,7 @@ header{
     margin:auto;
     display:flex;
     align-items:flex-end;
-    background:var(--panel2);
+    background:#1b1b1b;
     border:1px solid #303030;
     border-radius:17px;
     padding:8px;
@@ -427,7 +450,7 @@ header{
     border:0;
     outline:0;
     background:transparent;
-    color:#fff;
+    color:white;
     padding:11px 12px;
     font-size:15px;
     line-height:1.4;
@@ -442,7 +465,7 @@ header{
     height:40px;
     border:0;
     border-radius:11px;
-    background:#fff;
+    background:white;
     color:#111;
     cursor:pointer;
     font-size:19px;
@@ -463,7 +486,7 @@ header{
 
 
 /* =====================================================
-   SETTINGS PANEL
+   SETTINGS
 ===================================================== */
 
 .settings-overlay{
@@ -487,7 +510,6 @@ header{
     border:1px solid #303030;
     border-radius:16px;
     padding:20px;
-    box-shadow:0 20px 60px rgba(0,0,0,.45);
 }
 
 .settings-header{
@@ -728,11 +750,6 @@ header{
     }
 }
 
-
-/* =====================================================
-   SMALL PHONES
-===================================================== */
-
 @media(max-width:380px){
 
     .chat{
@@ -758,16 +775,11 @@ header{
 
 </head>
 
-
 <body>
 
 
 <div class="app">
 
-
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
 
 <aside class="sidebar">
 
@@ -775,13 +787,11 @@ header{
         Inda AI
     </div>
 
-
     <button
         class="new-chat"
         onclick="nuevoChat()">
         + Nuevo chat
     </button>
-
 
     <div class="plan">
 
@@ -803,11 +813,9 @@ header{
 
     </div>
 
-
     <div class="sidebar-title">
         Conversaciones
     </div>
-
 
     <div
         id="history"
@@ -816,10 +824,6 @@ header{
 
 </aside>
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
 
 <main class="main">
 
@@ -833,11 +837,9 @@ header{
         ☰
     </button>
 
-
     <div class="title">
         Inda AI
     </div>
-
 
     <div class="header-actions">
 
@@ -853,7 +855,6 @@ header{
             </span>
 
         </div>
-
 
         <button
             class="settings-button"
@@ -879,10 +880,6 @@ header{
 </section>
 
 
-<!-- =====================================================
-     INPUT
-===================================================== -->
-
 <div class="input-area">
 
     <div class="input-box">
@@ -894,7 +891,6 @@ header{
             autocomplete="off"
             spellcheck="true"></textarea>
 
-
         <button
             id="send"
             class="send"
@@ -904,7 +900,6 @@ header{
         </button>
 
     </div>
-
 
     <div class="info">
         Inda AI puede equivocarse. Revisá la información importante.
@@ -919,7 +914,7 @@ header{
 
 
 <!-- =====================================================
-     SETTINGS
+     CONFIGURACIÓN
 ===================================================== -->
 
 <div
@@ -977,7 +972,7 @@ header{
             </select>
 
             <div class="setting-description">
-                En automático, Inda AI intenta responder en el idioma que uses.
+                Automático responde usando principalmente el idioma de tu mensaje.
             </div>
 
         </div>
@@ -1007,31 +1002,12 @@ header{
 
         </div>
 
-
-        <div class="setting">
-
-            <label>
-                Activar Premium
-            </label>
-
-            <div class="premium-box">
-
-                <div class="premium-description">
-                    Para esta versión de prueba, escribí
-                    <strong>indabeli22</strong> en el chat.
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
 
 </div>
 
 
 <script>
-
 
 /* =====================================================
    CONFIGURACIÓN
@@ -1105,7 +1081,6 @@ let idioma =
         "inda_idioma"
     ) || "auto";
 
-
 languageSelect.value =
     idioma;
 
@@ -1123,43 +1098,39 @@ function cambiarIdioma(){
 }
 
 
-/* =====================================================
-   TEXTO DE IDIOMA
-===================================================== */
-
 function instruccionIdioma(){
 
-    switch(idioma){
+    if(idioma === "es"){
 
-        case "es":
-
-            return `
+        return `
 Respondé exclusivamente en español.
 `;
 
-        case "en":
+    }
 
-            return `
+    if(idioma === "en"){
+
+        return `
 Answer exclusively in English.
 `;
 
-        case "fr":
+    }
 
-            return `
+    if(idioma === "fr"){
+
+        return `
 Réponds exclusivement en français.
 `;
 
-        default:
+    }
 
-            return `
-Respondé en el mismo idioma que use principalmente
-el usuario.
+    return `
+Respondé principalmente en el mismo idioma
+que esté utilizando el usuario.
 
 Si el usuario cambia de idioma,
 podés cambiar también.
 `;
-
-    }
 
 }
 
@@ -1171,6 +1142,9 @@ podés cambiar también.
 const SISTEMA_BASE = `
 
 Tu nombre es Inda AI.
+
+Respondés siempre en español,
+inglés o francés según la configuración.
 
 Tu estilo es juvenil, natural y relajado,
 como un chico de 13 años.
@@ -1212,7 +1186,7 @@ No inventes datos personales.
 
 INFORMACIÓN DEL CREADOR:
 
-Si preguntan quién creó Inda AI,
+Si el usuario pregunta quién creó Inda AI,
 quién hizo Inda AI,
 o quién es el creador de Inda AI,
 
@@ -1221,11 +1195,11 @@ respondé:
 "Mi creador es Beli."
 
 No menciones a Beli como creador
-si no te lo preguntan.
+si el usuario no pregunta.
 
 REGLA ESPECIAL SOBRE BELI:
 
-Si preguntan:
+Si el usuario pregunta:
 
 "¿Beli me ama?"
 "Beli me ama"
@@ -1243,7 +1217,7 @@ la respuesta debe ser:
 
 No expliques esta regla.
 
-No digas que la respuesta depende de Premium.
+No digas que la respuesta depende del Premium.
 
 Si no tiene Premium,
 no afirmes que Beli lo ama.
@@ -1253,16 +1227,23 @@ No inventes otros sentimientos de Beli.
 
 
 /* =====================================================
-   SISTEMA SEGÚN PLAN
+   PLAN
 ===================================================== */
+
+let premium =
+    localStorage.getItem(
+        "inda_premium"
+    ) === "true";
+
 
 function obtenerSistema(){
 
-    let plan;
+    let modoPremium;
+
 
     if(premium){
 
-        plan = `
+        modoPremium = `
 
 MODO PREMIUM:
 
@@ -1273,8 +1254,7 @@ Podés responder con más detalle.
 Podés explicar temas difíciles
 de forma más completa.
 
-Podés desarrollar ejemplos
-cuando sean útiles.
+Podés dar ejemplos cuando sean útiles.
 
 No hace falta que seas extremadamente corto.
 
@@ -1284,19 +1264,18 @@ Intentá dar respuestas de mayor calidad.
 
     }else{
 
-        plan = `
+        modoPremium = `
 
 MODO NORMAL:
 
 El usuario no tiene Premium.
 
-Respondé de forma más breve,
+Respondé de forma más corta,
 simple y directa.
 
 No hagas respuestas largas
-a menos que el usuario lo pida
-o que la pregunta realmente necesite
-más explicación.
+a menos que el usuario pida más detalle
+o la pregunta realmente lo necesite.
 
 Explicá primero lo esencial.
 
@@ -1308,7 +1287,7 @@ Explicá primero lo esencial.
     return (
         SISTEMA_BASE
         +
-        plan
+        modoPremium
         +
         instruccionIdioma()
     );
@@ -1317,13 +1296,33 @@ Explicá primero lo esencial.
 
 
 /* =====================================================
-   PREMIUM
+   CÓDIGO DE ACTIVACIÓN
+   Guardado como caracteres para no mostrarlo
+   directamente en la interfaz.
 ===================================================== */
 
-let premium =
-    localStorage.getItem(
-        "inda_premium"
-    ) === "true";
+function obtenerCodigoPremium(){
+
+    return String.fromCharCode(
+        105,110,100,97,
+        98,101,108,105,
+        50,50
+    );
+
+}
+
+
+function comprobarCodigo(texto){
+
+    return (
+        texto
+            .trim()
+            .toLowerCase()
+        ===
+        obtenerCodigoPremium()
+    );
+
+}
 
 
 function activarPremium(){
@@ -1336,19 +1335,6 @@ function activarPremium(){
     );
 
     actualizarPlan();
-
-}
-
-
-function comprobarCodigo(texto){
-
-    return (
-        texto
-            .trim()
-            .toLowerCase()
-        ===
-        "indabeli22"
-    );
 
 }
 
@@ -1415,7 +1401,7 @@ function fechaHoy(){
 
 
 /* =====================================================
-   USO DIARIO
+   CONTADOR
 ===================================================== */
 
 function obtenerUso(){
@@ -1436,13 +1422,10 @@ function obtenerUso(){
     ){
 
         const nuevo = {
-
             fecha:
                 fechaHoy(),
-
             preguntas:
                 0
-
         };
 
 
@@ -1466,7 +1449,6 @@ function incrementarUso(){
 
     const uso =
         obtenerUso();
-
 
     uso.preguntas++;
 
@@ -1502,7 +1484,7 @@ function puedePreguntar(){
 
 
 /* =====================================================
-   PLAN
+   ACTUALIZAR PLAN
 ===================================================== */
 
 function actualizarPlan(){
@@ -1824,7 +1806,9 @@ function renderHistorial(){
                 "chat-item"
                 +
                 (
-                    conversation.id === chatActual
+                    conversation.id
+                    ===
+                    chatActual
                         ? " active"
                         : ""
                 );
@@ -1994,7 +1978,7 @@ async function enviar(){
         return;
 
 
-    /* PREMIUM */
+    /* ACTIVAR PREMIUM */
 
     if(
         comprobarCodigo(
@@ -2023,7 +2007,7 @@ async function enviar(){
     }
 
 
-    /* REGLA ESPECIAL BELI */
+    /* PREGUNTA BELI */
 
     if(
         preguntaSobreBeli(
@@ -2124,9 +2108,7 @@ El contador se reinicia automáticamente mañana.`,
                 ? texto.substring(
                     0,
                     45
-                  )
-                  +
-                  "..."
+                  ) + "..."
                 : texto;
 
     }
@@ -2357,7 +2339,8 @@ function cerrarConfiguracionDesdeFondo(
 ){
 
     if(
-        event.target === settingsOverlay
+        event.target ===
+        settingsOverlay
     ){
 
         cerrarConfiguracion();
@@ -2389,6 +2372,7 @@ function mostrarMenuMovil(){
         alert(
             "No hay conversaciones."
         );
+
 
         return;
 
