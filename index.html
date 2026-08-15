@@ -1,31 +1,21 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>Inda AI</title>
 
-<meta
-    name="description"
-    content="Inda AI - Asistente de inteligencia artificial."
->
+<meta name="description"
+      content="Inda AI - Asistente de inteligencia artificial.">
 
-<meta
-    name="robots"
-    content="index, follow"
->
+<meta name="robots"
+      content="index, follow">
 
-<meta
-    name="theme-color"
-    content="#0d0d0d"
->
+<meta name="theme-color"
+      content="#0d0d0d">
 
 <style>
 
@@ -38,13 +28,15 @@
 
 :root{
     --bg:#0d0d0d;
-    --sidebar:#111111;
+    --sidebar:#111;
     --panel:#171717;
-    --panel2:#1c1c1c;
+    --panel2:#1d1d1d;
     --hover:#242424;
     --border:#2b2b2b;
     --text:#f5f5f5;
-    --muted:#858585;
+    --muted:#888;
+    --green:#76c893;
+    --red:#c86b6b;
 }
 
 html,
@@ -70,6 +62,7 @@ button{
     cursor:pointer;
 }
 
+
 /* =====================================================
    AUTH
 ===================================================== */
@@ -81,13 +74,12 @@ button{
     align-items:center;
     justify-content:center;
     padding:20px;
-    background:#0d0d0d;
 }
 
 .auth-card{
     width:min(420px,100%);
     background:#151515;
-    border:1px solid #2d2d2d;
+    border:1px solid var(--border);
     border-radius:18px;
     padding:26px;
 }
@@ -101,7 +93,7 @@ button{
 
 .auth-subtitle{
     text-align:center;
-    color:#888;
+    color:var(--muted);
     font-size:13px;
     margin-bottom:22px;
 }
@@ -156,10 +148,6 @@ button{
     outline:none;
 }
 
-.field input:focus{
-    border-color:#555;
-}
-
 .auth-submit{
     width:100%;
     height:44px;
@@ -182,6 +170,7 @@ button{
     display:none !important;
 }
 
+
 /* =====================================================
    APP
 ===================================================== */
@@ -197,6 +186,7 @@ button{
     width:100%;
     height:100%;
 }
+
 
 /* =====================================================
    SIDEBAR
@@ -227,12 +217,7 @@ button{
     border:1px solid #333;
     border-radius:10px;
     background:#191919;
-    color:#fff;
-    font-size:14px;
-}
-
-.new-chat:hover{
-    background:#252525;
+    color:white;
 }
 
 .plan{
@@ -261,7 +246,7 @@ button{
 }
 
 .role-value{
-    margin-top:3px;
+    margin-top:4px;
     color:#777;
     font-size:11px;
 }
@@ -311,7 +296,6 @@ button{
 .delete-chat{
     color:#777;
     opacity:0;
-    cursor:pointer;
 }
 
 .chat-item:hover .delete-chat{
@@ -320,8 +304,8 @@ button{
 
 .sidebar-footer{
     margin-top:12px;
-    border-top:1px solid #222;
     padding-top:12px;
+    border-top:1px solid #222;
 }
 
 .account-name{
@@ -338,6 +322,7 @@ button{
     background:#191919;
     color:#ccc;
 }
+
 
 /* =====================================================
    MAIN
@@ -401,6 +386,7 @@ header{
     color:#ccc;
 }
 
+
 /* =====================================================
    CHAT
 ===================================================== */
@@ -409,7 +395,6 @@ header{
     flex:1;
     overflow-y:auto;
     padding:30px 20px 150px;
-    scroll-behavior:smooth;
 }
 
 .chat-inner{
@@ -469,10 +454,6 @@ header{
     opacity:.5;
 }
 
-/* =====================================================
-   WELCOME
-===================================================== */
-
 .welcome{
     min-height:65vh;
     display:flex;
@@ -492,7 +473,7 @@ header{
     align-items:center;
     justify-content:center;
     font-size:17px;
-    font-weight:700;
+    font-weight:bold;
     margin-bottom:18px;
 }
 
@@ -503,8 +484,8 @@ header{
 
 .welcome p{
     color:#888;
-    font-size:14px;
 }
+
 
 /* =====================================================
    INPUT
@@ -516,10 +497,6 @@ header{
     right:0;
     bottom:0;
     padding:20px;
-    padding-bottom:max(
-        20px,
-        env(safe-area-inset-bottom)
-    );
     background:linear-gradient(
         transparent,
         var(--bg) 30%
@@ -538,10 +515,6 @@ header{
     padding:8px;
 }
 
-.input-box:focus-within{
-    border-color:#444;
-}
-
 #prompt{
     flex:1;
     resize:none;
@@ -553,11 +526,6 @@ header{
     color:#fff;
     padding:11px 12px;
     font-size:15px;
-    line-height:1.4;
-}
-
-#prompt::placeholder{
-    color:#777;
 }
 
 .send{
@@ -568,11 +536,6 @@ header{
     background:#fff;
     color:#111;
     font-size:19px;
-    flex-shrink:0;
-}
-
-.send:disabled{
-    opacity:.4;
 }
 
 .info{
@@ -583,92 +546,133 @@ header{
     font-size:10px;
 }
 
+
 /* =====================================================
-   SETTINGS
+   SETTINGS / CEO
 ===================================================== */
 
-.settings-overlay{
+.modal{
     position:fixed;
     inset:0;
+    background:rgba(0,0,0,.6);
     display:none;
     align-items:center;
     justify-content:center;
     padding:20px;
-    background:rgba(0,0,0,.55);
     z-index:100;
 }
 
-.settings-overlay.open{
+.modal.open{
     display:flex;
 }
 
-.settings-panel{
-    width:min(430px,100%);
+.modal-card{
+    width:min(900px,100%);
+    max-height:90vh;
+    overflow:auto;
     background:#151515;
     border:1px solid #303030;
-    border-radius:16px;
-    padding:20px;
+    border-radius:18px;
+    padding:22px;
 }
 
-.settings-header{
+.modal-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
     margin-bottom:20px;
 }
 
-.settings-header h2{
-    font-size:18px;
+.modal-header h2{
+    font-size:20px;
 }
 
-.close-settings{
-    width:32px;
-    height:32px;
+.close{
+    width:34px;
+    height:34px;
     border:0;
     border-radius:8px;
     background:#222;
-    color:#bbb;
+    color:#ccc;
     font-size:18px;
 }
 
-.setting{
-    margin-bottom:18px;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:22px;
 }
 
-.setting label{
-    display:block;
-    margin-bottom:7px;
-    color:#aaa;
-    font-size:13px;
-}
-
-.setting select{
-    width:100%;
-    height:42px;
-    border:1px solid #333;
-    border-radius:10px;
-    background:#1d1d1d;
-    color:#fff;
-    padding:0 10px;
-}
-
-.setting-box{
+.stat{
+    background:#1c1c1c;
     border:1px solid #2b2b2b;
-    border-radius:10px;
-    padding:12px;
-    background:#1b1b1b;
+    border-radius:12px;
+    padding:16px;
 }
 
-.setting-main{
-    font-weight:600;
-    font-size:13px;
-}
-
-.setting-description{
-    margin-top:5px;
+.stat-label{
     color:#777;
     font-size:11px;
 }
+
+.stat-value{
+    margin-top:6px;
+    font-size:24px;
+    font-weight:700;
+}
+
+.user-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.user-row{
+    display:grid;
+    grid-template-columns:1.5fr .8fr .8fr auto;
+    gap:12px;
+    align-items:center;
+    background:#1b1b1b;
+    border:1px solid #292929;
+    border-radius:10px;
+    padding:12px;
+}
+
+.user-name{
+    font-weight:600;
+}
+
+.user-meta{
+    color:#888;
+    font-size:12px;
+}
+
+.role-badge,
+.plan-badge{
+    font-size:11px;
+    color:#bbb;
+}
+
+.admin-button{
+    border:1px solid #333;
+    background:#222;
+    color:#ddd;
+    border-radius:8px;
+    padding:8px 10px;
+}
+
+.admin-button:hover{
+    background:#2c2c2c;
+}
+
+.privacy-note{
+    margin-top:16px;
+    color:#666;
+    font-size:11px;
+    line-height:1.5;
+}
+
 
 /* =====================================================
    MOBILE
@@ -721,88 +725,60 @@ header{
         padding:18px 13px 125px;
     }
 
-    .message-row{
-        margin:14px 0;
-    }
-
-    .message-row.user{
-        padding-left:35px;
-    }
-
-    .message-row.ai{
-        padding-right:12px;
-    }
-
     .message{
         max-width:calc(100vw - 70px);
         font-size:15px;
-        padding:10px 12px;
-    }
-
-    .avatar{
-        width:27px;
-        height:27px;
-        font-size:9px;
-        margin-right:8px;
-    }
-
-    .welcome{
-        min-height:calc(100dvh - 180px);
-        padding:0 25px;
-    }
-
-    .welcome h1{
-        font-size:27px;
     }
 
     .input-area{
         left:0;
         right:0;
-        padding:
-            8px
-            10px
-            max(8px,env(safe-area-inset-bottom));
+        padding:8px 10px;
     }
 
     .input-box{
         min-height:47px;
-        border-radius:15px;
         padding:5px;
     }
 
     #prompt{
         min-height:35px;
         max-height:120px;
-        padding:9px 10px;
     }
 
     .send{
         width:35px;
         height:35px;
-        border-radius:10px;
-        font-size:17px;
     }
 
-    .settings-overlay{
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .user-row{
+        grid-template-columns:1fr;
+    }
+
+    .modal{
         align-items:flex-end;
         padding:0;
     }
 
-    .settings-panel{
+    .modal-card{
         width:100%;
+        max-height:90dvh;
         border-radius:18px 18px 0 0;
     }
-
 }
 
 </style>
-
 </head>
 
 <body>
 
+
 <!-- =====================================================
-     LOGIN / REGISTRO
+     LOGIN
 ===================================================== -->
 
 <div
@@ -810,143 +786,133 @@ header{
     class="auth-screen"
 >
 
-    <div class="auth-card">
+<div class="auth-card">
 
-        <div class="auth-logo">
-            Inda AI
-        </div>
+    <div class="auth-logo">
+        Inda AI
+    </div>
 
-        <div class="auth-subtitle">
-            Iniciá sesión o creá tu cuenta
-        </div>
-
-
-        <div class="auth-tabs">
-
-            <button
-                id="loginTab"
-                class="auth-tab active"
-                onclick="mostrarFormulario('login')">
-                Iniciar sesión
-            </button>
-
-            <button
-                id="registerTab"
-                class="auth-tab"
-                onclick="mostrarFormulario('register')">
-                Crear cuenta
-            </button>
-
-        </div>
+    <div class="auth-subtitle">
+        Iniciá sesión o creá tu cuenta
+    </div>
 
 
-        <!-- LOGIN -->
+    <div class="auth-tabs">
 
-        <form
-            id="loginForm"
-            class="auth-form active"
-            onsubmit="iniciarSesion(event)"
-        >
+        <button
+            id="loginTab"
+            class="auth-tab active"
+            onclick="mostrarFormulario('login')">
+            Iniciar sesión
+        </button>
 
-            <div class="field">
-
-                <label>
-                    Usuario
-                </label>
-
-                <input
-                    id="loginUser"
-                    type="text"
-                    autocomplete="username"
-                    required
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Contraseña
-                </label>
-
-                <input
-                    id="loginPassword"
-                    type="password"
-                    autocomplete="current-password"
-                    required
-                >
-
-            </div>
-
-
-            <button
-                class="auth-submit"
-                type="submit"
-            >
-                Entrar
-            </button>
-
-        </form>
-
-
-        <!-- REGISTRO -->
-
-        <form
-            id="registerForm"
-            class="auth-form"
-            onsubmit="crearCuenta(event)"
-        >
-
-            <div class="field">
-
-                <label>
-                    Nombre de usuario
-                </label>
-
-                <input
-                    id="registerUser"
-                    type="text"
-                    minlength="3"
-                    maxlength="30"
-                    required
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Contraseña
-                </label>
-
-                <input
-                    id="registerPassword"
-                    type="password"
-                    minlength="6"
-                    required
-                >
-
-            </div>
-
-
-            <button
-                class="auth-submit"
-                type="submit"
-            >
-                Crear cuenta
-            </button>
-
-        </form>
-
-
-        <div
-            id="authMessage"
-            class="auth-message"
-        ></div>
+        <button
+            id="registerTab"
+            class="auth-tab"
+            onclick="mostrarFormulario('register')">
+            Crear cuenta
+        </button>
 
     </div>
+
+
+    <form
+        id="loginForm"
+        class="auth-form active"
+        onsubmit="iniciarSesion(event)"
+    >
+
+        <div class="field">
+
+            <label>
+                Usuario
+            </label>
+
+            <input
+                id="loginUser"
+                autocomplete="username"
+                required
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Contraseña
+            </label>
+
+            <input
+                id="loginPassword"
+                type="password"
+                autocomplete="current-password"
+                required
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="auth-submit"
+        >
+            Entrar
+        </button>
+
+    </form>
+
+
+    <form
+        id="registerForm"
+        class="auth-form"
+        onsubmit="crearCuenta(event)"
+    >
+
+        <div class="field">
+
+            <label>
+                Nombre de usuario
+            </label>
+
+            <input
+                id="registerUser"
+                minlength="3"
+                maxlength="30"
+                required
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Contraseña
+            </label>
+
+            <input
+                id="registerPassword"
+                type="password"
+                minlength="6"
+                required
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="auth-submit"
+        >
+            Crear cuenta
+        </button>
+
+    </form>
+
+
+    <div
+        id="authMessage"
+        class="auth-message"
+    ></div>
+
+</div>
 
 </div>
 
@@ -962,178 +928,153 @@ header{
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
 
-    <aside class="sidebar">
+<aside class="sidebar">
 
-        <div class="logo">
-            Inda AI
+    <div class="logo">
+        Inda AI
+    </div>
+
+    <button
+        class="new-chat"
+        onclick="nuevoChat()">
+        + Nuevo chat
+    </button>
+
+    <div class="plan">
+
+        <div class="plan-title">
+            Plan
         </div>
-
-
-        <button
-            class="new-chat"
-            onclick="nuevoChat()"
-        >
-            + Nuevo chat
-        </button>
-
-
-        <div class="plan">
-
-            <div class="plan-title">
-                Plan
-            </div>
-
-            <div
-                id="planValue"
-                class="plan-value"
-            >
-                Normal
-            </div>
-
-            <div
-                id="counter"
-                class="counter"
-            >
-                50 preguntas disponibles
-            </div>
-
-            <div
-                id="roleValue"
-                class="role-value"
-            >
-                Usuario
-            </div>
-
-        </div>
-
-
-        <div class="sidebar-title">
-            Conversaciones
-        </div>
-
 
         <div
-            id="history"
-            class="history"
-        ></div>
+            id="planValue"
+            class="plan-value">
+            Normal
+        </div>
+
+        <div
+            id="counter"
+            class="counter">
+            50 preguntas disponibles
+        </div>
+
+        <div
+            id="roleValue"
+            class="role-value">
+            Usuario
+        </div>
+
+    </div>
+
+    <div class="sidebar-title">
+        Conversaciones
+    </div>
+
+    <div
+        id="history"
+        class="history">
+    </div>
+
+    <div class="sidebar-footer">
+
+        <div
+            id="sidebarUser"
+            class="account-name">
+            Usuario
+        </div>
+
+        <button
+            class="logout-button"
+            onclick="cerrarSesion()">
+            Cerrar sesión
+        </button>
+
+    </div>
+
+</aside>
 
 
-        <div class="sidebar-footer">
+<main class="main">
+
+<header>
+
+    <button
+        class="mobile-menu"
+        onclick="mostrarMenuMovil()">
+        ☰
+    </button>
+
+    <div class="title">
+        Inda AI
+    </div>
+
+    <div class="header-actions">
+
+        <div class="status">
 
             <div
-                id="sidebarUser"
-                class="account-name"
-            >
-                Usuario
+                id="dot"
+                class="dot">
             </div>
 
-            <button
-                class="logout-button"
-                onclick="cerrarSesion()"
-            >
-                Cerrar sesión
-            </button>
+            <span id="estado">
+                Comprobando...
+            </span>
 
         </div>
 
-    </aside>
+        <button
+            class="settings-button"
+            onclick="abrirConfiguracion()">
+            ⚙
+        </button>
+
+    </div>
+
+</header>
 
 
-    <!-- MAIN -->
+<section
+    id="chat"
+    class="chat"
+>
 
-    <main class="main">
+    <div
+        id="chatInner"
+        class="chat-inner">
+    </div>
 
-        <header>
-
-            <button
-                class="mobile-menu"
-                onclick="mostrarMenuMovil()"
-                aria-label="Abrir menú"
-            >
-                ☰
-            </button>
+</section>
 
 
-            <div class="title">
-                Inda AI
-            </div>
+<div class="input-area">
 
+    <div class="input-box">
 
-            <div class="header-actions">
+        <textarea
+            id="prompt"
+            rows="1"
+            placeholder="Preguntale algo a Inda AI..."
+            autocomplete="off">
+        </textarea>
 
-                <div class="status">
+        <button
+            id="send"
+            class="send"
+            onclick="enviar()">
+            ↑
+        </button>
 
-                    <div
-                        id="dot"
-                        class="dot"
-                    ></div>
+    </div>
 
-                    <span id="estado">
-                        Comprobando...
-                    </span>
+    <div class="info">
+        Inda AI puede equivocarse. Revisá la información importante.
+    </div>
 
-                </div>
+</div>
 
-
-                <button
-                    class="settings-button"
-                    onclick="abrirConfiguracion()"
-                    aria-label="Configuración"
-                >
-                    ⚙
-                </button>
-
-            </div>
-
-        </header>
-
-
-        <section
-            id="chat"
-            class="chat"
-        >
-
-            <div
-                id="chatInner"
-                class="chat-inner"
-            ></div>
-
-        </section>
-
-
-        <div class="input-area">
-
-            <div class="input-box">
-
-                <textarea
-                    id="prompt"
-                    rows="1"
-                    placeholder="Preguntale algo a Inda AI..."
-                    autocomplete="off"
-                    spellcheck="true"
-                ></textarea>
-
-
-                <button
-                    id="send"
-                    class="send"
-                    onclick="enviar()"
-                >
-                    ↑
-                </button>
-
-            </div>
-
-
-            <div class="info">
-                Inda AI puede equivocarse. Revisá la información importante.
-            </div>
-
-        </div>
-
-    </main>
+</main>
 
 </div>
 
@@ -1146,117 +1087,154 @@ header{
 
 <div
     id="settingsOverlay"
-    class="settings-overlay"
+    class="modal"
     onclick="cerrarConfiguracionDesdeFondo(event)"
 >
 
-    <div
-        class="settings-panel"
-        onclick="event.stopPropagation()"
-    >
+<div
+    class="modal-card"
+    onclick="event.stopPropagation()"
+>
 
-        <div class="settings-header">
+    <div class="modal-header">
 
-            <h2>
-                Configuración
-            </h2>
+        <h2>
+            Configuración
+        </h2>
 
-            <button
-                class="close-settings"
-                onclick="cerrarConfiguracion()"
-            >
-                ×
-            </button>
+        <button
+            class="close"
+            onclick="cerrarConfiguracion()">
+            ×
+        </button>
 
-        </div>
-
-
-        <div class="setting">
-
-            <label>
-                Idioma de respuesta
-            </label>
-
-            <select
-                id="languageSelect"
-                onchange="cambiarIdioma()"
-            >
-
-                <option value="auto">
-                    Automático
-                </option>
-
-                <option value="es">
-                    Español
-                </option>
-
-                <option value="en">
-                    English
-                </option>
-
-                <option value="fr">
-                    Français
-                </option>
-
-            </select>
-
-        </div>
+    </div>
 
 
-        <div class="setting">
+    <div class="setting">
 
-            <label>
-                Plan
-            </label>
+        <label>
+            Idioma de respuesta
+        </label>
 
-            <div class="setting-box">
+        <select
+            id="languageSelect"
+            onchange="cambiarIdioma()">
 
-                <div
-                    id="settingsPlan"
-                    class="setting-main"
-                >
-                    Normal
-                </div>
+            <option value="auto">
+                Automático
+            </option>
 
-                <div
-                    id="settingsPlanDescription"
-                    class="setting-description"
-                >
-                    Respuestas simples y cortas.
-                </div>
+            <option value="es">
+                Español
+            </option>
 
+            <option value="en">
+                English
+            </option>
+
+            <option value="fr">
+                Français
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="setting">
+
+        <div class="setting-box">
+            <div
+                id="settingsPlan"
+                class="setting-main">
+                Normal
             </div>
 
-        </div>
-
-
-        <div class="setting">
-
-            <label>
-                Cuenta
-            </label>
-
-            <div class="setting-box">
-
-                <div
-                    id="settingsUsername"
-                    class="setting-main"
-                >
-                    Usuario
-                </div>
-
-                <div
-                    id="settingsRole"
-                    class="setting-description"
-                >
-                    Usuario
-                </div>
-
+            <div
+                id="settingsPlanDescription"
+                class="setting-description">
+                Respuestas más simples y cortas.
             </div>
-
         </div>
 
     </div>
+
+
+    <div
+        id="ceoSection"
+        class="hidden"
+    >
+
+        <div class="modal-header">
+            <h2>
+                Panel CEO
+            </h2>
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Usuarios
+                </div>
+
+                <div
+                    id="statUsers"
+                    class="stat-value">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Premium
+                </div>
+
+                <div
+                    id="statPremium"
+                    class="stat-value">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Chats
+                </div>
+
+                <div
+                    id="statChats"
+                    class="stat-value">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="userList"
+            class="user-list">
+        </div>
+
+
+        <div class="privacy-note">
+            El panel administrativo muestra usuarios,
+            roles, planes y estadísticas. No muestra
+            el contenido de conversaciones privadas.
+        </div>
+
+    </div>
+
+</div>
 
 </div>
 
@@ -1264,17 +1242,17 @@ header{
 <script>
 
 /* =====================================================
-   CONFIGURACIÓN
+   CONFIG
 ===================================================== */
 
 const API_URL =
     "https://inda-ai-api2-0.belisarionogueira2013.workers.dev";
 
 const USERS_KEY =
-    "inda_users_demo_v2";
+    "inda_users_demo_ceo";
 
 const SESSION_KEY =
-    "inda_session_demo_v2";
+    "inda_session_demo_ceo";
 
 const LIMITE_DIARIO =
     50;
@@ -1340,15 +1318,20 @@ const settingsPlanDescription =
         "settingsPlanDescription"
     );
 
-const settingsUsername =
-    document.getElementById(
-        "settingsUsername"
-    );
+const ceoSection =
+    document.getElementById("ceoSection");
 
-const settingsRole =
-    document.getElementById(
-        "settingsRole"
-    );
+const userList =
+    document.getElementById("userList");
+
+const statUsers =
+    document.getElementById("statUsers");
+
+const statPremium =
+    document.getElementById("statPremium");
+
+const statChats =
+    document.getElementById("statChats");
 
 
 /* =====================================================
@@ -1356,6 +1339,12 @@ const settingsRole =
 ===================================================== */
 
 let usuarioActual =
+    null;
+
+let conversaciones =
+    [];
+
+let chatActual =
     null;
 
 
@@ -1381,7 +1370,6 @@ function getUsers(){
 
 }
 
-
 function saveUsers(users){
 
     localStorage.setItem(
@@ -1393,7 +1381,7 @@ function saveUsers(users){
 
 
 /* =====================================================
-   AUTENTICACIÓN
+   REGISTRO
 ===================================================== */
 
 function mostrarFormulario(tipo){
@@ -1419,41 +1407,23 @@ function mostrarFormulario(tipo){
         );
 
 
-    if(tipo === "login"){
+    if(
+        tipo === "login"
+    ){
 
-        loginForm.classList.add(
-            "active"
-        );
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
 
-        registerForm.classList.remove(
-            "active"
-        );
-
-        loginTab.classList.add(
-            "active"
-        );
-
-        registerTab.classList.remove(
-            "active"
-        );
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
 
     }else{
 
-        loginForm.classList.remove(
-            "active"
-        );
+        loginForm.classList.remove("active");
+        registerForm.classList.add("active");
 
-        registerForm.classList.add(
-            "active"
-        );
-
-        loginTab.classList.remove(
-            "active"
-        );
-
-        registerTab.classList.add(
-            "active"
-        );
+        loginTab.classList.remove("active");
+        registerTab.classList.add("active");
 
     }
 
@@ -1462,10 +1432,6 @@ function mostrarFormulario(tipo){
 
 }
 
-
-/* =====================================================
-   CREAR CUENTA
-===================================================== */
 
 function crearCuenta(event){
 
@@ -1485,32 +1451,17 @@ function crearCuenta(event){
 
 
     if(
-        username.length < 3
-    ){
-
-        authMessage.textContent =
-            "El usuario debe tener al menos 3 caracteres.";
-
-        return;
-
-    }
-
-
-    if(
+        username.length < 3 ||
         password.length < 6
     ){
 
         authMessage.textContent =
-            "La contraseña debe tener al menos 6 caracteres.";
+            "Revisá el usuario y la contraseña.";
 
         return;
 
     }
 
-
-    /*
-      No permitimos registrar el nombre reservado.
-    */
 
     if(
         username.toLowerCase()
@@ -1519,7 +1470,7 @@ function crearCuenta(event){
     ){
 
         authMessage.textContent =
-            "Ese nombre de usuario está reservado.";
+            "Ese usuario está reservado.";
 
         return;
 
@@ -1528,7 +1479,6 @@ function crearCuenta(event){
 
     const users =
         getUsers();
-
 
     const key =
         username.toLowerCase();
@@ -1546,24 +1496,11 @@ function crearCuenta(event){
 
     users[key] = {
 
-        username:
-            username,
-
-        password:
-            password,
-
-        plan:
-            "Normal",
-
-        role:
-            "Usuario",
-
-        premium:
-            false,
-
-        chats:
-            0,
-
+        username,
+        password,
+        plan:"Normal",
+        premium:false,
+        role:"Usuario",
         createdAt:
             new Date().toISOString()
 
@@ -1575,24 +1512,22 @@ function crearCuenta(event){
     );
 
 
+    authMessage.textContent =
+        "Cuenta creada correctamente.";
+
     document.getElementById(
         "registerForm"
     ).reset();
-
 
     mostrarFormulario(
         "login"
     );
 
-
-    authMessage.textContent =
-        "Cuenta creada. Ahora iniciá sesión.";
-
 }
 
 
 /* =====================================================
-   INICIAR SESIÓN
+   LOGIN
 ===================================================== */
 
 function iniciarSesion(event){
@@ -1613,7 +1548,7 @@ function iniciarSesion(event){
 
 
     /*
-      CUENTA CEO + PREMIUM
+      Cuenta especial demo
     */
 
     if(
@@ -1631,20 +1566,14 @@ function iniciarSesion(event){
             username:
                 "beligmail",
 
-            password:
-                password,
-
             plan:
                 "Premium",
-
-            role:
-                "CEO",
 
             premium:
                 true,
 
-            chats:
-                0
+            role:
+                "CEO"
 
         };
 
@@ -1664,20 +1593,14 @@ function iniciarSesion(event){
     }
 
 
-    /*
-      CUENTAS NORMALES
-    */
-
     const users =
         getUsers();
 
 
-    const key =
-        username.toLowerCase();
-
-
     const user =
-        users[key];
+        users[
+            username.toLowerCase()
+        ];
 
 
     if(
@@ -1694,22 +1617,10 @@ function iniciarSesion(event){
 
 
     usuarioActual = {
-
-        username:
-            user.username,
-
-        plan:
-            user.plan || "Normal",
-
-        role:
-            user.role || "Usuario",
-
-        premium:
-            user.premium === true,
-
-        chats:
-            user.chats || 0
-
+        username:user.username,
+        plan:user.plan || "Normal",
+        premium:user.premium === true,
+        role:user.role || "Usuario"
     };
 
 
@@ -1727,7 +1638,7 @@ function iniciarSesion(event){
 
 
 /* =====================================================
-   MOSTRAR APP
+   APP
 ===================================================== */
 
 function mostrarAplicacion(){
@@ -1744,11 +1655,7 @@ function mostrarAplicacion(){
         usuarioActual.username;
 
 
-    settingsUsername.textContent =
-        usuarioActual.username;
-
-
-    settingsRole.textContent =
+    roleValue.textContent =
         usuarioActual.role;
 
 
@@ -1757,18 +1664,31 @@ function mostrarAplicacion(){
 
     cargarIdioma();
 
-
     cargarChats();
-
 
     actualizarEstado();
 
+
+    if(
+        usuarioActual.role === "CEO"
+    ){
+
+        ceoSection.classList.remove(
+            "hidden"
+        );
+
+        renderCEO();
+
+    }else{
+
+        ceoSection.classList.add(
+            "hidden"
+        );
+
+    }
+
 }
 
-
-/* =====================================================
-   CERRAR SESIÓN
-===================================================== */
 
 function cerrarSesion(){
 
@@ -1776,148 +1696,19 @@ function cerrarSesion(){
         SESSION_KEY
     );
 
-
     usuarioActual =
         null;
 
-
     app.style.display =
         "none";
-
 
     authScreen.classList.remove(
         "hidden"
     );
 
-
     document.getElementById(
         "loginForm"
     ).reset();
-
-
-    authMessage.textContent =
-        "";
-
-}
-
-
-/* =====================================================
-   SESIÓN EXISTENTE
-===================================================== */
-
-function restaurarSesion(){
-
-    try{
-
-        const saved =
-            localStorage.getItem(
-                SESSION_KEY
-            );
-
-
-        if(!saved)
-            return;
-
-
-        const session =
-            JSON.parse(
-                saved
-            );
-
-
-        if(
-            session &&
-            session.username
-        ){
-
-            usuarioActual =
-                session;
-
-            mostrarAplicacion();
-
-        }
-
-    }catch{
-
-        localStorage.removeItem(
-            SESSION_KEY
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   PREMIUM
-===================================================== */
-
-function activarPremium(){
-
-    if(!usuarioActual)
-        return;
-
-
-    usuarioActual.premium =
-        true;
-
-    usuarioActual.plan =
-        "Premium";
-
-
-    if(
-        usuarioActual.role
-        !==
-        "CEO"
-    ){
-
-        usuarioActual.role =
-            "Usuario";
-
-    }
-
-
-    guardarSesion();
-
-
-    actualizarPlan();
-
-}
-
-
-function comprobarCodigoPremium(texto){
-
-    const codigo =
-        String.fromCharCode(
-            105,110,100,97,
-            98,101,108,105,
-            50,50
-        );
-
-
-    return (
-        texto
-            .trim()
-            .toLowerCase()
-        ===
-        codigo
-    );
-
-}
-
-
-/* =====================================================
-   GUARDAR SESIÓN
-===================================================== */
-
-function guardarSesion(){
-
-    localStorage.setItem(
-        SESSION_KEY,
-        JSON.stringify(
-            usuarioActual
-        )
-    );
 
 }
 
@@ -1926,159 +1717,286 @@ function guardarSesion(){
    PLAN
 ===================================================== */
 
-function actualizarPlan(){
+function activarPremiumUsuario(username){
 
-    if(
-        !usuarioActual
-    )
+    const users =
+        getUsers();
+
+    const key =
+        username.toLowerCase();
+
+
+    if(!users[key])
         return;
 
 
-    if(
-        usuarioActual.premium
-    ){
+    users[key].premium =
+        true;
 
-        planValue.textContent =
-            "Premium";
-
-        counter.textContent =
-            "Preguntas ilimitadas";
-
-        settingsPlan.textContent =
-            "Premium";
-
-        settingsPlanDescription.textContent =
-            "Respuestas más completas y detalladas.";
-
-    }else{
-
-        planValue.textContent =
-            "Normal";
-
-        settingsPlan.textContent =
-            obtenerRestantes()
-            +
-            " preguntas disponibles";
-
-        settingsPlanDescription.textContent =
-            "Respuestas más simples y cortas.";
-
-    }
+    users[key].plan =
+        "Premium";
 
 
-    roleValue.textContent =
-        usuarioActual.role;
+    saveUsers(
+        users
+    );
 
+
+    renderCEO();
+
+}
+
+
+function desactivarPremiumUsuario(username){
+
+    const users =
+        getUsers();
+
+    const key =
+        username.toLowerCase();
+
+
+    if(!users[key])
+        return;
+
+
+    users[key].premium =
+        false;
+
+    users[key].plan =
+        "Normal";
+
+
+    saveUsers(
+        users
+    );
+
+
+    renderCEO();
 
 }
 
 
 /* =====================================================
-   CONTADOR
+   PANEL CEO
 ===================================================== */
 
-function fechaHoy(){
+function renderCEO(){
 
-    const date =
-        new Date();
+    if(
+        usuarioActual?.role !== "CEO"
+    ){
+        return;
+    }
 
 
-    return (
-        date.getFullYear()
-        +
-        "-"
-        +
-        String(
-            date.getMonth()+1
-        ).padStart(2,"0")
-        +
-        "-"
-        +
-        String(
-            date.getDate()
-        ).padStart(2,"0")
+    const users =
+        getUsers();
+
+
+    const userKeys =
+        Object.keys(users);
+
+
+    let premiumCount =
+        0;
+
+    let totalChats =
+        0;
+
+
+    userKeys.forEach(
+        key => {
+
+            const user =
+                users[key];
+
+
+            if(
+                user.premium === true
+            ){
+
+                premiumCount++;
+
+            }
+
+
+            try{
+
+                const chats =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "inda_chats_"
+                            +
+                            user.username
+                        )
+                        ||
+                        "[]"
+                    );
+
+
+                totalChats +=
+                    chats.length;
+
+            }catch{}
+
+        }
     );
 
-}
 
+    statUsers.textContent =
+        String(
+            userKeys.length
+        );
 
-function usoKey(){
+    statPremium.textContent =
+        String(
+            premiumCount
+        );
 
-    return (
-        "inda_uso_"
-        +
-        usuarioActual.username
-        +
-        "_"
-        +
-        fechaHoy()
-    );
-
-}
-
-
-function obtenerUso(){
-
-    const value =
-        Number(
-            localStorage.getItem(
-                usoKey()
-            )
-            ||
-            "0"
+    statChats.textContent =
+        String(
+            totalChats
         );
 
 
-    return Number.isFinite(
-        value
-    )
-        ? value
-        : 0;
+    userList.innerHTML =
+        "";
 
-}
-
-
-function obtenerRestantes(){
-
-    return Math.max(
-        0,
-        LIMITE_DIARIO -
-        obtenerUso()
-    );
-
-}
-
-
-function incrementarUso(){
-
-    localStorage.setItem(
-        usoKey(),
-        String(
-            obtenerUso() + 1
-        )
-    );
-
-
-    actualizarPlan();
-
-}
-
-
-function puedePreguntar(){
 
     if(
-        usuarioActual?.premium
+        userKeys.length === 0
     ){
 
-        return true;
+        userList.innerHTML =
+            "<div class='user-meta'>No hay usuarios normales registrados.</div>";
+
+        return;
 
     }
 
 
-    return (
-        obtenerUso()
-        <
-        LIMITE_DIARIO
+    userKeys.forEach(
+        key => {
+
+            const user =
+                users[key];
+
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "user-row";
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+
+            name.className =
+                "user-name";
+
+
+            name.textContent =
+                user.username;
+
+
+            const plan =
+                document.createElement(
+                    "div"
+                );
+
+
+            plan.className =
+                "plan-badge";
+
+
+            plan.textContent =
+                user.plan ||
+                "Normal";
+
+
+            const role =
+                document.createElement(
+                    "div"
+                );
+
+
+            role.className =
+                "role-badge";
+
+
+            role.textContent =
+                user.role ||
+                "Usuario";
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "admin-button";
+
+
+            button.textContent =
+                user.premium
+                    ? "Quitar Premium"
+                    : "Dar Premium";
+
+
+            button.onclick =
+                function(){
+
+                    if(
+                        user.premium
+                    ){
+
+                        desactivarPremiumUsuario(
+                            user.username
+                        );
+
+                    }else{
+
+                        activarPremiumUsuario(
+                            user.username
+                        );
+
+                    }
+
+                };
+
+
+            row.appendChild(
+                name
+            );
+
+            row.appendChild(
+                plan
+            );
+
+            row.appendChild(
+                role
+            );
+
+            row.appendChild(
+                button
+            );
+
+
+            userList.appendChild(
+                row
+            );
+
+        }
     );
 
 }
@@ -2090,35 +2008,21 @@ function puedePreguntar(){
 
 function cargarIdioma(){
 
-    if(!usuarioActual)
-        return;
-
-
     const key =
         "inda_idioma_"
         +
         usuarioActual.username;
 
 
-    const saved =
+    languageSelect.value =
         localStorage.getItem(
             key
-        )
-        ||
-        "auto";
-
-
-    languageSelect.value =
-        saved;
+        ) || "auto";
 
 }
 
 
 function cambiarIdioma(){
-
-    if(!usuarioActual)
-        return;
-
 
     localStorage.setItem(
         "inda_idioma_"
@@ -2132,160 +2036,111 @@ function cambiarIdioma(){
 
 function instruccionIdioma(){
 
-    const idioma =
-        languageSelect.value;
-
-
     if(
-        idioma === "es"
+        languageSelect.value
+        ===
+        "en"
     ){
 
-        return `
-Respondé exclusivamente en español.
-`;
+        return "Answer in English.";
 
     }
 
 
     if(
-        idioma === "en"
+        languageSelect.value
+        ===
+        "fr"
     ){
 
-        return `
-Answer exclusively in English.
-`;
+        return "Réponds en français.";
 
     }
 
 
     if(
-        idioma === "fr"
+        languageSelect.value
+        ===
+        "es"
     ){
 
-        return `
-Réponds exclusivement en français.
-`;
+        return "Respondé en español.";
 
     }
 
 
     return `
-Respondé principalmente en el mismo idioma
+Respondé principalmente en el idioma
 que use el usuario.
-Si cambia de idioma, cambiá con él.
 `;
 
 }
 
 
 /* =====================================================
-   SISTEMA
+   SISTEMA IA
 ===================================================== */
 
 function obtenerSistema(){
 
-    let plan;
+    const nivel =
+        usuarioActual.premium
 
-
-    if(
-        usuarioActual?.premium
-    ){
-
-        plan = `
-MODO PREMIUM:
-
+        ? `
 El usuario tiene Premium.
 
-Podés responder con más detalle.
+Respondé con más detalle,
+mejor explicación y ejemplos
+cuando sirvan.
+`
 
-Podés explicar temas difíciles
-de forma más completa.
+        : `
+El usuario tiene plan Normal.
 
-Podés dar ejemplos cuando sean útiles.
-
-No hace falta que seas extremadamente corto.
-
-Intentá dar respuestas de mayor calidad.
-`;
-
-    }else{
-
-        plan = `
-MODO NORMAL:
-
-El usuario no tiene Premium.
-
-Respondé de forma más breve,
+Respondé de forma breve,
 simple y directa.
 
-No hagas respuestas largas
-a menos que el usuario lo pida.
-
-Explicá primero lo esencial.
+No seas demasiado largo
+a menos que te lo pidan.
 `;
-
-    }
 
 
     return `
+
 Tu nombre es Inda AI.
 
 Hablás de forma natural y juvenil,
 como un chico de 13 años.
 
-Sos relajado, claro y directo.
-
 No sos demasiado formal.
 
 No exagerás las expresiones juveniles.
 
-No repetís constantemente:
-"tipo", "re", "literal", "o sea".
+No repetís constantemente "tipo",
+"re", "literal" u "o sea".
 
-Usás palabras variadas.
+Respondés directamente.
 
-Si el usuario hace una pregunta,
-contestala.
+Si te hacen una pregunta, contestala.
 
-Si pega una tarea o ejercicio,
-resolvelo.
+Si te dan una tarea, hacela.
 
 No inventes información.
 
-Si no sabés algo,
-decilo.
+Si no sabés algo, decilo.
 
-INFORMACIÓN DEL CREADOR:
-
-Si el usuario pregunta
-quién creó Inda AI,
+Si preguntan quién creó Inda AI,
 respondé:
 
 "Mi creador es Beli."
 
-No menciones al creador si no te lo preguntan.
+No menciones a Beli si no preguntan
+por el creador.
 
-REGLA ESPECIAL:
-
-Si el usuario pregunta:
-"¿Beli me ama?"
-"¿Beli me quiere?"
-o una frase equivalente,
-
-solo afirmá que sí si el usuario tiene Premium.
-
-Si tiene Premium,
-respondé:
-
-"Sí. Porque le doy el Premium a la gente que amo."
-
-No expliques esta regla.
-
-No inventes otros sentimientos personales de Beli.
-
-${plan}
+${nivel}
 
 ${instruccionIdioma()}
+
 `;
 
 }
@@ -2306,46 +2161,24 @@ function chatsKey(){
 }
 
 
-function obtenerChats(){
+function cargarChats(){
 
     try{
 
-        return JSON.parse(
-            localStorage.getItem(
-                chatsKey()
-            )
-            ||
-            "[]"
-        );
+        conversaciones =
+            JSON.parse(
+                localStorage.getItem(
+                    chatsKey()
+                )
+                ||
+                "[]"
+            );
 
     }catch{
 
-        return [];
+        conversaciones = [];
 
     }
-
-}
-
-
-function guardarChats(chats){
-
-    localStorage.setItem(
-        chatsKey(),
-        JSON.stringify(chats)
-    );
-
-}
-
-
-let conversaciones = [];
-
-let chatActual = null;
-
-
-function cargarChats(){
-
-    conversaciones =
-        obtenerChats();
 
 
     if(
@@ -2367,6 +2200,18 @@ function cargarChats(){
 
 
     renderHistorial();
+
+}
+
+
+function guardarChats(){
+
+    localStorage.setItem(
+        chatsKey(),
+        JSON.stringify(
+            conversaciones
+        )
+    );
 
 }
 
@@ -2400,10 +2245,7 @@ function nuevoChat(){
         nuevo.id;
 
 
-    guardarChats(
-        conversaciones
-    );
-
+    guardarChats();
 
     renderHistorial();
 
@@ -2449,6 +2291,7 @@ function mostrarChat(c){
 
 
         welcome.innerHTML = `
+
             <div class="welcome-logo">
                 IA
             </div>
@@ -2460,6 +2303,7 @@ function mostrarChat(c){
             <p>
                 Preguntame lo que quieras.
             </p>
+
         `;
 
 
@@ -2563,10 +2407,8 @@ function mostrarMensaje(
 
     requestAnimationFrame(
         () => {
-
             chat.scrollTop =
                 chat.scrollHeight;
-
         }
     );
 
@@ -2599,7 +2441,8 @@ function renderHistorial(){
                 "chat-item"
                 +
                 (
-                    conversation.id ===
+                    conversation.id
+                    ===
                     chatActual
                         ? " active"
                         : ""
@@ -2649,7 +2492,6 @@ function renderHistorial(){
             item.appendChild(
                 title
             );
-
 
             item.appendChild(
                 borrar
@@ -2726,7 +2568,6 @@ function borrarChat(id){
             chatActual =
                 conversaciones[0].id;
 
-
             mostrarChat(
                 conversaciones[0]
             );
@@ -2740,12 +2581,151 @@ function borrarChat(id){
     }
 
 
-    guardarChats(
-        conversaciones
+    guardarChats();
+
+    renderHistorial();
+
+}
+
+
+/* =====================================================
+   CONTADOR
+===================================================== */
+
+function fechaHoy(){
+
+    const d =
+        new Date();
+
+
+    return (
+        d.getFullYear()
+        +
+        "-"
+        +
+        String(
+            d.getMonth()+1
+        ).padStart(2,"0")
+        +
+        "-"
+        +
+        String(
+            d.getDate()
+        ).padStart(2,"0")
+    );
+
+}
+
+
+function usoKey(){
+
+    return (
+        "inda_uso_"
+        +
+        usuarioActual.username
+        +
+        "_"
+        +
+        fechaHoy()
+    );
+
+}
+
+
+function obtenerUso(){
+
+    return Number(
+        localStorage.getItem(
+            usoKey()
+        )
+        ||
+        "0"
+    );
+
+}
+
+
+function incrementarUso(){
+
+    localStorage.setItem(
+        usoKey(),
+        String(
+            obtenerUso()
+            +
+            1
+        )
     );
 
 
-    renderHistorial();
+    actualizarPlan();
+
+}
+
+
+function actualizarPlan(){
+
+    if(
+        usuarioActual.premium
+    ){
+
+        planValue.textContent =
+            "Premium";
+
+        counter.textContent =
+            "Preguntas ilimitadas";
+
+        settingsPlan.textContent =
+            "Premium";
+
+        settingsPlanDescription.textContent =
+            "Respuestas más completas y detalladas.";
+
+    }else{
+
+        const restantes =
+            Math.max(
+                0,
+                LIMITE_DIARIO -
+                obtenerUso()
+            );
+
+
+        planValue.textContent =
+            "Normal";
+
+        counter.textContent =
+            restantes
+            +
+            " preguntas disponibles";
+
+        settingsPlan.textContent =
+            "Normal";
+
+        settingsPlanDescription.textContent =
+            "Respuestas más simples y cortas.";
+
+    }
+
+
+    roleValue.textContent =
+        usuarioActual.role;
+
+}
+
+
+function puedePreguntar(){
+
+    if(
+        usuarioActual.premium
+    )
+        return true;
+
+
+    return (
+        obtenerUso()
+        <
+        LIMITE_DIARIO
+    );
 
 }
 
@@ -2764,89 +2744,22 @@ async function enviar(){
         return;
 
 
-    /* ACTIVAR PREMIUM */
-
     if(
-        comprobarCodigoPremium(
-            texto
-        )
+        !chatActual
     ){
 
-        activarPremium();
-
-
-        input.value =
-            "";
-
-
-        ajustarInput();
-
-
-        mostrarMensaje(
-            "Premium activado.",
-            "ai"
-        );
-
-
-        return;
+        nuevoChat();
 
     }
 
 
-    /* REGLA BELI */
-
-    const normalizada =
-        texto
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(
-                /[\u0300-\u036f]/g,
-                ""
-            );
+    const c =
+        obtenerActual();
 
 
-    if(
-        normalizada.includes(
-            "beli me ama"
-        )
-        ||
-        normalizada.includes(
-            "beli me quiere"
-        )
-    ){
-
-        if(
-            usuarioActual?.premium
-        ){
-
-            mostrarMensaje(
-                "Sí. Porque le doy el Premium a la gente que amo.",
-                "ai"
-            );
-
-        }else{
-
-            mostrarMensaje(
-                "No tengo información para afirmar eso.",
-                "ai"
-            );
-
-        }
-
-
-        input.value =
-            "";
-
-
-        ajustarInput();
-
-
+    if(!c)
         return;
 
-    }
-
-
-    /* LÍMITE */
 
     if(
         !puedePreguntar()
@@ -2865,23 +2778,11 @@ El contador se reinicia automáticamente mañana.`,
     }
 
 
-    if(!chatActual)
-        nuevoChat();
-
-
-    const conversation =
-        obtenerActual();
-
-
-    if(!conversation)
-        return;
-
-
     send.disabled =
         true;
 
 
-    conversation.messages.push({
+    c.messages.push({
 
         role:"user",
 
@@ -2891,11 +2792,12 @@ El contador se reinicia automáticamente mañana.`,
 
 
     if(
-        conversation.title ===
+        c.title
+        ===
         "Nuevo chat"
     ){
 
-        conversation.title =
+        c.title =
             texto.length > 45
                 ? texto.substring(
                     0,
@@ -2908,13 +2810,9 @@ El contador se reinicia automáticamente mañana.`,
     }
 
 
-    guardarChats(
-        conversaciones
-    );
-
+    guardarChats();
 
     renderHistorial();
-
 
     mostrarMensaje(
         texto,
@@ -2948,6 +2846,7 @@ El contador se reinicia automáticamente mañana.`,
                 API_URL +
                 "/chat",
                 {
+
                     method:"POST",
 
                     headers:{
@@ -2962,7 +2861,7 @@ El contador se reinicia automáticamente mañana.`,
                                 obtenerSistema(),
 
                             messages:
-                                conversation.messages
+                                c.messages
 
                         })
                 }
@@ -2978,7 +2877,8 @@ El contador se reinicia automáticamente mañana.`,
         ){
 
             throw new Error(
-                data?.error ||
+                data?.error
+                ||
                 "Error del servidor."
             );
 
@@ -3007,11 +2907,13 @@ El contador se reinicia automáticamente mañana.`,
             answer;
 
 
-        conversation.messages.push({
+        c.messages.push({
 
-            role:"assistant",
+            role:
+                "assistant",
 
-            content:answer
+            content:
+                answer
 
         });
 
@@ -3019,9 +2921,7 @@ El contador se reinicia automáticamente mañana.`,
         incrementarUso();
 
 
-        guardarChats(
-            conversaciones
-        );
+        guardarChats();
 
 
     }catch(error){
@@ -3035,10 +2935,6 @@ El contador se reinicia automáticamente mañana.`,
 `No pude conectarme con Inda AI.
 
 ${error.message}`;
-
-        console.error(
-            error
-        );
 
     }
 
@@ -3177,34 +3073,36 @@ function mostrarMenuMovil(){
             .join("\n");
 
 
-    const selection =
+    const seleccion =
         prompt(
-            "Conversaciones\n\n" +
-            lista +
+            "Conversaciones\n\n"
+            +
+            lista
+            +
             "\n\nEscribí el número:"
         );
 
 
-    if(!selection)
+    if(!seleccion)
         return;
 
 
-    const index =
+    const numero =
         Number(
-            selection
+            seleccion
         ) - 1;
 
 
     if(
-        Number.isInteger(index)
+        Number.isInteger(numero)
         &&
-        index >= 0
+        numero >= 0
         &&
-        index < conversaciones.length
+        numero < conversaciones.length
     ){
 
         abrirChat(
-            conversaciones[index].id
+            conversaciones[numero].id
         );
 
     }
@@ -3213,7 +3111,7 @@ function mostrarMenuMovil(){
 
 
 /* =====================================================
-   ESTADO WORKER
+   ESTADO
 ===================================================== */
 
 async function actualizarEstado(){
@@ -3241,7 +3139,7 @@ async function actualizarEstado(){
 
 
         dot.style.background =
-            "#76c893";
+            "var(--green)";
 
 
     }catch{
@@ -3251,7 +3149,57 @@ async function actualizarEstado(){
 
 
         dot.style.background =
-            "#c86b6b";
+            "var(--red)";
+
+    }
+
+}
+
+
+/* =====================================================
+   RESTAURAR SESIÓN
+===================================================== */
+
+function restaurarSesion(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                SESSION_KEY
+            );
+
+
+        if(!saved)
+            return;
+
+
+        usuarioActual =
+            JSON.parse(
+                saved
+            );
+
+
+        if(
+            !usuarioActual?.username
+        ){
+
+            localStorage.removeItem(
+                SESSION_KEY
+            );
+
+            return;
+
+        }
+
+
+        mostrarAplicacion();
+
+    }catch{
+
+        localStorage.removeItem(
+            SESSION_KEY
+        );
 
     }
 
@@ -3268,4 +3216,3 @@ restaurarSesion();
 
 </body>
 </html>
-```
