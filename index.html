@@ -3,912 +3,466 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
-
-<title>Inda AI - Inteligencia Artificial</title>
-
-<meta
-    name="description"
-    content="Inda AI es un asistente de inteligencia artificial online con generación de imágenes."
->
-
-<meta
-    name="robots"
-    content="index, follow"
->
-
-<meta
-    name="theme-color"
-    content="#0d0d0d"
->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inda AI</title>
 
 <style>
-
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Segoe UI,Arial,sans-serif;
-}
-
-:root{
-    --bg:#0d0d0d;
-    --sidebar:#111111;
-    --panel:#191919;
-    --hover:#242424;
-    --border:#2b2b2b;
-    --text:#f5f5f5;
-}
-
-html,
-body{
-    width:100%;
-    height:100%;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Segoe UI,Arial,sans-serif;
 }
 
 body{
-    overflow:hidden;
-    background:var(--bg);
-    color:var(--text);
+  background:#0d0d0d;
+  color:#f5f5f5;
+  min-height:100vh;
 }
 
-button,
-select,
-textarea{
-    font:inherit;
+button,input{
+  font:inherit;
 }
 
-.app{
-    display:flex;
-    width:100%;
-    height:100dvh;
+button{
+  cursor:pointer;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+.screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
 
-.sidebar{
-    width:270px;
-    min-width:270px;
-    background:var(--sidebar);
-    border-right:1px solid var(--border);
-    padding:14px;
-    display:flex;
-    flex-direction:column;
+.card{
+  width:min(420px,100%);
+  background:#171717;
+  border:1px solid #2b2b2b;
+  border-radius:18px;
+  padding:26px;
 }
 
 .logo{
-    height:55px;
-    display:flex;
-    align-items:center;
-    padding:0 10px;
-    font-size:21px;
-    font-weight:600;
+  text-align:center;
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:8px;
 }
 
-.new-chat{
-    width:100%;
-    height:44px;
-    border:1px solid #333;
-    border-radius:10px;
-    background:#191919;
-    color:white;
-    cursor:pointer;
-    font-size:14px;
+.subtitle{
+  text-align:center;
+  color:#888;
+  font-size:13px;
+  margin-bottom:24px;
 }
 
-.new-chat:hover{
-    background:#252525;
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
 }
 
-.plan{
-    margin-top:12px;
-    padding:11px;
-    border:1px solid #292929;
-    border-radius:10px;
-    background:#171717;
+.tabs button{
+  flex:1;
+  height:40px;
+  border:1px solid #303030;
+  border-radius:10px;
+  background:#1d1d1d;
+  color:#aaa;
 }
 
-.plan-title{
-    font-size:12px;
-    color:#aaa;
+.tabs button.active{
+  background:#fff;
+  color:#111;
 }
 
-.plan-value{
-    margin-top:5px;
-    font-size:13px;
-    font-weight:600;
+.form{
+  display:none;
 }
 
-.counter{
-    margin-top:5px;
-    color:#777;
-    font-size:11px;
+.form.active{
+  display:block;
 }
 
-.sidebar-title{
-    margin:24px 9px 9px;
-    color:#666;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
+.field{
+  margin-bottom:14px;
 }
 
-.history{
-    flex:1;
-    overflow-y:auto;
+.field label{
+  display:block;
+  color:#aaa;
+  font-size:12px;
+  margin-bottom:7px;
 }
 
-.chat-item{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding:10px;
-    border-radius:9px;
-    margin-bottom:4px;
-    color:#ccc;
-    font-size:13px;
-    cursor:pointer;
+.field input{
+  width:100%;
+  height:44px;
+  border-radius:10px;
+  border:1px solid #333;
+  outline:none;
+  background:#101010;
+  color:#fff;
+  padding:0 12px;
 }
 
-.chat-item:hover{
-    background:var(--hover);
-}
-
-.chat-item.active{
-    background:#282828;
-    color:white;
-}
-
-.chat-title{
-    flex:1;
-    min-width:0;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.delete-chat{
-    color:#777;
-    cursor:pointer;
-    opacity:0;
-}
-
-.chat-item:hover .delete-chat{
-    opacity:1;
-}
-
-/* =========================
-   MAIN
-========================= */
-
-.main{
-    flex:1;
-    min-width:0;
-    display:flex;
-    flex-direction:column;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-header{
-    height:60px;
-    min-height:60px;
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-}
-
-.title{
-    font-size:15px;
-    font-weight:600;
-}
-
-.mobile-menu{
-    display:none;
-}
-
-.header-actions{
-    position:absolute;
-    right:16px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.status{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    color:#777;
-    font-size:11px;
-}
-
-.dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#777;
-}
-
-.settings-button{
-    width:34px;
-    height:34px;
-    border:1px solid #2d2d2d;
-    border-radius:9px;
-    background:#181818;
-    color:#ccc;
-    cursor:pointer;
-}
-
-/* =========================
-   CHAT
-========================= */
-
-.chat{
-    flex:1;
-    overflow-y:auto;
-    padding:30px 20px 150px;
-    scroll-behavior:smooth;
-}
-
-.chat-inner{
-    width:100%;
-    max-width:900px;
-    margin:auto;
-}
-
-.message-row{
-    display:flex;
-    width:100%;
-    margin:18px 0;
-}
-
-.message-row.user{
-    justify-content:flex-end;
-}
-
-.message-row.ai{
-    justify-content:flex-start;
-}
-
-.avatar{
-    width:30px;
-    height:30px;
-    border-radius:8px;
-    background:#242424;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:10px;
-    font-weight:bold;
-    margin-right:10px;
-    flex-shrink:0;
+.primary{
+  width:100%;
+  height:44px;
+  border:0;
+  border-radius:10px;
+  background:#fff;
+  color:#111;
+  font-weight:600;
 }
 
 .message{
-    max-width:82%;
-    padding:13px 16px;
-    border-radius:14px;
-    line-height:1.55;
-    white-space:pre-wrap;
-    word-break:break-word;
-    font-size:15px;
+  margin-top:12px;
+  min-height:18px;
+  color:#888;
+  font-size:12px;
+  text-align:center;
 }
 
-.message.user{
-    background:#292929;
+.hidden{
+  display:none !important;
 }
 
-.message.ai{
-    background:transparent;
-    padding-left:0;
+.app{
+  min-height:100vh;
+  display:none;
 }
 
-.thinking{
-    opacity:.5;
+.topbar{
+  height:60px;
+  border-bottom:1px solid #2b2b2b;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
 }
 
-.generated-image{
-    display:block;
-    width:min(100%,700px);
-    border-radius:14px;
-    margin-top:6px;
-    border:1px solid #303030;
-    background:#171717;
+.brand{
+  font-weight:700;
 }
 
-/* =========================
-   WELCOME
-========================= */
+.user-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logout{
+  border:1px solid #333;
+  background:#191919;
+  color:#ccc;
+  border-radius:9px;
+  padding:8px 12px;
+}
+
+.content{
+  padding:30px;
+  max-width:1000px;
+  margin:auto;
+}
 
 .welcome{
-    min-height:65vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:30px;
-}
-
-.welcome-logo{
-    width:66px;
-    height:66px;
-    border-radius:18px;
-    background:#202020;
-    border:1px solid #303030;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:17px;
-    font-weight:bold;
-    margin-bottom:18px;
+  padding:28px;
+  border:1px solid #2b2b2b;
+  border-radius:16px;
+  background:#151515;
 }
 
 .welcome h1{
-    font-size:30px;
-    margin-bottom:10px;
+  margin-bottom:10px;
 }
 
 .welcome p{
-    color:#888;
-    font-size:14px;
+  color:#888;
+  line-height:1.5;
 }
 
-/* =========================
-   INPUT
-========================= */
-
-.input-area{
-    position:fixed;
-    left:270px;
-    right:0;
-    bottom:0;
-    padding:20px;
-    padding-bottom:max(
-        20px,
-        env(safe-area-inset-bottom)
-    );
-    background:linear-gradient(
-        transparent,
-        var(--bg) 30%
-    );
-    z-index:20;
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:18px;
 }
 
-.input-box{
-    max-width:900px;
-    margin:auto;
-    display:flex;
-    align-items:flex-end;
-    gap:6px;
-    background:#1b1b1b;
-    border:1px solid #303030;
-    border-radius:17px;
-    padding:8px;
+.stat{
+  background:#151515;
+  border:1px solid #2b2b2b;
+  border-radius:14px;
+  padding:18px;
 }
 
-.input-box:focus-within{
-    border-color:#444;
+.stat-title{
+  color:#777;
+  font-size:11px;
+  margin-bottom:7px;
 }
 
-#prompt{
-    flex:1;
-    resize:none;
-    min-height:42px;
-    max-height:180px;
-    border:0;
-    outline:0;
-    background:transparent;
-    color:white;
-    padding:11px 12px;
-    font-size:15px;
-    line-height:1.4;
+.stat-value{
+  font-size:22px;
+  font-weight:700;
 }
-
-#prompt::placeholder{
-    color:#777;
-}
-
-.image-button,
-.send{
-    height:40px;
-    border:0;
-    border-radius:11px;
-    cursor:pointer;
-    flex-shrink:0;
-}
-
-.image-button{
-    width:70px;
-    background:#292929;
-    color:#ddd;
-    border:1px solid #3a3a3a;
-    font-size:12px;
-}
-
-.image-button:hover{
-    background:#333;
-}
-
-.send{
-    width:40px;
-    background:white;
-    color:#111;
-    font-size:19px;
-}
-
-.image-button:disabled,
-.send:disabled{
-    opacity:.4;
-    cursor:default;
-}
-
-.info{
-    max-width:900px;
-    margin:7px auto 0;
-    text-align:center;
-    color:#555;
-    font-size:10px;
-}
-
-/* =========================
-   SETTINGS
-========================= */
-
-.settings-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.55);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:100;
-    padding:20px;
-}
-
-.settings-overlay.open{
-    display:flex;
-}
-
-.settings-panel{
-    width:min(430px,100%);
-    background:#151515;
-    border:1px solid #303030;
-    border-radius:16px;
-    padding:20px;
-}
-
-.settings-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:20px;
-}
-
-.settings-header h2{
-    font-size:18px;
-}
-
-.close-settings{
-    width:32px;
-    height:32px;
-    border:0;
-    border-radius:8px;
-    background:#222;
-    color:#bbb;
-    cursor:pointer;
-    font-size:18px;
-}
-
-.setting{
-    margin-bottom:18px;
-}
-
-.setting label{
-    display:block;
-    margin-bottom:7px;
-    font-size:13px;
-    color:#aaa;
-}
-
-.setting select{
-    width:100%;
-    height:42px;
-    padding:0 10px;
-    border-radius:10px;
-    border:1px solid #333;
-    background:#1d1d1d;
-    color:#fff;
-    outline:none;
-}
-
-.setting-description{
-    margin-top:7px;
-    font-size:11px;
-    color:#666;
-}
-
-/* =========================
-   MOBILE
-========================= */
 
 @media(max-width:700px){
+  .stats{
+    grid-template-columns:1fr;
+  }
 
-    .sidebar{
-        display:none;
-    }
+  .topbar{
+    padding:0 12px;
+  }
 
-    .main{
-        width:100%;
-    }
-
-    header{
-        height:50px;
-        min-height:50px;
-        justify-content:flex-start;
-        padding-left:52px;
-    }
-
-    .mobile-menu{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        position:absolute;
-        left:10px;
-        width:32px;
-        height:32px;
-        border:0;
-        background:transparent;
-        color:#ddd;
-        font-size:20px;
-    }
-
-    .title{
-        font-size:15px;
-    }
-
-    .status{
-        display:none;
-    }
-
-    .header-actions{
-        right:10px;
-    }
-
-    .settings-button{
-        width:32px;
-        height:32px;
-    }
-
-    .chat{
-        padding:18px 13px 125px;
-    }
-
-    .message-row{
-        margin:14px 0;
-    }
-
-    .message-row.user{
-        padding-left:35px;
-    }
-
-    .message-row.ai{
-        padding-right:12px;
-    }
-
-    .avatar{
-        width:27px;
-        height:27px;
-        border-radius:7px;
-        font-size:9px;
-        margin-right:8px;
-    }
-
-    .message{
-        max-width:calc(100vw - 70px);
-        font-size:15px;
-        line-height:1.5;
-        padding:10px 12px;
-        border-radius:12px;
-    }
-
-    .message.user{
-        padding:10px 13px;
-    }
-
-    .message.ai{
-        padding:4px 0;
-    }
-
-    .welcome{
-        min-height:calc(100dvh - 180px);
-        padding:0 25px;
-    }
-
-    .welcome-logo{
-        width:58px;
-        height:58px;
-        font-size:15px;
-    }
-
-    .welcome h1{
-        font-size:27px;
-    }
-
-    .input-area{
-        left:0;
-        right:0;
-        padding:
-            8px
-            10px
-            max(8px,env(safe-area-inset-bottom));
-        background:linear-gradient(
-            transparent,
-            #0d0d0d 24%
-        );
-    }
-
-    .input-box{
-        min-height:47px;
-        border-radius:15px;
-        padding:5px;
-    }
-
-    #prompt{
-        min-height:35px;
-        max-height:120px;
-        padding:9px 10px;
-        font-size:15px;
-    }
-
-    .image-button{
-        width:58px;
-        height:35px;
-        font-size:11px;
-    }
-
-    .send{
-        width:35px;
-        height:35px;
-        font-size:17px;
-    }
-
-    .info{
-        margin-top:4px;
-        font-size:9px;
-    }
-
-    .settings-overlay{
-        align-items:flex-end;
-        padding:0;
-    }
-
-    .settings-panel{
-        width:100%;
-        border-radius:18px 18px 0 0;
-    }
+  .content{
+    padding:15px;
+  }
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<!-- =====================================================
+     LOGIN / REGISTRO
+===================================================== -->
 
-<aside class="sidebar">
+<div id="authScreen" class="screen">
+
+  <div class="card">
 
     <div class="logo">
-        Inda AI
+      Inda AI
     </div>
 
-    <button
-        class="new-chat"
-        onclick="nuevoChat()">
-        + Nuevo chat
-    </button>
+    <div class="subtitle">
+      Iniciá sesión o creá tu cuenta
+    </div>
 
-    <div class="plan">
+    <div class="tabs">
 
-        <div class="plan-title">
-            Plan
-        </div>
+      <button
+        id="loginTab"
+        class="active"
+        onclick="mostrarFormulario('login')">
+        Iniciar sesión
+      </button>
 
-        <div
-            id="planValue"
-            class="plan-value">
-            Normal
-        </div>
-
-        <div
-            id="counter"
-            class="counter">
-            50 preguntas disponibles
-        </div>
+      <button
+        id="registerTab"
+        onclick="mostrarFormulario('register')">
+        Crear cuenta
+      </button>
 
     </div>
 
-    <div class="sidebar-title">
-        Conversaciones
-    </div>
+
+    <!-- LOGIN -->
+
+    <form
+      id="loginForm"
+      class="form active"
+      onsubmit="iniciarSesion(event)">
+
+      <div class="field">
+
+        <label>
+          Nombre de usuario
+        </label>
+
+        <input
+          id="loginUser"
+          type="text"
+          autocomplete="username"
+          required>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Contraseña
+        </label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          autocomplete="current-password"
+          required>
+
+      </div>
+
+
+      <button
+        class="primary"
+        type="submit">
+        Entrar
+      </button>
+
+    </form>
+
+
+    <!-- REGISTRO -->
+
+    <form
+      id="registerForm"
+      class="form"
+      onsubmit="crearCuenta(event)">
+
+      <div class="field">
+
+        <label>
+          Nombre de usuario
+        </label>
+
+        <input
+          id="registerUser"
+          type="text"
+          autocomplete="username"
+          minlength="3"
+          maxlength="30"
+          required>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Contraseña
+        </label>
+
+        <input
+          id="registerPassword"
+          type="password"
+          autocomplete="new-password"
+          minlength="6"
+          required>
+
+      </div>
+
+
+      <button
+        class="primary"
+        type="submit">
+        Crear cuenta
+      </button>
+
+    </form>
+
 
     <div
-        id="history"
-        class="history">
+      id="authMessage"
+      class="message">
     </div>
 
-</aside>
-
-<main class="main">
-
-<header>
-
-    <button
-        class="mobile-menu"
-        onclick="mostrarMenuMovil()">
-        ☰
-    </button>
-
-    <div class="title">
-        Inda AI
-    </div>
-
-    <div class="header-actions">
-
-        <div class="status">
-
-            <div
-                id="dot"
-                class="dot">
-            </div>
-
-            <span id="estado">
-                Comprobando...
-            </span>
-
-        </div>
-
-        <button
-            class="settings-button"
-            onclick="abrirConfiguracion()">
-            ⚙
-        </button>
-
-    </div>
-
-</header>
-
-<section
-    id="chat"
-    class="chat">
-
-    <div
-        id="chatInner"
-        class="chat-inner">
-    </div>
-
-</section>
-
-<div class="input-area">
-
-    <div class="input-box">
-
-        <textarea
-            id="prompt"
-            rows="1"
-            placeholder="Preguntale algo a Inda AI..."
-            autocomplete="off"></textarea>
-
-        <button
-            id="imageButton"
-            class="image-button"
-            onclick="generarImagen()">
-            Imagen
-        </button>
-
-        <button
-            id="send"
-            class="send"
-            onclick="enviar()">
-            ↑
-        </button>
-
-    </div>
-
-    <div class="info">
-        Inda AI puede equivocarse. Revisá la información importante.
-    </div>
+  </div>
 
 </div>
 
-</main>
 
-</div>
-
-
-<!-- CONFIGURACIÓN -->
+<!-- =====================================================
+     APP
+===================================================== -->
 
 <div
-    id="settingsOverlay"
-    class="settings-overlay"
-    onclick="cerrarConfiguracionDesdeFondo(event)"
->
+  id="app"
+  class="app">
 
-    <div
-        class="settings-panel"
-        onclick="event.stopPropagation()"
-    >
+  <header class="topbar">
 
-        <div class="settings-header">
+    <div class="brand">
+      Inda AI
+    </div>
 
-            <h2>
-                Configuración
-            </h2>
+    <div class="user-area">
 
-            <button
-                class="close-settings"
-                onclick="cerrarConfiguracion()">
-                ×
-            </button>
+      <span id="currentUser">
+        Usuario
+      </span>
 
-        </div>
-
-        <div class="setting">
-
-            <label>
-                Idioma de respuesta
-            </label>
-
-            <select
-                id="languageSelect"
-                onchange="cambiarIdioma()">
-
-                <option value="auto">
-                    Automático
-                </option>
-
-                <option value="es">
-                    Español
-                </option>
-
-                <option value="en">
-                    English
-                </option>
-
-                <option value="fr">
-                    Français
-                </option>
-
-            </select>
-
-        </div>
-
-        <div class="setting">
-
-            <label>
-                Plan
-            </label>
-
-            <div class="setting-description">
-                <span id="settingsPlan">
-                    Normal
-                </span>
-            </div>
-
-        </div>
+      <button
+        class="logout"
+        onclick="cerrarSesion()">
+        Salir
+      </button>
 
     </div>
+
+  </header>
+
+
+  <main class="content">
+
+    <section class="welcome">
+
+      <h1>
+        Bienvenido a Inda AI
+      </h1>
+
+      <p>
+        Tu cuenta ya está iniciada.
+        Desde acá podés entrar a la aplicación,
+        guardar tu configuración y usar tus propios chats.
+      </p>
+
+    </section>
+
+
+    <section class="stats">
+
+      <div class="stat">
+
+        <div class="stat-title">
+          Cuenta
+        </div>
+
+        <div
+          id="accountName"
+          class="stat-value">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-title">
+          Chats propios
+        </div>
+
+        <div
+          id="chatCount"
+          class="stat-value">
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-title">
+          Plan
+        </div>
+
+        <div
+          id="accountPlan"
+          class="stat-value">
+          Normal
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>
 
@@ -916,1397 +470,359 @@ header{
 <script>
 
 /* =====================================================
-   CONFIG
+   CUENTAS DEMO LOCALES
+=====================================================
+
+   IMPORTANTE:
+   Esto es solamente una demostración.
+   NO sirve como sistema de cuentas real para una
+   página pública porque los datos están en el navegador.
+
+   Para cuentas reales se necesita un servidor,
+   base de datos y autenticación segura.
 ===================================================== */
 
-const API_URL =
-    "https://inda-ai-api.belisarionogueira2013.workers.dev";
 
-const LIMITE_DIARIO = 50;
+const USERS_KEY =
+  "inda_users_demo";
 
-
-/* =====================================================
-   ELEMENTOS
-===================================================== */
-
-const chat =
-    document.getElementById("chat");
-
-const chatInner =
-    document.getElementById("chatInner");
-
-const input =
-    document.getElementById("prompt");
-
-const send =
-    document.getElementById("send");
-
-const imageButton =
-    document.getElementById("imageButton");
-
-const history =
-    document.getElementById("history");
-
-const estado =
-    document.getElementById("estado");
-
-const dot =
-    document.getElementById("dot");
-
-const planValue =
-    document.getElementById("planValue");
-
-const counter =
-    document.getElementById("counter");
-
-const languageSelect =
-    document.getElementById("languageSelect");
-
-const settingsPlan =
-    document.getElementById("settingsPlan");
+const SESSION_KEY =
+  "inda_session_demo";
 
 
-/* =====================================================
-   IDIOMA
-===================================================== */
+function getUsers(){
 
-let idioma =
-    localStorage.getItem("inda_idioma")
-    || "auto";
-
-languageSelect.value =
-    idioma;
-
-function cambiarIdioma(){
-
-    idioma =
-        languageSelect.value;
-
-    localStorage.setItem(
-        "inda_idioma",
-        idioma
-    );
-
-}
-
-function instruccionIdioma(){
-
-    if(idioma === "es"){
-        return "Respondé exclusivamente en español.";
-    }
-
-    if(idioma === "en"){
-        return "Answer exclusively in English.";
-    }
-
-    if(idioma === "fr"){
-        return "Réponds exclusivement en français.";
-    }
-
-    return `
-Respondé principalmente en el mismo idioma
-que utilice el usuario.
-`;
+  return JSON.parse(
+    localStorage.getItem(
+      USERS_KEY
+    ) || "{}"
+  );
 
 }
 
 
-/* =====================================================
-   PERSONALIDAD
-===================================================== */
+function saveUsers(users){
 
-const SISTEMA_BASE = `
-
-Tu nombre es Inda AI.
-
-Hablás de forma natural y juvenil,
-como un chico de 13 años.
-
-No sos demasiado formal.
-
-No exagerás las expresiones juveniles.
-
-No repetís constantemente:
-"tipo"
-"re"
-"literal"
-"o sea"
-
-Respondés directamente.
-
-Si el usuario hace una pregunta:
-CONTESTALA.
-
-Si el usuario pega una tarea:
-HACELA.
-
-Si el usuario pega un ejercicio:
-RESOLVELO.
-
-No inventes información.
-
-Si no sabés algo:
-decí que no lo sabés.
-`;
-
-
-/* =====================================================
-   PREMIUM
-===================================================== */
-
-let premium =
-    localStorage.getItem("inda_premium")
-    === "true";
-
-
-function activarPremium(){
-
-    premium = true;
-
-    localStorage.setItem(
-        "inda_premium",
-        "true"
-    );
-
-    actualizarPlan();
+  localStorage.setItem(
+    USERS_KEY,
+    JSON.stringify(users)
+  );
 
 }
 
 
-function obtenerCodigoPremium(){
+function mostrarFormulario(tipo){
 
-    return String.fromCharCode(
-        105,110,100,97,
-        98,101,108,105,
-        50,50
+  const loginForm =
+    document.getElementById(
+      "loginForm"
     );
+
+  const registerForm =
+    document.getElementById(
+      "registerForm"
+    );
+
+  const loginTab =
+    document.getElementById(
+      "loginTab"
+    );
+
+  const registerTab =
+    document.getElementById(
+      "registerTab"
+    );
+
+
+  if(tipo === "login"){
+
+    loginForm.classList.add("active");
+    registerForm.classList.remove("active");
+
+    loginTab.classList.add("active");
+    registerTab.classList.remove("active");
+
+  }else{
+
+    loginForm.classList.remove("active");
+    registerForm.classList.add("active");
+
+    loginTab.classList.remove("active");
+    registerTab.classList.add("active");
+
+  }
+
+
+  mostrarMensaje("");
 
 }
 
 
-function comprobarCodigo(texto){
+function mostrarMensaje(texto){
 
-    return (
-        texto
-            .trim()
-            .toLowerCase()
-        ===
-        obtenerCodigoPremium()
-    );
+  document.getElementById(
+    "authMessage"
+  ).textContent =
+    texto;
 
 }
 
 
-function obtenerSistema(){
+function crearCuenta(event){
 
-    const plan =
-        premium
+  event.preventDefault();
 
-        ? `
-MODO PREMIUM:
 
-Respondé con más detalle
-y explicá mejor los temas difíciles.
+  const username =
+    document.getElementById(
+      "registerUser"
+    ).value.trim();
 
-Podés desarrollar ejemplos
-cuando sea útil.
-`
 
-        : `
-MODO NORMAL:
+  const password =
+    document.getElementById(
+      "registerPassword"
+    ).value;
 
-Respondé de forma breve,
-simple y directa.
 
-No hagas respuestas largas
-a menos que el usuario lo pida.
-`;
-
-
-    return (
-        SISTEMA_BASE
-        +
-        plan
-        +
-        "\n"
-        +
-        instruccionIdioma()
-    );
-
-}
-
-
-/* =====================================================
-   FECHA / CONTADOR
-===================================================== */
-
-function fechaHoy(){
-
-    const d =
-        new Date();
-
-    return (
-        d.getFullYear()
-        +
-        "-"
-        +
-        String(
-            d.getMonth()+1
-        ).padStart(2,"0")
-        +
-        "-"
-        +
-        String(
-            d.getDate()
-        ).padStart(2,"0")
-    );
-
-}
-
-
-function obtenerUso(){
-
-    const old =
-        JSON.parse(
-            localStorage.getItem(
-                "inda_uso_diario"
-            )
-            || "null"
-        );
-
-
-    if(
-        !old ||
-        old.fecha !== fechaHoy()
-    ){
-
-        const nuevo = {
-            fecha:fechaHoy(),
-            preguntas:0
-        };
-
-
-        localStorage.setItem(
-            "inda_uso_diario",
-            JSON.stringify(nuevo)
-        );
-
-
-        return nuevo;
-
-    }
-
-
-    return old;
-
-}
-
-
-function incrementarUso(){
-
-    const uso =
-        obtenerUso();
-
-    uso.preguntas++;
-
-    localStorage.setItem(
-        "inda_uso_diario",
-        JSON.stringify(uso)
-    );
-
-    actualizarPlan();
-
-}
-
-
-function puedePreguntar(){
-
-    if(premium)
-        return true;
-
-    return (
-        obtenerUso().preguntas
-        <
-        LIMITE_DIARIO
-    );
-
-}
-
-
-function actualizarPlan(){
-
-    if(premium){
-
-        planValue.textContent =
-            "Premium";
-
-        counter.textContent =
-            "Preguntas ilimitadas";
-
-        settingsPlan.textContent =
-            "Premium";
-
-        return;
-
-    }
-
-
-    const restantes =
-        Math.max(
-            0,
-            LIMITE_DIARIO -
-            obtenerUso().preguntas
-        );
-
-
-    planValue.textContent =
-        "Normal";
-
-    counter.textContent =
-        restantes +
-        " preguntas disponibles";
-
-    settingsPlan.textContent =
-        "Normal";
-
-}
-
-
-/* =====================================================
-   CONVERSACIONES
-===================================================== */
-
-let conversaciones =
-    JSON.parse(
-        localStorage.getItem(
-            "inda_conversaciones"
-        )
-        || "[]"
-    );
-
-let chatActual = null;
-
-
-function guardar(){
-
-    localStorage.setItem(
-        "inda_conversaciones",
-        JSON.stringify(
-            conversaciones
-        )
-    );
-
-}
-
-
-function nuevoChat(){
-
-    const nuevo = {
-        id:
-            Date.now() +
-            Math.random(),
-
-        title:
-            "Nuevo chat",
-
-        messages:[],
-
-        created:
-            Date.now()
-    };
-
-
-    conversaciones.unshift(
-        nuevo
-    );
-
-    chatActual =
-        nuevo.id;
-
-    guardar();
-
-    renderHistorial();
-
-    mostrarChat(
-        nuevo
-    );
-
-    input.focus();
-
-}
-
-
-function obtenerActual(){
-
-    return conversaciones.find(
-        c =>
-            c.id === chatActual
-    );
-
-}
-
-
-/* =====================================================
-   MOSTRAR CHAT
-===================================================== */
-
-function mostrarChat(c){
-
-    chatInner.innerHTML =
-        "";
-
-    if(
-        c.messages.length === 0
-    ){
-
-        const welcome =
-            document.createElement(
-                "div"
-            );
-
-        welcome.className =
-            "welcome";
-
-        welcome.innerHTML = `
-            <div class="welcome-logo">
-                IA
-            </div>
-
-            <h1>
-                Inda AI
-            </h1>
-
-            <p>
-                Preguntame lo que quieras.
-            </p>
-        `;
-
-        chatInner.appendChild(
-            welcome
-        );
-
-        return;
-    }
-
-
-    c.messages.forEach(
-        msg => {
-
-            if(msg.type === "image"){
-                mostrarImagen(
-                    msg.image,
-                    msg.prompt
-                );
-                return;
-            }
-
-            mostrarMensaje(
-                msg.content,
-                msg.role === "user"
-                    ? "user"
-                    : "ai"
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   MENSAJES
-===================================================== */
-
-function mostrarMensaje(
-    texto,
-    quien
-){
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "message-row " +
-        quien;
-
-
-    if(
-        quien === "ai"
-    ){
-
-        const avatar =
-            document.createElement(
-                "div"
-            );
-
-        avatar.className =
-            "avatar";
-
-        avatar.textContent =
-            "IA";
-
-        row.appendChild(
-            avatar
-        );
-
-    }
-
-
-    const bubble =
-        document.createElement(
-            "div"
-        );
-
-    bubble.className =
-        "message " +
-        quien;
-
-    bubble.textContent =
-        texto;
-
-    row.appendChild(
-        bubble
-    );
-
-    chatInner.appendChild(
-        row
-    );
-
-    requestAnimationFrame(
-        () => {
-            chat.scrollTop =
-                chat.scrollHeight;
-        }
-    );
-
-    return bubble;
-
-}
-
-
-/* =====================================================
-   IMAGEN
-===================================================== */
-
-function mostrarImagen(
-    src,
-    promptText
-){
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "message-row ai";
-
-
-    const avatar =
-        document.createElement(
-            "div"
-        );
-
-    avatar.className =
-        "avatar";
-
-    avatar.textContent =
-        "IA";
-
-
-    row.appendChild(
-        avatar
-    );
-
-
-    const container =
-        document.createElement(
-            "div"
-        );
-
-
-    const img =
-        document.createElement(
-            "img"
-        );
-
-    img.className =
-        "generated-image";
-
-    img.src =
-        src;
-
-    img.alt =
-        promptText ||
-        "Imagen generada por Inda AI";
-
-
-    container.appendChild(
-        img
-    );
-
-
-    row.appendChild(
-        container
-    );
-
-    chatInner.appendChild(
-        row
-    );
-
-
-    requestAnimationFrame(
-        () => {
-            chat.scrollTop =
-                chat.scrollHeight;
-        }
-    );
-
-}
-
-
-/* =====================================================
-   HISTORIAL
-===================================================== */
-
-function renderHistorial(){
-
-    history.innerHTML =
-        "";
-
-    conversaciones.forEach(
-        c => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-            item.className =
-                "chat-item" +
-                (
-                    c.id === chatActual
-                        ? " active"
-                        : ""
-                );
-
-
-            const title =
-                document.createElement(
-                    "span"
-                );
-
-            title.className =
-                "chat-title";
-
-            title.textContent =
-                c.title;
-
-
-            const borrar =
-                document.createElement(
-                    "span"
-                );
-
-            borrar.className =
-                "delete-chat";
-
-            borrar.textContent =
-                "×";
-
-
-            borrar.onclick =
-                function(e){
-
-                    e.stopPropagation();
-
-                    borrarChat(
-                        c.id
-                    );
-
-                };
-
-
-            item.appendChild(
-                title
-            );
-
-            item.appendChild(
-                borrar
-            );
-
-
-            item.onclick =
-                function(){
-
-                    abrirChat(
-                        c.id
-                    );
-
-                };
-
-
-            history.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
-
-
-function abrirChat(id){
-
-    const c =
-        conversaciones.find(
-            x =>
-                x.id === id
-        );
-
-    if(!c)
-        return;
-
-    chatActual =
-        id;
-
-    mostrarChat(c);
-
-    renderHistorial();
-
-    input.focus();
-
-}
-
-
-function borrarChat(id){
-
-    conversaciones =
-        conversaciones.filter(
-            c =>
-                c.id !== id
-        );
-
-
-    if(
-        chatActual === id
-    ){
-
-        if(
-            conversaciones.length
-        ){
-
-            chatActual =
-                conversaciones[0].id;
-
-            mostrarChat(
-                conversaciones[0]
-            );
-
-        }else{
-
-            nuevoChat();
-
-        }
-
-    }
-
-    guardar();
-
-    renderHistorial();
-
-}
-
-
-/* =====================================================
-   ENVIAR TEXTO
-===================================================== */
-
-async function enviar(){
-
-    const texto =
-        input.value.trim();
-
-    if(!texto)
-        return;
-
-
-    if(
-        comprobarCodigo(texto)
-    ){
-
-        activarPremium();
-
-        input.value =
-            "";
-
-        ajustarInput();
-
-        mostrarMensaje(
-            "Premium activado.",
-            "ai"
-        );
-
-        return;
-
-    }
-
-
-    if(
-        !puedePreguntar()
-    ){
-
-        mostrarMensaje(
-`Llegaste al límite de 50 preguntas de hoy.
-
-El contador se reinicia automáticamente mañana.`,
-            "ai"
-        );
-
-        return;
-
-    }
-
-
-    if(!chatActual)
-        nuevoChat();
-
-
-    const c =
-        obtenerActual();
-
-
-    send.disabled =
-        true;
-
-
-    c.messages.push({
-
-        role:"user",
-
-        content:texto
-
-    });
-
-
-    if(
-        c.title === "Nuevo chat"
-    ){
-
-        c.title =
-            texto.length > 45
-                ? texto.substring(
-                    0,
-                    45
-                  ) + "..."
-                : texto;
-
-    }
-
-
-    guardar();
-
-    renderHistorial();
+  if(username.length < 3){
 
     mostrarMensaje(
-        texto,
-        "user"
+      "El usuario debe tener al menos 3 caracteres."
     );
 
-
-    input.value =
-        "";
-
-    ajustarInput();
+    return;
+  }
 
 
-    const thinking =
-        mostrarMensaje(
-            "Pensando...",
-            "ai"
-        );
-
-    thinking.classList.add(
-        "thinking"
-    );
-
-
-    try{
-
-        const response =
-            await fetch(
-                API_URL +
-                "/chat",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            system:
-                                obtenerSistema(),
-
-                            messages:
-                                c.messages
-                        })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if(!response.ok){
-
-            throw new Error(
-                data?.error ||
-                "Error del servidor."
-            );
-
-        }
-
-
-        const answer =
-            data?.response;
-
-
-        if(!answer){
-
-            throw new Error(
-                "La IA no devolvió una respuesta."
-            );
-
-        }
-
-
-        thinking.classList.remove(
-            "thinking"
-        );
-
-        thinking.textContent =
-            answer;
-
-
-        c.messages.push({
-
-            role:"assistant",
-
-            content:answer
-
-        });
-
-
-        incrementarUso();
-
-        guardar();
-
-
-    }catch(error){
-
-        thinking.classList.remove(
-            "thinking"
-        );
-
-        thinking.textContent =
-`No pude conectarme con Inda AI.
-
-${error.message}`;
-
-    }
-
-
-    send.disabled =
-        false;
-
-    input.focus();
-
-}
-
-
-/* =====================================================
-   GENERAR IMAGEN
-===================================================== */
-
-async function generarImagen(){
-
-    const prompt =
-        input.value.trim();
-
-
-    if(!prompt)
-        return;
-
-
-    imageButton.disabled =
-        true;
-
-    send.disabled =
-        true;
-
-
-    if(!chatActual)
-        nuevoChat();
-
-
-    const c =
-        obtenerActual();
-
+  if(password.length < 6){
 
     mostrarMensaje(
-        "Creá una imagen: " +
-        prompt,
-        "user"
+      "La contraseña debe tener al menos 6 caracteres."
+    );
+
+    return;
+  }
+
+
+  const users =
+    getUsers();
+
+
+  const key =
+    username.toLowerCase();
+
+
+  if(users[key]){
+
+    mostrarMensaje(
+      "Ese usuario ya existe."
+    );
+
+    return;
+  }
+
+
+  users[key] = {
+    username: username,
+
+    password: password,
+
+    plan: "Normal",
+
+    chats: 0,
+
+    createdAt:
+      new Date().toISOString()
+  };
+
+
+  saveUsers(users);
+
+
+  mostrarMensaje(
+    "Cuenta creada. Ahora podés iniciar sesión."
+  );
+
+
+  document.getElementById(
+    "registerForm"
+  ).reset();
+
+
+  mostrarFormulario(
+    "login"
+  );
+
+}
+
+
+function iniciarSesion(event){
+
+  event.preventDefault();
+
+
+  const username =
+    document.getElementById(
+      "loginUser"
+    ).value.trim();
+
+
+  const password =
+    document.getElementById(
+      "loginPassword"
+    ).value;
+
+
+  const users =
+    getUsers();
+
+
+  const key =
+    username.toLowerCase();
+
+
+  const user =
+    users[key];
+
+
+  if(
+    !user ||
+    user.password !== password
+  ){
+
+    mostrarMensaje(
+      "Usuario o contraseña incorrectos."
+    );
+
+    return;
+  }
+
+
+  localStorage.setItem(
+    SESSION_KEY,
+    key
+  );
+
+
+  mostrarApp(
+    user
+  );
+
+}
+
+
+function mostrarApp(user){
+
+  document.getElementById(
+    "authScreen"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  const app =
+    document.getElementById(
+      "app"
     );
 
 
-    input.value =
-        "";
-
-    ajustarInput();
+  app.style.display =
+    "block";
 
 
-    const thinking =
-        mostrarMensaje(
-            "Generando imagen...",
-            "ai"
-        );
+  document.getElementById(
+    "currentUser"
+  ).textContent =
+    user.username;
 
-    thinking.classList.add(
-        "thinking"
+
+  document.getElementById(
+    "accountName"
+  ).textContent =
+    user.username;
+
+
+  document.getElementById(
+    "chatCount"
+  ).textContent =
+    String(
+      user.chats || 0
     );
 
 
-    try{
-
-        const response =
-            await fetch(
-                API_URL +
-                "/image",
-                {
-
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            prompt:prompt
-                        })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if(!response.ok){
-
-            throw new Error(
-                data?.error ||
-                "No se pudo generar la imagen."
-            );
-
-        }
-
-
-        if(!data?.image){
-
-            throw new Error(
-                "El servidor no devolvió una imagen."
-            );
-
-        }
-
-
-        thinking.remove();
-
-
-        mostrarImagen(
-            data.image,
-            prompt
-        );
-
-
-        c.messages.push({
-            type:"image",
-            image:data.image,
-            prompt:prompt
-        });
-
-
-        guardar();
-
-
-    }catch(error){
-
-        thinking.classList.remove(
-            "thinking"
-        );
-
-        thinking.textContent =
-`No pude generar la imagen.
-
-${error.message}`;
-
-    }
-
-
-    imageButton.disabled =
-        false;
-
-    send.disabled =
-        false;
+  document.getElementById(
+    "accountPlan"
+  ).textContent =
+    user.plan || "Normal";
 
 }
 
 
-/* =====================================================
-   TEXTAREA
-===================================================== */
+function cerrarSesion(){
 
-function ajustarInput(){
-
-    input.style.height =
-        "auto";
-
-    input.style.height =
-        Math.min(
-            input.scrollHeight,
-            window.innerWidth <= 700
-                ? 120
-                : 180
-        ) + "px";
-
-}
-
-input.addEventListener(
-    "input",
-    ajustarInput
-);
+  localStorage.removeItem(
+    SESSION_KEY
+  );
 
 
-input.addEventListener(
-    "keydown",
-    function(e){
-
-        if(
-            e.key === "Enter" &&
-            !e.shiftKey
-        ){
-
-            e.preventDefault();
-
-            enviar();
-
-        }
-
-    }
-);
+  document.getElementById(
+    "app"
+  ).style.display =
+    "none";
 
 
-/* =====================================================
-   CONFIGURACIÓN
-===================================================== */
+  document.getElementById(
+    "authScreen"
+  ).classList.remove(
+    "hidden"
+  );
 
-function abrirConfiguracion(){
-
-    document
-        .getElementById(
-            "settingsOverlay"
-        )
-        .classList.add(
-            "open"
-        );
-
-}
-
-function cerrarConfiguracion(){
-
-    document
-        .getElementById(
-            "settingsOverlay"
-        )
-        .classList.remove(
-            "open"
-        );
-
-}
-
-function cerrarConfiguracionDesdeFondo(e){
-
-    if(
-        e.target.id ===
-        "settingsOverlay"
-    ){
-
-        cerrarConfiguracion();
-
-    }
+  document.getElementById(
+    "loginForm"
+  ).reset();
 
 }
 
 
-/* =====================================================
-   MENÚ MÓVIL
-===================================================== */
+function restaurarSesion(){
 
-function mostrarMenuMovil(){
-
-    if(
-        window.innerWidth > 700
-    )
-        return;
-
-
-    if(
-        !conversaciones.length
-    ){
-
-        alert(
-            "No hay conversaciones."
-        );
-
-        return;
-
-    }
-
-
-    const lista =
-        conversaciones
-            .map(
-                (c,i) =>
-                    (i+1)
-                    + ". "
-                    + c.title
-            )
-            .join("\n");
-
-
-    const selection =
-        prompt(
-            "Conversaciones\n\n" +
-            lista +
-            "\n\nEscribí el número:"
-        );
-
-
-    if(!selection)
-        return;
-
-
-    const index =
-        Number(selection) - 1;
-
-
-    if(
-        Number.isInteger(index)
-        &&
-        index >= 0
-        &&
-        index < conversaciones.length
-    ){
-
-        abrirChat(
-            conversaciones[index].id
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   ESTADO
-===================================================== */
-
-async function actualizarEstado(){
-
-    try{
-
-        const response =
-            await fetch(
-                API_URL +
-                "/health"
-            );
-
-
-        if(!response.ok)
-            throw new Error();
-
-
-        estado.textContent =
-            "Inda AI conectada";
-
-
-        dot.style.background =
-            "#76c893";
-
-
-    }catch{
-
-        estado.textContent =
-            "Servidor desconectado";
-
-
-        dot.style.background =
-            "#c86b6b";
-
-    }
-
-}
-
-
-/* =====================================================
-   INICIO
-===================================================== */
-
-actualizarPlan();
-
-
-if(
-    conversaciones.length > 0
-){
-
-    chatActual =
-        conversaciones[0].id;
-
-    mostrarChat(
-        conversaciones[0]
+  const session =
+    localStorage.getItem(
+      SESSION_KEY
     );
 
-}else{
 
-    nuevoChat();
+  if(!session)
+    return;
+
+
+  const users =
+    getUsers();
+
+
+  const user =
+    users[session];
+
+
+  if(!user){
+
+    localStorage.removeItem(
+      SESSION_KEY
+    );
+
+    return;
+  }
+
+
+  mostrarApp(
+    user
+  );
 
 }
 
 
-renderHistorial();
-
-actualizarEstado();
-
-
-setInterval(
-    actualizarEstado,
-    7000
-);
-
-
-window.addEventListener(
-    "resize",
-    ajustarInput
-);
+restaurarSesion();
 
 </script>
 
