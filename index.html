@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,9 +8,6 @@
 <title>Inda AI</title>
 
 <style>
-/* =====================================================
-   RESET
-===================================================== */
 
 *{
     box-sizing:border-box;
@@ -22,14 +20,10 @@
     --bg:#0d0d0d;
     --sidebar:#111111;
     --panel:#191919;
-    --panel2:#1b1b1b;
     --hover:#242424;
     --border:#2b2b2b;
-    --border2:#303030;
     --text:#f5f5f5;
     --muted:#858585;
-    --muted2:#666;
-    --white:#ffffff;
 }
 
 html,
@@ -44,19 +38,16 @@ body{
     color:var(--text);
 }
 
-/* =====================================================
-   APP
-===================================================== */
-
 .app{
     display:flex;
     width:100%;
     height:100dvh;
 }
 
-/* =====================================================
+
+/* =========================
    SIDEBAR
-===================================================== */
+========================= */
 
 .sidebar{
     width:270px;
@@ -83,10 +74,9 @@ body{
     border:1px solid #333;
     border-radius:10px;
     background:#191919;
-    color:#fff;
+    color:white;
     cursor:pointer;
     font-size:14px;
-    transition:.15s;
 }
 
 .new-chat:hover{
@@ -129,13 +119,12 @@ body{
 .history{
     flex:1;
     overflow-y:auto;
-    padding-right:2px;
 }
 
 .chat-item{
     display:flex;
     align-items:center;
-    gap:7px;
+    gap:6px;
     padding:10px;
     border-radius:9px;
     margin-bottom:4px;
@@ -150,32 +139,31 @@ body{
 
 .chat-item.active{
     background:#282828;
-    color:#fff;
+    color:white;
 }
 
 .chat-title{
-    min-width:0;
     flex:1;
-    white-space:nowrap;
+    min-width:0;
     overflow:hidden;
     text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 .delete-chat{
     color:#777;
     cursor:pointer;
-    font-size:15px;
     opacity:0;
-    flex-shrink:0;
 }
 
 .chat-item:hover .delete-chat{
     opacity:1;
 }
 
-/* =====================================================
+
+/* =========================
    MAIN
-===================================================== */
+========================= */
 
 .main{
     flex:1;
@@ -184,9 +172,10 @@ body{
     flex-direction:column;
 }
 
-/* =====================================================
+
+/* =========================
    HEADER
-===================================================== */
+========================= */
 
 header{
     height:60px;
@@ -196,8 +185,6 @@ header{
     align-items:center;
     justify-content:center;
     position:relative;
-    background:var(--bg);
-    z-index:10;
 }
 
 .title{
@@ -207,6 +194,14 @@ header{
 
 .mobile-menu{
     display:none;
+    position:absolute;
+    left:12px;
+    border:0;
+    background:transparent;
+    color:#ddd;
+    font-size:20px;
+    width:32px;
+    height:32px;
 }
 
 .status{
@@ -226,9 +221,10 @@ header{
     background:#777;
 }
 
-/* =====================================================
+
+/* =========================
    CHAT
-===================================================== */
+========================= */
 
 .chat{
     flex:1;
@@ -243,14 +239,10 @@ header{
     margin:auto;
 }
 
-/* =====================================================
-   MESSAGES
-===================================================== */
-
 .message-row{
     display:flex;
-    margin:18px 0;
     width:100%;
+    margin:18px 0;
 }
 
 .message-row.user{
@@ -294,17 +286,14 @@ header{
     padding-left:0;
 }
 
-/* =====================================================
-   THINKING
-===================================================== */
-
 .thinking{
     opacity:.5;
 }
 
-/* =====================================================
+
+/* =========================
    WELCOME
-===================================================== */
+========================= */
 
 .welcome{
     min-height:65vh;
@@ -313,7 +302,6 @@ header{
     align-items:center;
     justify-content:center;
     text-align:center;
-    padding:30px;
 }
 
 .welcome-logo{
@@ -340,9 +328,10 @@ header{
     font-size:14px;
 }
 
-/* =====================================================
-   INPUT AREA
-===================================================== */
+
+/* =========================
+   INPUT
+========================= */
 
 .input-area{
     position:fixed;
@@ -350,7 +339,10 @@ header{
     right:0;
     bottom:0;
     padding:20px;
-    padding-bottom:max(20px, env(safe-area-inset-bottom));
+    padding-bottom:max(
+        20px,
+        env(safe-area-inset-bottom)
+    );
     background:linear-gradient(
         transparent,
         var(--bg) 30%
@@ -363,11 +355,10 @@ header{
     margin:auto;
     display:flex;
     align-items:flex-end;
-    background:var(--panel2);
-    border:1px solid var(--border2);
+    background:#1b1b1b;
+    border:1px solid #303030;
     border-radius:17px;
     padding:8px;
-    transition:border-color .15s;
 }
 
 .input-box:focus-within{
@@ -382,7 +373,7 @@ header{
     border:0;
     outline:0;
     background:transparent;
-    color:#fff;
+    color:white;
     padding:11px 12px;
     font-size:15px;
     line-height:1.4;
@@ -397,22 +388,15 @@ header{
     height:40px;
     border:0;
     border-radius:11px;
-    background:#fff;
+    background:white;
     color:#111;
     cursor:pointer;
     font-size:19px;
     flex-shrink:0;
-    transition:.15s;
-}
-
-.send:hover{
-    transform:translateY(-1px);
 }
 
 .send:disabled{
     opacity:.4;
-    cursor:default;
-    transform:none;
 }
 
 .info{
@@ -423,19 +407,12 @@ header{
     font-size:10px;
 }
 
-/* =====================================================
+
+/* =========================
    MOBILE
-===================================================== */
+========================= */
 
 @media(max-width:700px){
-
-    body{
-        background:#0d0d0d;
-    }
-
-    .app{
-        height:100dvh;
-    }
 
     .sidebar{
         display:none;
@@ -443,35 +420,24 @@ header{
 
     .main{
         width:100%;
-        min-width:0;
     }
 
     header{
         height:50px;
         min-height:50px;
         justify-content:flex-start;
-        padding:0 14px;
+        padding-left:52px;
         border-bottom:1px solid #202020;
-    }
-
-    .title{
-        font-size:15px;
-        margin-left:38px;
     }
 
     .mobile-menu{
         display:flex;
-        position:absolute;
-        left:10px;
-        width:32px;
-        height:32px;
-        border:0;
-        background:transparent;
-        color:#ddd;
         align-items:center;
         justify-content:center;
-        font-size:20px;
-        cursor:pointer;
+    }
+
+    .title{
+        font-size:15px;
     }
 
     .status{
@@ -479,19 +445,11 @@ header{
     }
 
     .chat{
-        padding:
-            18px
-            13px
-            125px
-            13px;
-    }
-
-    .chat-inner{
-        max-width:none;
+        padding:18px 13px 125px;
     }
 
     .message-row{
-        margin:13px 0;
+        margin:14px 0;
     }
 
     .message-row.user{
@@ -519,13 +477,12 @@ header{
     }
 
     .message.user{
-        border-radius:14px;
         padding:10px 13px;
+        border-radius:14px;
     }
 
     .message.ai{
         padding:4px 0;
-        background:transparent;
     }
 
     .welcome{
@@ -536,14 +493,12 @@ header{
     .welcome-logo{
         width:58px;
         height:58px;
-        border-radius:16px;
         font-size:15px;
         margin-bottom:15px;
     }
 
     .welcome h1{
         font-size:27px;
-        margin-bottom:8px;
     }
 
     .welcome p{
@@ -553,7 +508,6 @@ header{
     .input-area{
         left:0;
         right:0;
-        bottom:0;
         padding:
             8px
             10px
@@ -566,12 +520,9 @@ header{
     }
 
     .input-box{
-        max-width:none;
         min-height:47px;
         border-radius:15px;
         padding:5px;
-        background:#1a1a1a;
-        border-color:#292929;
     }
 
     #prompt{
@@ -594,15 +545,12 @@ header{
     }
 }
 
-/* =====================================================
-   TELÉFONOS MUY PEQUEÑOS
-===================================================== */
+
+/* =========================
+   SMALL PHONES
+========================= */
 
 @media(max-width:380px){
-
-    .title{
-        font-size:14px;
-    }
 
     .chat{
         padding-left:10px;
@@ -622,6 +570,7 @@ header{
         font-size:25px;
     }
 }
+
 </style>
 </head>
 
@@ -629,9 +578,7 @@ header{
 
 <div class="app">
 
-    <!-- =================================================
-         SIDEBAR
-    ================================================== -->
+    <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
@@ -677,9 +624,7 @@ header{
     </aside>
 
 
-    <!-- =================================================
-         MAIN
-    ================================================== -->
+    <!-- MAIN -->
 
     <main class="main">
 
@@ -687,8 +632,7 @@ header{
 
             <button
                 class="mobile-menu"
-                onclick="mostrarMenuMovil()"
-                aria-label="Abrir conversaciones">
+                onclick="mostrarMenuMovil()">
                 ☰
             </button>
 
@@ -724,9 +668,7 @@ header{
         </section>
 
 
-        <!-- =================================================
-             INPUT
-        ================================================== -->
+        <!-- INPUT -->
 
         <div class="input-area">
 
@@ -736,14 +678,12 @@ header{
                     id="prompt"
                     rows="1"
                     placeholder="Preguntale algo a Inda AI..."
-                    autocomplete="off"
-                    spellcheck="true"></textarea>
+                    autocomplete="off"></textarea>
 
                 <button
                     id="send"
                     class="send"
-                    onclick="enviar()"
-                    aria-label="Enviar">
+                    onclick="enviar()">
                     ↑
                 </button>
 
@@ -852,6 +792,13 @@ decí que no lo sabés.
 Respondé directamente.
 
 La respuesta tiene que sentirse natural.
+
+No uses asteriscos como decoración.
+
+No copies literalmente la forma de escribir
+del usuario.
+
+No inventes datos personales.
 `;
 
 
@@ -860,7 +807,9 @@ La respuesta tiene que sentirse natural.
 ===================================================== */
 
 let premium =
-    localStorage.getItem("inda_premium") === "true";
+    localStorage.getItem(
+        "inda_premium"
+    ) === "true";
 
 
 function activarPremium(){
@@ -888,7 +837,7 @@ function comprobarCodigo(texto){
 
 
 /* =====================================================
-   CONTADOR DIARIO
+   FECHA
 ===================================================== */
 
 function fechaHoy(){
@@ -896,7 +845,8 @@ function fechaHoy(){
     const ahora =
         new Date();
 
-    return ahora.getFullYear()
+    return (
+        ahora.getFullYear()
         + "-"
         + String(
             ahora.getMonth() + 1
@@ -904,10 +854,15 @@ function fechaHoy(){
         + "-"
         + String(
             ahora.getDate()
-        ).padStart(2,"0");
+        ).padStart(2,"0")
+    );
 
 }
 
+
+/* =====================================================
+   CONTADOR
+===================================================== */
 
 function obtenerUso(){
 
@@ -925,8 +880,13 @@ function obtenerUso(){
     ){
 
         const nuevo = {
-            fecha:fechaHoy(),
-            preguntas:0
+
+            fecha:
+                fechaHoy(),
+
+            preguntas:
+                0
+
         };
 
         localStorage.setItem(
@@ -968,8 +928,10 @@ function puedePreguntar(){
     const uso =
         obtenerUso();
 
-    return uso.preguntas <
-        LIMITE_DIARIO;
+    return (
+        uso.preguntas <
+        LIMITE_DIARIO
+    );
 
 }
 
@@ -988,8 +950,10 @@ function actualizarPlan(){
 
     }
 
+
     const uso =
         obtenerUso();
+
 
     const restantes =
         Math.max(
@@ -997,6 +961,7 @@ function actualizarPlan(){
             LIMITE_DIARIO -
             uso.preguntas
         );
+
 
     planValue.textContent =
         "Normal";
@@ -1019,7 +984,9 @@ let conversaciones =
         ) || "[]"
     );
 
-let chatActual = null;
+
+let chatActual =
+    null;
 
 
 function guardar(){
@@ -1056,12 +1023,15 @@ function nuevoChat(){
 
     };
 
+
     conversaciones.unshift(
         nuevo
     );
 
+
     chatActual =
         nuevo.id;
+
 
     guardar();
 
@@ -1075,7 +1045,7 @@ function nuevoChat(){
 
 
 /* =====================================================
-   CHAT ACTUAL
+   OBTENER ACTUAL
 ===================================================== */
 
 function obtenerActual(){
@@ -1094,7 +1064,9 @@ function obtenerActual(){
 
 function mostrarChat(c){
 
-    chatInner.innerHTML = "";
+    chatInner.innerHTML =
+        "";
+
 
     if(
         c.messages.length === 0
@@ -1105,8 +1077,10 @@ function mostrarChat(c){
                 "div"
             );
 
+
         welcome.className =
             "welcome";
+
 
         welcome.innerHTML = `
 
@@ -1114,7 +1088,9 @@ function mostrarChat(c){
                 IA
             </div>
 
-            <h1>Inda AI</h1>
+            <h1>
+                Inda AI
+            </h1>
 
             <p>
                 Preguntame lo que quieras.
@@ -1122,13 +1098,16 @@ function mostrarChat(c){
 
         `;
 
+
         chatInner.appendChild(
             welcome
         );
 
+
         return;
 
     }
+
 
     c.messages.forEach(
         mensaje => {
@@ -1147,7 +1126,7 @@ function mostrarChat(c){
 
 
 /* =====================================================
-   MENSAJES
+   MOSTRAR MENSAJE
 ===================================================== */
 
 function mostrarMensaje(
@@ -1159,6 +1138,7 @@ function mostrarMensaje(
         document.createElement(
             "div"
         );
+
 
     row.className =
         "message-row " +
@@ -1174,11 +1154,14 @@ function mostrarMensaje(
                 "div"
             );
 
+
         avatar.className =
             "avatar";
 
+
         avatar.textContent =
             "IA";
+
 
         row.appendChild(
             avatar
@@ -1192,20 +1175,25 @@ function mostrarMensaje(
             "div"
         );
 
+
     bubble.className =
         "message " +
         quien;
 
+
     bubble.textContent =
         texto;
+
 
     row.appendChild(
         bubble
     );
 
+
     chatInner.appendChild(
         row
     );
+
 
     requestAnimationFrame(
         () => {
@@ -1215,6 +1203,7 @@ function mostrarMensaje(
 
         }
     );
+
 
     return bubble;
 
@@ -1227,7 +1216,8 @@ function mostrarMensaje(
 
 function renderHistorial(){
 
-    history.innerHTML = "";
+    history.innerHTML =
+        "";
 
 
     conversaciones.forEach(
@@ -1237,6 +1227,7 @@ function renderHistorial(){
                 document.createElement(
                     "div"
                 );
+
 
             item.className =
                 "chat-item" +
@@ -1252,8 +1243,10 @@ function renderHistorial(){
                     "span"
                 );
 
+
             title.className =
                 "chat-title";
+
 
             title.textContent =
                 c.title;
@@ -1264,14 +1257,13 @@ function renderHistorial(){
                     "span"
                 );
 
+
             borrar.className =
                 "delete-chat";
 
+
             borrar.textContent =
                 "×";
-
-            borrar.title =
-                "Eliminar";
 
 
             borrar.onclick =
@@ -1289,6 +1281,7 @@ function renderHistorial(){
             item.appendChild(
                 title
             );
+
 
             item.appendChild(
                 borrar
@@ -1327,11 +1320,14 @@ function abrirChat(id){
                 x.id === id
         );
 
+
     if(!c)
         return;
 
+
     chatActual =
         id;
+
 
     mostrarChat(c);
 
@@ -1366,17 +1362,20 @@ function borrarChat(id){
             chatActual =
                 conversaciones[0].id;
 
+
             mostrarChat(
                 conversaciones[0]
             );
 
-        }else{
+        }
+        else{
 
             nuevoChat();
 
         }
 
     }
+
 
     guardar();
 
@@ -1399,9 +1398,7 @@ async function enviar(){
         return;
 
 
-    /* ---------------------------------------------
-       PREMIUM
-    --------------------------------------------- */
+    /* PREMIUM */
 
     if(
         comprobarCodigo(texto)
@@ -1409,7 +1406,8 @@ async function enviar(){
 
         activarPremium();
 
-        input.value = "";
+        input.value =
+            "";
 
         ajustarInput();
 
@@ -1423,9 +1421,7 @@ async function enviar(){
     }
 
 
-    /* ---------------------------------------------
-       LÍMITE
-    --------------------------------------------- */
+    /* LÍMITE */
 
     if(
         !puedePreguntar()
@@ -1443,9 +1439,7 @@ El contador se reinicia automáticamente mañana.`,
     }
 
 
-    /* ---------------------------------------------
-       CHAT
-    --------------------------------------------- */
+    /* CREAR CHAT */
 
     if(!chatActual){
 
@@ -1478,15 +1472,18 @@ El contador se reinicia automáticamente mañana.`,
 
 
     if(
-        c.title === "Nuevo chat"
+        c.title ===
+        "Nuevo chat"
     ){
 
         c.title =
             texto.length > 45
+
             ? texto.substring(
                 0,
                 45
               ) + "..."
+
             : texto;
 
     }
@@ -1502,7 +1499,9 @@ El contador se reinicia automáticamente mañana.`,
     );
 
 
-    input.value = "";
+    input.value =
+        "";
+
 
     ajustarInput();
 
@@ -1513,6 +1512,7 @@ El contador se reinicia automáticamente mañana.`,
             "ai"
         );
 
+
     pensando.classList.add(
         "thinking"
     );
@@ -1522,7 +1522,8 @@ El contador se reinicia automáticamente mañana.`,
 
         const response =
             await fetch(
-                API_URL + "/chat",
+                API_URL +
+                "/chat",
                 {
 
                     method:
@@ -1548,18 +1549,20 @@ El contador se reinicia automáticamente mañana.`,
             );
 
 
-        let data = null;
+        let data;
+
 
         try{
 
             data =
                 await response.json();
 
-        }catch{
+        }
+        catch{
 
             data = {
                 error:
-                    "El servidor devolvió una respuesta inválida."
+                    "El servidor no devolvió JSON."
             };
 
         }
@@ -1594,6 +1597,7 @@ El contador se reinicia automáticamente mañana.`,
             "thinking"
         );
 
+
         pensando.textContent =
             respuesta;
 
@@ -1626,6 +1630,7 @@ El contador se reinicia automáticamente mañana.`,
             "thinking"
         );
 
+
         pensando.textContent =
 `No pude conectarme con Inda AI.
 
@@ -1636,6 +1641,7 @@ ${error.message}`;
 
     send.disabled =
         false;
+
 
     input.focus();
 
@@ -1651,12 +1657,13 @@ function ajustarInput(){
     input.style.height =
         "auto";
 
+
     input.style.height =
         Math.min(
             input.scrollHeight,
             window.innerWidth <= 700
-            ? 120
-            : 180
+                ? 120
+                : 180
         ) + "px";
 
 }
@@ -1715,10 +1722,10 @@ function mostrarMenuMovil(){
     }
 
 
-    const opciones =
+    const lista =
         conversaciones
             .map(
-                (c, index) =>
+                (c,index) =>
                     (index + 1) +
                     ". " +
                     c.title
@@ -1726,29 +1733,31 @@ function mostrarMenuMovil(){
             .join("\n");
 
 
-    const resultado =
+    const seleccion =
         prompt(
-            "Escribí el número de la conversación:\n\n"
-            + opciones
+            "Conversaciones\n\n" +
+            lista +
+            "\n\nEscribí el número:"
         );
 
 
-    if(!resultado)
+    if(!seleccion)
         return;
 
 
-    const indice =
-        Number(resultado) - 1;
+    const numero =
+        Number(seleccion) -
+        1;
 
 
     if(
-        Number.isInteger(indice) &&
-        indice >= 0 &&
-        indice < conversaciones.length
+        Number.isInteger(numero) &&
+        numero >= 0 &&
+        numero < conversaciones.length
     ){
 
         abrirChat(
-            conversaciones[indice].id
+            conversaciones[numero].id
         );
 
     }
@@ -1766,10 +1775,8 @@ async function actualizarEstado(){
 
         const response =
             await fetch(
-                API_URL + "/health",
-                {
-                    method:"GET"
-                }
+                API_URL +
+                "/health"
             );
 
 
@@ -1785,15 +1792,16 @@ async function actualizarEstado(){
         estado.textContent =
             "Inda AI conectada";
 
+
         dot.style.background =
             "#76c893";
-
 
     }
     catch{
 
         estado.textContent =
             "Servidor desconectado";
+
 
         dot.style.background =
             "#c86b6b";
@@ -1816,6 +1824,7 @@ if(
 
     chatActual =
         conversaciones[0].id;
+
 
     mostrarChat(
         conversaciones[0]
@@ -1840,10 +1849,6 @@ setInterval(
 );
 
 
-/* =====================================================
-   CAMBIOS DE TAMAÑO
-===================================================== */
-
 window.addEventListener(
     "resize",
     ajustarInput
@@ -1853,3 +1858,4 @@ window.addEventListener(
 
 </body>
 </html>
+```
