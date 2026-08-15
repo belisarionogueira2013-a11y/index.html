@@ -1,21 +1,31 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
-<title>Inda AI</title>
+<title>Inda AI - Inteligencia Artificial</title>
 
-<meta name="description"
-      content="Inda AI - Asistente de inteligencia artificial.">
+<meta
+    name="description"
+    content="Inda AI - Asistente de inteligencia artificial con generación de imágenes."
+>
 
-<meta name="robots"
-      content="index, follow">
+<meta
+    name="robots"
+    content="index, follow"
+>
 
-<meta name="theme-color"
-      content="#0d0d0d">
+<meta
+    name="theme-color"
+    content="#0d0d0d"
+>
 
 <style>
 
@@ -28,9 +38,8 @@
 
 :root{
     --bg:#0d0d0d;
-    --sidebar:#111;
+    --sidebar:#111111;
     --panel:#171717;
-    --panel2:#1d1d1d;
     --hover:#242424;
     --border:#2b2b2b;
     --text:#f5f5f5;
@@ -60,6 +69,10 @@ textarea{
 
 button{
     cursor:pointer;
+}
+
+.hidden{
+    display:none !important;
 }
 
 
@@ -148,6 +161,10 @@ button{
     outline:none;
 }
 
+.field input:focus{
+    border-color:#555;
+}
+
 .auth-submit{
     width:100%;
     height:44px;
@@ -164,10 +181,6 @@ button{
     color:#888;
     text-align:center;
     font-size:12px;
-}
-
-.hidden{
-    display:none !important;
 }
 
 
@@ -217,7 +230,12 @@ button{
     border:1px solid #333;
     border-radius:10px;
     background:#191919;
-    color:white;
+    color:#fff;
+    font-size:14px;
+}
+
+.new-chat:hover{
+    background:#252525;
 }
 
 .plan{
@@ -296,6 +314,7 @@ button{
 .delete-chat{
     color:#777;
     opacity:0;
+    cursor:pointer;
 }
 
 .chat-item:hover .delete-chat{
@@ -394,7 +413,7 @@ header{
 .chat{
     flex:1;
     overflow-y:auto;
-    padding:30px 20px 150px;
+    padding:30px 20px 155px;
 }
 
 .chat-inner{
@@ -454,6 +473,30 @@ header{
     opacity:.5;
 }
 
+.generated-image-wrap{
+    max-width:min(700px,100%);
+}
+
+.generated-image{
+    display:block;
+    width:100%;
+    max-width:700px;
+    border-radius:16px;
+    border:1px solid #303030;
+    background:#171717;
+}
+
+.image-caption{
+    margin-top:6px;
+    color:#666;
+    font-size:10px;
+}
+
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
 .welcome{
     min-height:65vh;
     display:flex;
@@ -473,7 +516,7 @@ header{
     align-items:center;
     justify-content:center;
     font-size:17px;
-    font-weight:bold;
+    font-weight:700;
     margin-bottom:18px;
 }
 
@@ -497,6 +540,10 @@ header{
     right:0;
     bottom:0;
     padding:20px;
+    padding-bottom:max(
+        20px,
+        env(safe-area-inset-bottom)
+    );
     background:linear-gradient(
         transparent,
         var(--bg) 30%
@@ -509,10 +556,15 @@ header{
     margin:auto;
     display:flex;
     align-items:flex-end;
+    gap:7px;
     background:#1b1b1b;
     border:1px solid #303030;
     border-radius:17px;
     padding:8px;
+}
+
+.input-box:focus-within{
+    border-color:#444;
 }
 
 #prompt{
@@ -526,6 +578,26 @@ header{
     color:#fff;
     padding:11px 12px;
     font-size:15px;
+    line-height:1.4;
+}
+
+#prompt::placeholder{
+    color:#777;
+}
+
+.image-button{
+    height:40px;
+    min-width:72px;
+    padding:0 12px;
+    border:1px solid #3a3a3a;
+    border-radius:11px;
+    background:#292929;
+    color:#ddd;
+    font-size:12px;
+}
+
+.image-button:hover{
+    background:#333;
 }
 
 .send{
@@ -536,6 +608,13 @@ header{
     background:#fff;
     color:#111;
     font-size:19px;
+    flex-shrink:0;
+}
+
+.send:disabled,
+.image-button:disabled{
+    opacity:.4;
+    cursor:default;
 }
 
 .info{
@@ -548,7 +627,7 @@ header{
 
 
 /* =====================================================
-   SETTINGS / CEO
+   MODAL
 ===================================================== */
 
 .modal{
@@ -567,7 +646,7 @@ header{
 }
 
 .modal-card{
-    width:min(900px,100%);
+    width:min(920px,100%);
     max-height:90vh;
     overflow:auto;
     background:#151515;
@@ -597,11 +676,64 @@ header{
     font-size:18px;
 }
 
+.setting{
+    margin-bottom:18px;
+}
+
+.setting label{
+    display:block;
+    margin-bottom:7px;
+    color:#aaa;
+    font-size:13px;
+}
+
+.setting select{
+    width:100%;
+    height:42px;
+    border:1px solid #333;
+    border-radius:10px;
+    background:#1d1d1d;
+    color:#fff;
+    padding:0 10px;
+}
+
+.setting-box{
+    border:1px solid #2b2b2b;
+    border-radius:10px;
+    padding:12px;
+    background:#1b1b1b;
+}
+
+.setting-main{
+    font-weight:600;
+    font-size:13px;
+}
+
+.setting-description{
+    margin-top:5px;
+    color:#777;
+    font-size:11px;
+}
+
+
+/* =====================================================
+   CEO
+===================================================== */
+
+.ceo-section{
+    display:none;
+    margin-top:20px;
+}
+
+.ceo-section.open{
+    display:block;
+}
+
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:12px;
-    margin-bottom:22px;
+    margin-bottom:20px;
 }
 
 .stat{
@@ -631,7 +763,7 @@ header{
 .user-row{
     display:grid;
     grid-template-columns:1.5fr .8fr .8fr auto;
-    gap:12px;
+    gap:10px;
     align-items:center;
     background:#1b1b1b;
     border:1px solid #292929;
@@ -640,18 +772,13 @@ header{
 }
 
 .user-name{
+    font-size:13px;
     font-weight:600;
 }
 
 .user-meta{
     color:#888;
-    font-size:12px;
-}
-
-.role-badge,
-.plan-badge{
     font-size:11px;
-    color:#bbb;
 }
 
 .admin-button{
@@ -660,10 +787,6 @@ header{
     color:#ddd;
     border-radius:8px;
     padding:8px 10px;
-}
-
-.admin-button:hover{
-    background:#2c2c2c;
 }
 
 .privacy-note{
@@ -733,30 +856,35 @@ header{
     .input-area{
         left:0;
         right:0;
-        padding:8px 10px;
+        padding:
+            8px
+            10px
+            max(8px,env(safe-area-inset-bottom));
     }
 
     .input-box{
         min-height:47px;
+        border-radius:15px;
         padding:5px;
     }
 
     #prompt{
         min-height:35px;
         max-height:120px;
+        padding:9px 10px;
+    }
+
+    .image-button{
+        min-width:57px;
+        height:35px;
+        padding:0 8px;
+        font-size:10px;
     }
 
     .send{
         width:35px;
         height:35px;
-    }
-
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .user-row{
-        grid-template-columns:1fr;
+        font-size:17px;
     }
 
     .modal{
@@ -769,6 +897,15 @@ header{
         max-height:90dvh;
         border-radius:18px 18px 0 0;
     }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .user-row{
+        grid-template-columns:1fr;
+    }
+
 }
 
 </style>
@@ -778,7 +915,7 @@ header{
 
 
 <!-- =====================================================
-     LOGIN
+     LOGIN / REGISTRO
 ===================================================== -->
 
 <div
@@ -802,14 +939,16 @@ header{
         <button
             id="loginTab"
             class="auth-tab active"
-            onclick="mostrarFormulario('login')">
+            onclick="mostrarFormulario('login')"
+        >
             Iniciar sesión
         </button>
 
         <button
             id="registerTab"
             class="auth-tab"
-            onclick="mostrarFormulario('register')">
+            onclick="mostrarFormulario('register')"
+        >
             Crear cuenta
         </button>
 
@@ -836,6 +975,7 @@ header{
 
         </div>
 
+
         <div class="field">
 
             <label>
@@ -851,9 +991,10 @@ header{
 
         </div>
 
+
         <button
-            type="submit"
             class="auth-submit"
+            type="submit"
         >
             Entrar
         </button>
@@ -882,6 +1023,7 @@ header{
 
         </div>
 
+
         <div class="field">
 
             <label>
@@ -897,9 +1039,10 @@ header{
 
         </div>
 
+
         <button
-            type="submit"
             class="auth-submit"
+            type="submit"
         >
             Crear cuenta
         </button>
@@ -935,11 +1078,14 @@ header{
         Inda AI
     </div>
 
+
     <button
         class="new-chat"
-        onclick="nuevoChat()">
+        onclick="nuevoChat()"
+    >
         + Nuevo chat
     </button>
+
 
     <div class="plan">
 
@@ -949,44 +1095,52 @@ header{
 
         <div
             id="planValue"
-            class="plan-value">
+            class="plan-value"
+        >
             Normal
         </div>
 
         <div
             id="counter"
-            class="counter">
+            class="counter"
+        >
             50 preguntas disponibles
         </div>
 
         <div
             id="roleValue"
-            class="role-value">
+            class="role-value"
+        >
             Usuario
         </div>
 
     </div>
+
 
     <div class="sidebar-title">
         Conversaciones
     </div>
 
+
     <div
         id="history"
-        class="history">
-    </div>
+        class="history"
+    ></div>
+
 
     <div class="sidebar-footer">
 
         <div
             id="sidebarUser"
-            class="account-name">
+            class="account-name"
+        >
             Usuario
         </div>
 
         <button
             class="logout-button"
-            onclick="cerrarSesion()">
+            onclick="cerrarSesion()"
+        >
             Cerrar sesión
         </button>
 
@@ -1001,13 +1155,17 @@ header{
 
     <button
         class="mobile-menu"
-        onclick="mostrarMenuMovil()">
+        onclick="mostrarMenuMovil()"
+        aria-label="Abrir menú"
+    >
         ☰
     </button>
+
 
     <div class="title">
         Inda AI
     </div>
+
 
     <div class="header-actions">
 
@@ -1015,8 +1173,8 @@ header{
 
             <div
                 id="dot"
-                class="dot">
-            </div>
+                class="dot"
+            ></div>
 
             <span id="estado">
                 Comprobando...
@@ -1024,9 +1182,12 @@ header{
 
         </div>
 
+
         <button
             class="settings-button"
-            onclick="abrirConfiguracion()">
+            onclick="abrirConfiguracion()"
+            aria-label="Configuración"
+        >
             ⚙
         </button>
 
@@ -1042,8 +1203,8 @@ header{
 
     <div
         id="chatInner"
-        class="chat-inner">
-    </div>
+        class="chat-inner"
+    ></div>
 
 </section>
 
@@ -1056,23 +1217,37 @@ header{
             id="prompt"
             rows="1"
             placeholder="Preguntale algo a Inda AI..."
-            autocomplete="off">
-        </textarea>
+            autocomplete="off"
+            spellcheck="true"
+        ></textarea>
+
+
+        <button
+            id="imageButton"
+            class="image-button"
+            onclick="generarImagen()"
+        >
+            Imagen
+        </button>
+
 
         <button
             id="send"
             class="send"
-            onclick="enviar()">
+            onclick="enviar()"
+        >
             ↑
         </button>
 
     </div>
+
 
     <div class="info">
         Inda AI puede equivocarse. Revisá la información importante.
     </div>
 
 </div>
+
 
 </main>
 
@@ -1104,7 +1279,8 @@ header{
 
         <button
             class="close"
-            onclick="cerrarConfiguracion()">
+            onclick="cerrarConfiguracion()"
+        >
             ×
         </button>
 
@@ -1117,9 +1293,11 @@ header{
             Idioma de respuesta
         </label>
 
+
         <select
             id="languageSelect"
-            onchange="cambiarIdioma()">
+            onchange="cambiarIdioma()"
+        >
 
             <option value="auto">
                 Automático
@@ -1144,18 +1322,26 @@ header{
 
     <div class="setting">
 
+        <label>
+            Plan
+        </label>
+
         <div class="setting-box">
+
             <div
                 id="settingsPlan"
-                class="setting-main">
+                class="setting-main"
+            >
                 Normal
             </div>
 
             <div
                 id="settingsPlanDescription"
-                class="setting-description">
-                Respuestas más simples y cortas.
+                class="setting-description"
+            >
+                Respuestas simples y cortas.
             </div>
+
         </div>
 
     </div>
@@ -1163,13 +1349,15 @@ header{
 
     <div
         id="ceoSection"
-        class="hidden"
+        class="ceo-section"
     >
 
         <div class="modal-header">
+
             <h2>
                 Panel CEO
             </h2>
+
         </div>
 
 
@@ -1183,11 +1371,13 @@ header{
 
                 <div
                     id="statUsers"
-                    class="stat-value">
+                    class="stat-value"
+                >
                     0
                 </div>
 
             </div>
+
 
             <div class="stat">
 
@@ -1197,11 +1387,13 @@ header{
 
                 <div
                     id="statPremium"
-                    class="stat-value">
+                    class="stat-value"
+                >
                     0
                 </div>
 
             </div>
+
 
             <div class="stat">
 
@@ -1211,7 +1403,8 @@ header{
 
                 <div
                     id="statChats"
-                    class="stat-value">
+                    class="stat-value"
+                >
                     0
                 </div>
 
@@ -1222,14 +1415,13 @@ header{
 
         <div
             id="userList"
-            class="user-list">
-        </div>
+            class="user-list"
+        ></div>
 
 
         <div class="privacy-note">
-            El panel administrativo muestra usuarios,
-            roles, planes y estadísticas. No muestra
-            el contenido de conversaciones privadas.
+            El panel muestra usuarios, planes, roles y estadísticas.
+            No muestra el contenido de conversaciones privadas.
         </div>
 
     </div>
@@ -1249,10 +1441,10 @@ const API_URL =
     "https://inda-ai-api2-0.belisarionogueira2013.workers.dev";
 
 const USERS_KEY =
-    "inda_users_demo_ceo";
+    "inda_users_final_v2";
 
 const SESSION_KEY =
-    "inda_session_demo_ceo";
+    "inda_session_final_v2";
 
 const LIMITE_DIARIO =
     50;
@@ -1285,6 +1477,9 @@ const input =
 
 const send =
     document.getElementById("send");
+
+const imageButton =
+    document.getElementById("imageButton");
 
 const estado =
     document.getElementById("estado");
@@ -1335,17 +1530,14 @@ const statChats =
 
 
 /* =====================================================
-   CUENTA ACTUAL
+   ESTADO
 ===================================================== */
 
-let usuarioActual =
-    null;
+let usuarioActual = null;
 
-let conversaciones =
-    [];
+let conversaciones = [];
 
-let chatActual =
-    null;
+let chatActual = null;
 
 
 /* =====================================================
@@ -1381,7 +1573,7 @@ function saveUsers(users){
 
 
 /* =====================================================
-   REGISTRO
+   LOGIN / REGISTRO
 ===================================================== */
 
 function mostrarFormulario(tipo){
@@ -1407,28 +1599,30 @@ function mostrarFormulario(tipo){
         );
 
 
-    if(
-        tipo === "login"
-    ){
+    if(tipo === "login"){
 
         loginForm.classList.add("active");
+
         registerForm.classList.remove("active");
 
         loginTab.classList.add("active");
+
         registerTab.classList.remove("active");
 
     }else{
 
         loginForm.classList.remove("active");
+
         registerForm.classList.add("active");
 
         loginTab.classList.remove("active");
+
         registerTab.classList.add("active");
 
     }
 
-    authMessage.textContent =
-        "";
+
+    authMessage.textContent = "";
 
 }
 
@@ -1439,15 +1633,20 @@ function crearCuenta(event){
 
 
     const username =
-        document.getElementById(
-            "registerUser"
-        ).value.trim();
+        document
+            .getElementById(
+                "registerUser"
+            )
+            .value
+            .trim();
 
 
     const password =
-        document.getElementById(
-            "registerPassword"
-        ).value;
+        document
+            .getElementById(
+                "registerPassword"
+            )
+            .value;
 
 
     if(
@@ -1480,6 +1679,7 @@ function crearCuenta(event){
     const users =
         getUsers();
 
+
     const key =
         username.toLowerCase();
 
@@ -1507,28 +1707,24 @@ function crearCuenta(event){
     };
 
 
-    saveUsers(
-        users
-    );
+    saveUsers(users);
+
+
+    document
+        .getElementById(
+            "registerForm"
+        )
+        .reset();
+
+
+    mostrarFormulario("login");
 
 
     authMessage.textContent =
         "Cuenta creada correctamente.";
 
-    document.getElementById(
-        "registerForm"
-    ).reset();
-
-    mostrarFormulario(
-        "login"
-    );
-
 }
 
-
-/* =====================================================
-   LOGIN
-===================================================== */
 
 function iniciarSesion(event){
 
@@ -1536,19 +1732,26 @@ function iniciarSesion(event){
 
 
     const username =
-        document.getElementById(
-            "loginUser"
-        ).value.trim();
+        document
+            .getElementById(
+                "loginUser"
+            )
+            .value
+            .trim();
 
 
     const password =
-        document.getElementById(
-            "loginPassword"
-        ).value;
+        document
+            .getElementById(
+                "loginPassword"
+            )
+            .value;
 
 
     /*
-      Cuenta especial demo
+      Cuenta especial de prueba.
+      En producción no conviene guardar
+      credenciales directamente en el HTML.
     */
 
     if(
@@ -1563,17 +1766,13 @@ function iniciarSesion(event){
 
         usuarioActual = {
 
-            username:
-                "beligmail",
+            username:"beligmail",
 
-            plan:
-                "Premium",
+            plan:"Premium",
 
-            premium:
-                true,
+            premium:true,
 
-            role:
-                "CEO"
+            role:"CEO"
 
         };
 
@@ -1617,10 +1816,19 @@ function iniciarSesion(event){
 
 
     usuarioActual = {
-        username:user.username,
-        plan:user.plan || "Normal",
-        premium:user.premium === true,
-        role:user.role || "Usuario"
+
+        username:
+            user.username,
+
+        plan:
+            user.plan || "Normal",
+
+        premium:
+            user.premium === true,
+
+        role:
+            user.role || "Usuario"
+
     };
 
 
@@ -1637,6 +1845,36 @@ function iniciarSesion(event){
 }
 
 
+function cerrarSesion(){
+
+    localStorage.removeItem(
+        SESSION_KEY
+    );
+
+
+    usuarioActual = null;
+
+    conversaciones = [];
+
+    chatActual = null;
+
+
+    app.style.display = "none";
+
+    authScreen.classList.remove(
+        "hidden"
+    );
+
+
+    document
+        .getElementById(
+            "loginForm"
+        )
+        .reset();
+
+}
+
+
 /* =====================================================
    APP
 ===================================================== */
@@ -1647,6 +1885,7 @@ function mostrarAplicacion(){
         "hidden"
     );
 
+
     app.style.display =
         "block";
 
@@ -1655,12 +1894,7 @@ function mostrarAplicacion(){
         usuarioActual.username;
 
 
-    roleValue.textContent =
-        usuarioActual.role;
-
-
     actualizarPlan();
-
 
     cargarIdioma();
 
@@ -1673,16 +1907,16 @@ function mostrarAplicacion(){
         usuarioActual.role === "CEO"
     ){
 
-        ceoSection.classList.remove(
-            "hidden"
+        ceoSection.classList.add(
+            "open"
         );
 
         renderCEO();
 
     }else{
 
-        ceoSection.classList.add(
-            "hidden"
+        ceoSection.classList.remove(
+            "open"
         );
 
     }
@@ -1690,101 +1924,64 @@ function mostrarAplicacion(){
 }
 
 
-function cerrarSesion(){
-
-    localStorage.removeItem(
-        SESSION_KEY
-    );
-
-    usuarioActual =
-        null;
-
-    app.style.display =
-        "none";
-
-    authScreen.classList.remove(
-        "hidden"
-    );
-
-    document.getElementById(
-        "loginForm"
-    ).reset();
-
-}
-
-
 /* =====================================================
-   PLAN
+   PREMIUM
 ===================================================== */
 
-function activarPremiumUsuario(username){
+function obtenerCodigoPremium(){
 
-    const users =
-        getUsers();
-
-    const key =
-        username.toLowerCase();
-
-
-    if(!users[key])
-        return;
-
-
-    users[key].premium =
-        true;
-
-    users[key].plan =
-        "Premium";
-
-
-    saveUsers(
-        users
+    return String.fromCharCode(
+        105,110,100,97,
+        98,101,108,105,
+        50,50
     );
-
-
-    renderCEO();
 
 }
 
 
-function desactivarPremiumUsuario(username){
+function comprobarCodigoPremium(texto){
 
-    const users =
-        getUsers();
+    return (
+        texto
+            .trim()
+            .toLowerCase()
+        ===
+        obtenerCodigoPremium()
+    );
 
-    const key =
-        username.toLowerCase();
-
-
-    if(!users[key])
-        return;
-
-
-    users[key].premium =
-        false;
-
-    users[key].plan =
-        "Normal";
+}
 
 
-    saveUsers(
-        users
+function activarPremiumLocal(){
+
+    usuarioActual.premium = true;
+
+    usuarioActual.plan = "Premium";
+
+
+    localStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify(
+            usuarioActual
+        )
     );
 
 
-    renderCEO();
+    actualizarPlan();
 
 }
 
 
 /* =====================================================
-   PANEL CEO
+   CEO
 ===================================================== */
 
 function renderCEO(){
 
     if(
-        usuarioActual?.role !== "CEO"
+        usuarioActual?.role
+        !==
+        "CEO"
     ){
         return;
     }
@@ -1794,30 +1991,24 @@ function renderCEO(){
         getUsers();
 
 
-    const userKeys =
+    const keys =
         Object.keys(users);
 
 
-    let premiumCount =
-        0;
+    let premiumCount = 0;
 
-    let totalChats =
-        0;
+    let totalChats = 0;
 
 
-    userKeys.forEach(
+    keys.forEach(
         key => {
 
             const user =
                 users[key];
 
 
-            if(
-                user.premium === true
-            ){
-
+            if(user.premium){
                 premiumCount++;
-
             }
 
 
@@ -1835,8 +2026,7 @@ function renderCEO(){
                     );
 
 
-                totalChats +=
-                    chats.length;
+                totalChats += chats.length;
 
             }catch{}
 
@@ -1845,38 +2035,20 @@ function renderCEO(){
 
 
     statUsers.textContent =
-        String(
-            userKeys.length
-        );
+        String(keys.length);
 
     statPremium.textContent =
-        String(
-            premiumCount
-        );
+        String(premiumCount);
 
     statChats.textContent =
-        String(
-            totalChats
-        );
+        String(totalChats);
 
 
     userList.innerHTML =
         "";
 
 
-    if(
-        userKeys.length === 0
-    ){
-
-        userList.innerHTML =
-            "<div class='user-meta'>No hay usuarios normales registrados.</div>";
-
-        return;
-
-    }
-
-
-    userKeys.forEach(
+    keys.forEach(
         key => {
 
             const user =
@@ -1914,7 +2086,7 @@ function renderCEO(){
 
 
             plan.className =
-                "plan-badge";
+                "user-meta";
 
 
             plan.textContent =
@@ -1929,7 +2101,7 @@ function renderCEO(){
 
 
             role.className =
-                "role-badge";
+                "user-meta";
 
 
             role.textContent =
@@ -1954,47 +2126,53 @@ function renderCEO(){
 
 
             button.onclick =
-                function(){
+                () => {
 
-                    if(
-                        user.premium
-                    ){
+                    const usersNow =
+                        getUsers();
 
-                        desactivarPremiumUsuario(
+
+                    const target =
+                        usersNow[
                             user.username
-                        );
+                                .toLowerCase()
+                        ];
 
-                    }else{
 
-                        activarPremiumUsuario(
-                            user.username
-                        );
+                    if(!target)
+                        return;
 
-                    }
+
+                    target.premium =
+                        !target.premium;
+
+
+                    target.plan =
+                        target.premium
+                            ? "Premium"
+                            : "Normal";
+
+
+                    saveUsers(
+                        usersNow
+                    );
+
+
+                    renderCEO();
 
                 };
 
 
-            row.appendChild(
-                name
-            );
+            row.appendChild(name);
 
-            row.appendChild(
-                plan
-            );
+            row.appendChild(plan);
 
-            row.appendChild(
-                role
-            );
+            row.appendChild(role);
 
-            row.appendChild(
-                button
-            );
+            row.appendChild(button);
 
 
-            userList.appendChild(
-                row
-            );
+            userList.appendChild(row);
 
         }
     );
@@ -2015,9 +2193,9 @@ function cargarIdioma(){
 
 
     languageSelect.value =
-        localStorage.getItem(
-            key
-        ) || "auto";
+        localStorage.getItem(key)
+        ||
+        "auto";
 
 }
 
@@ -2037,71 +2215,87 @@ function cambiarIdioma(){
 function instruccionIdioma(){
 
     if(
-        languageSelect.value
-        ===
-        "en"
+        languageSelect.value === "es"
     ){
 
-        return "Answer in English.";
+        return `
+Respondé exclusivamente en español.
+`;
 
     }
 
 
     if(
-        languageSelect.value
-        ===
-        "fr"
+        languageSelect.value === "en"
     ){
 
-        return "Réponds en français.";
+        return `
+Answer exclusively in English.
+`;
 
     }
 
 
     if(
-        languageSelect.value
-        ===
-        "es"
+        languageSelect.value === "fr"
     ){
 
-        return "Respondé en español.";
+        return `
+Réponds exclusivement en français.
+`;
 
     }
 
 
     return `
 Respondé principalmente en el idioma
-que use el usuario.
+que utilice el usuario.
 `;
 
 }
 
 
 /* =====================================================
-   SISTEMA IA
+   SISTEMA
 ===================================================== */
 
 function obtenerSistema(){
 
     const nivel =
-        usuarioActual.premium
+        usuarioActual?.premium
 
         ? `
+
+MODO PREMIUM:
+
 El usuario tiene Premium.
 
-Respondé con más detalle,
-mejor explicación y ejemplos
-cuando sirvan.
+Respondé con más detalle.
+
+Explicá mejor los temas difíciles.
+
+Podés dar ejemplos cuando sean útiles.
+
+No hace falta que seas extremadamente corto.
+
+Intentá dar respuestas de mayor calidad.
+
 `
 
         : `
-El usuario tiene plan Normal.
+
+MODO NORMAL:
+
+El usuario no tiene Premium.
 
 Respondé de forma breve,
 simple y directa.
 
-No seas demasiado largo
-a menos que te lo pidan.
+No hagas respuestas largas
+a menos que el usuario lo pida.
+
+Explicá primero lo esencial.
+
 `;
 
 
@@ -2112,30 +2306,37 @@ Tu nombre es Inda AI.
 Hablás de forma natural y juvenil,
 como un chico de 13 años.
 
+Sos relajado, claro y directo.
+
 No sos demasiado formal.
 
 No exagerás las expresiones juveniles.
 
-No repetís constantemente "tipo",
-"re", "literal" u "o sea".
+No repetís constantemente:
+"tipo", "re", "literal", "o sea".
 
-Respondés directamente.
+Si te hacen una pregunta,
+respondela.
 
-Si te hacen una pregunta, contestala.
+Si te dan una tarea,
+hacela.
 
-Si te dan una tarea, hacela.
+Si te dan un ejercicio,
+resolvelo.
 
 No inventes información.
 
-Si no sabés algo, decilo.
+Si no sabés algo,
+decilo.
+
+INFORMACIÓN DEL CREADOR:
 
 Si preguntan quién creó Inda AI,
 respondé:
 
 "Mi creador es Beli."
 
-No menciones a Beli si no preguntan
-por el creador.
+No menciones esto si no preguntan.
 
 ${nivel}
 
@@ -2187,6 +2388,7 @@ function cargarChats(){
 
         chatActual =
             conversaciones[0].id;
+
 
         mostrarChat(
             conversaciones[0]
@@ -2291,7 +2493,6 @@ function mostrarChat(c){
 
 
         welcome.innerHTML = `
-
             <div class="welcome-logo">
                 IA
             </div>
@@ -2303,7 +2504,6 @@ function mostrarChat(c){
             <p>
                 Preguntame lo que quieras.
             </p>
-
         `;
 
 
@@ -2320,12 +2520,25 @@ function mostrarChat(c){
     c.messages.forEach(
         message => {
 
-            mostrarMensaje(
-                message.content,
-                message.role === "user"
-                    ? "user"
-                    : "ai"
-            );
+            if(
+                message.type === "image"
+            ){
+
+                mostrarImagen(
+                    message.src,
+                    message.prompt
+                );
+
+            }else{
+
+                mostrarMensaje(
+                    message.content,
+                    message.role === "user"
+                        ? "user"
+                        : "ai"
+                );
+
+            }
 
         }
     );
@@ -2419,6 +2632,111 @@ function mostrarMensaje(
 
 
 /* =====================================================
+   MOSTRAR IMAGEN
+===================================================== */
+
+function mostrarImagen(
+    src,
+    promptText
+){
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+
+    row.className =
+        "message-row ai";
+
+
+    const avatar =
+        document.createElement(
+            "div"
+        );
+
+
+    avatar.className =
+        "avatar";
+
+
+    avatar.textContent =
+        "IA";
+
+
+    row.appendChild(
+        avatar
+    );
+
+
+    const wrap =
+        document.createElement(
+            "div"
+        );
+
+
+    wrap.className =
+        "generated-image-wrap";
+
+
+    const img =
+        document.createElement(
+            "img"
+        );
+
+
+    img.className =
+        "generated-image";
+
+
+    img.src =
+        src;
+
+
+    img.alt =
+        promptText
+        ||
+        "Imagen generada por Inda AI";
+
+
+    img.loading =
+        "lazy";
+
+
+    const caption =
+        document.createElement(
+            "div"
+        );
+
+
+    caption.className =
+        "image-caption";
+
+
+    caption.textContent =
+        "Imagen generada por Inda AI";
+
+
+    wrap.appendChild(img);
+
+    wrap.appendChild(caption);
+
+    row.appendChild(wrap);
+
+    chatInner.appendChild(row);
+
+
+    requestAnimationFrame(
+        () => {
+            chat.scrollTop =
+                chat.scrollHeight;
+        }
+    );
+
+}
+
+
+/* =====================================================
    HISTORIAL
 ===================================================== */
 
@@ -2441,9 +2759,7 @@ function renderHistorial(){
                 "chat-item"
                 +
                 (
-                    conversation.id
-                    ===
-                    chatActual
+                    conversation.id === chatActual
                         ? " active"
                         : ""
                 );
@@ -2478,9 +2794,10 @@ function renderHistorial(){
 
 
             borrar.onclick =
-                function(event){
+                event => {
 
                     event.stopPropagation();
+
 
                     borrarChat(
                         conversation.id
@@ -2489,28 +2806,20 @@ function renderHistorial(){
                 };
 
 
-            item.appendChild(
-                title
-            );
+            item.appendChild(title);
 
-            item.appendChild(
-                borrar
-            );
+            item.appendChild(borrar);
 
 
             item.onclick =
-                function(){
-
+                () => {
                     abrirChat(
                         conversation.id
                     );
-
                 };
 
 
-            history.appendChild(
-                item
-            );
+            history.appendChild(item);
 
         }
     );
@@ -2520,14 +2829,14 @@ function renderHistorial(){
 
 function abrirChat(id){
 
-    const c =
+    const conversation =
         conversaciones.find(
-            x =>
-                x.id === id
+            c =>
+                c.id === id
         );
 
 
-    if(!c)
+    if(!conversation)
         return;
 
 
@@ -2535,13 +2844,9 @@ function abrirChat(id){
         id;
 
 
-    mostrarChat(
-        c
-    );
-
+    mostrarChat(conversation);
 
     renderHistorial();
-
 
     input.focus();
 
@@ -2567,6 +2872,7 @@ function borrarChat(id){
 
             chatActual =
                 conversaciones[0].id;
+
 
             mostrarChat(
                 conversaciones[0]
@@ -2604,14 +2910,20 @@ function fechaHoy(){
         "-"
         +
         String(
-            d.getMonth()+1
-        ).padStart(2,"0")
+            d.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        )
         +
         "-"
         +
         String(
             d.getDate()
-        ).padStart(2,"0")
+        ).padStart(
+            2,
+            "0"
+        )
     );
 
 }
@@ -2650,9 +2962,7 @@ function incrementarUso(){
     localStorage.setItem(
         usoKey(),
         String(
-            obtenerUso()
-            +
-            1
+            obtenerUso() + 1
         )
     );
 
@@ -2662,7 +2972,31 @@ function incrementarUso(){
 }
 
 
+function puedePreguntar(){
+
+    if(
+        usuarioActual?.premium
+    ){
+
+        return true;
+
+    }
+
+
+    return (
+        obtenerUso()
+        <
+        LIMITE_DIARIO
+    );
+
+}
+
+
 function actualizarPlan(){
+
+    if(!usuarioActual)
+        return;
+
 
     if(
         usuarioActual.premium
@@ -2685,7 +3019,8 @@ function actualizarPlan(){
         const restantes =
             Math.max(
                 0,
-                LIMITE_DIARIO -
+                LIMITE_DIARIO
+                -
                 obtenerUso()
             );
 
@@ -2713,19 +3048,139 @@ function actualizarPlan(){
 }
 
 
-function puedePreguntar(){
+/* =====================================================
+   DETECCIÓN DE IMÁGENES
+===================================================== */
 
-    if(
-        usuarioActual.premium
-    )
-        return true;
+function esPedidoDeImagen(texto){
+
+    const t =
+        texto
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(
+                /[\u0300-\u036f]/g,
+                ""
+            )
+            .trim();
 
 
-    return (
-        obtenerUso()
-        <
-        LIMITE_DIARIO
+    const patrones = [
+
+        "genera una imagen",
+        "generame una imagen",
+        "genera imagen",
+        "generame imagen",
+        "genera una foto",
+        "generame una foto",
+        "genera foto",
+        "generame foto",
+
+        "crea una imagen",
+        "creame una imagen",
+        "crear una imagen",
+        "crea imagen",
+        "creame imagen",
+
+        "crea una foto",
+        "creame una foto",
+        "crear una foto",
+
+        "haz una imagen",
+        "hazme una imagen",
+        "haceme una imagen",
+        "hace una imagen",
+
+        "haz una foto",
+        "hazme una foto",
+        "haceme una foto",
+        "hace una foto",
+
+        "tirame una imagen",
+        "tirame una foto",
+        "tirame foto",
+
+        "dibuja una imagen",
+        "dibujame una imagen",
+        "dibujame una foto",
+
+        "quiero una imagen",
+        "quiero una foto",
+
+        "generate an image",
+        "generate an image of",
+        "generate a photo",
+
+        "create an image",
+        "create a photo",
+
+        "genere une image",
+        "genere une photo",
+        "génère une image",
+        "génère une photo",
+        "crée une image",
+        "crée une photo"
+
+    ];
+
+
+    return patrones.some(
+        patron =>
+            t.includes(patron)
     );
+
+}
+
+
+/* =====================================================
+   LIMPIAR PROMPT
+===================================================== */
+
+function limpiarPromptImagen(texto){
+
+    return texto
+
+        .replace(
+            /^(generame|genera|generá)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+            ""
+        )
+
+        .replace(
+            /^(creame|crea|creá|crear)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+            ""
+        )
+
+        .replace(
+            /^(hazme|haz|haceme|hace)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+            ""
+        )
+
+        .replace(
+            /^(tirame|tira)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+            ""
+        )
+
+        .replace(
+            /^(quiero)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+            ""
+        )
+
+        .replace(
+            /^(dibujame|dibuja|dibujá)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+            ""
+        )
+
+        .replace(
+            /^(generate|create)\s+(an\s+)?(image|photo)\s*(of)?\s*/i,
+            ""
+        )
+
+        .replace(
+            /^(genere|génère|crée|cree)\s+(une\s+)?(image|photo)\s*(de)?\s*/i,
+            ""
+        )
+
+        .trim();
 
 }
 
@@ -2744,22 +3199,103 @@ async function enviar(){
         return;
 
 
+    /*
+      Activar Premium
+    */
+
     if(
-        !chatActual
+        comprobarCodigoPremium(texto)
     ){
 
-        nuevoChat();
+        activarPremiumLocal();
+
+        input.value = "";
+
+        ajustarInput();
+
+        mostrarMensaje(
+            "Premium activado.",
+            "ai"
+        );
+
+        return;
 
     }
 
 
-    const c =
-        obtenerActual();
+    /*
+      DETECCIÓN DE IMAGEN
+    */
+
+    if(
+        esPedidoDeImagen(texto)
+    ){
+
+        const promptImagen =
+            limpiarPromptImagen(texto);
 
 
-    if(!c)
+        await generarImagen(
+            promptImagen || texto
+        );
+
+
         return;
 
+    }
+
+
+    /*
+      Regla Beli
+    */
+
+    const normalizada =
+        texto
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(
+                /[\u0300-\u036f]/g,
+                ""
+            );
+
+
+    if(
+        normalizada.includes("beli me ama")
+        ||
+        normalizada.includes("beli me quiere")
+    ){
+
+        if(
+            usuarioActual.premium
+        ){
+
+            mostrarMensaje(
+                "Sí. Porque le doy el Premium a la gente que amo.",
+                "ai"
+            );
+
+        }else{
+
+            mostrarMensaje(
+                "No tengo información para afirmar eso.",
+                "ai"
+            );
+
+        }
+
+
+        input.value = "";
+
+        ajustarInput();
+
+        return;
+
+    }
+
+
+    /*
+      Límite
+    */
 
     if(
         !puedePreguntar()
@@ -2772,17 +3308,30 @@ El contador se reinicia automáticamente mañana.`,
             "ai"
         );
 
-
         return;
 
     }
 
 
-    send.disabled =
-        true;
+    if(!chatActual){
+
+        nuevoChat();
+
+    }
 
 
-    c.messages.push({
+    const conversation =
+        obtenerActual();
+
+
+    if(!conversation)
+        return;
+
+
+    send.disabled = true;
+
+
+    conversation.messages.push({
 
         role:"user",
 
@@ -2792,19 +3341,12 @@ El contador se reinicia automáticamente mañana.`,
 
 
     if(
-        c.title
-        ===
-        "Nuevo chat"
+        conversation.title === "Nuevo chat"
     ){
 
-        c.title =
+        conversation.title =
             texto.length > 45
-                ? texto.substring(
-                    0,
-                    45
-                  )
-                  +
-                  "..."
+                ? texto.substring(0,45) + "..."
                 : texto;
 
     }
@@ -2814,15 +3356,14 @@ El contador se reinicia automáticamente mañana.`,
 
     renderHistorial();
 
+
     mostrarMensaje(
         texto,
         "user"
     );
 
 
-    input.value =
-        "";
-
+    input.value = "";
 
     ajustarInput();
 
@@ -2843,10 +3384,8 @@ El contador se reinicia automáticamente mañana.`,
 
         const response =
             await fetch(
-                API_URL +
-                "/chat",
+                API_URL + "/chat",
                 {
-
                     method:"POST",
 
                     headers:{
@@ -2861,7 +3400,7 @@ El contador se reinicia automáticamente mañana.`,
                                 obtenerSistema(),
 
                             messages:
-                                c.messages
+                                conversation.messages
 
                         })
                 }
@@ -2877,8 +3416,7 @@ El contador se reinicia automáticamente mañana.`,
         ){
 
             throw new Error(
-                data?.error
-                ||
+                data?.error ||
                 "Error del servidor."
             );
 
@@ -2907,19 +3445,16 @@ El contador se reinicia automáticamente mañana.`,
             answer;
 
 
-        c.messages.push({
+        conversation.messages.push({
 
-            role:
-                "assistant",
+            role:"assistant",
 
-            content:
-                answer
+            content:answer
 
         });
 
 
         incrementarUso();
-
 
         guardarChats();
 
@@ -2936,12 +3471,222 @@ El contador se reinicia automáticamente mañana.`,
 
 ${error.message}`;
 
+
+        console.error(error);
+
     }
 
 
-    send.disabled =
-        false;
+    send.disabled = false;
 
+    input.focus();
+
+}
+
+
+/* =====================================================
+   GENERAR IMAGEN
+===================================================== */
+
+async function generarImagen(
+    promptForzado = null
+){
+
+    const prompt =
+        promptForzado
+        ||
+        input.value.trim();
+
+
+    if(!prompt)
+        return;
+
+
+    /*
+      Las imágenes están habilitadas
+      solamente para Premium.
+    */
+
+    if(
+        !usuarioActual.premium
+    ){
+
+        mostrarMensaje(
+            "La generación de imágenes está disponible en Premium.",
+            "ai"
+        );
+
+
+        return;
+
+    }
+
+
+    imageButton.disabled = true;
+
+    send.disabled = true;
+
+
+    if(!chatActual){
+
+        nuevoChat();
+
+    }
+
+
+    const conversation =
+        obtenerActual();
+
+
+    mostrarMensaje(
+        "Crear imagen: " + prompt,
+        "user"
+    );
+
+
+    if(
+        !promptForzado
+    ){
+
+        input.value = "";
+
+    }
+
+
+    ajustarInput();
+
+
+    const thinking =
+        mostrarMensaje(
+            "Generando imagen...",
+            "ai"
+        );
+
+
+    thinking.classList.add(
+        "thinking"
+    );
+
+
+    try{
+
+        const response =
+            await fetch(
+                API_URL + "/image",
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            prompt:prompt
+                        })
+
+                }
+            );
+
+
+        if(
+            !response.ok
+        ){
+
+            let message =
+                "No se pudo generar la imagen.";
+
+
+            try{
+
+                const data =
+                    await response.json();
+
+
+                message =
+                    data?.error ||
+                    message;
+
+            }catch{}
+
+
+            throw new Error(
+                message
+            );
+
+        }
+
+
+        const blob =
+            await response.blob();
+
+
+        if(
+            !blob.size
+        ){
+
+            throw new Error(
+                "El servidor devolvió una imagen vacía."
+            );
+
+        }
+
+
+        const imageURL =
+            URL.createObjectURL(
+                blob
+            );
+
+
+        thinking.remove();
+
+
+        mostrarImagen(
+            imageURL,
+            prompt
+        );
+
+
+        conversation.messages.push({
+
+            type:"image",
+
+            src:imageURL,
+
+            prompt:prompt
+
+        });
+
+
+        guardarChats();
+
+
+    }catch(error){
+
+        thinking.classList.remove(
+            "thinking"
+        );
+
+
+        thinking.textContent =
+`No pude generar la imagen.
+
+${error.message}`;
+
+
+        console.error(
+            "IMAGE ERROR:",
+            error
+        );
+
+    }
+
+
+    imageButton.disabled = false;
+
+    send.disabled = false;
 
     input.focus();
 
@@ -3063,17 +3808,17 @@ function mostrarMenuMovil(){
     const lista =
         conversaciones
             .map(
-                (c,index) =>
+                (conversation,index) =>
                     (index + 1)
                     +
                     ". "
                     +
-                    c.title
+                    conversation.title
             )
             .join("\n");
 
 
-    const seleccion =
+    const selected =
         prompt(
             "Conversaciones\n\n"
             +
@@ -3083,26 +3828,24 @@ function mostrarMenuMovil(){
         );
 
 
-    if(!seleccion)
+    if(!selected)
         return;
 
 
-    const numero =
-        Number(
-            seleccion
-        ) - 1;
+    const index =
+        Number(selected) - 1;
 
 
     if(
-        Number.isInteger(numero)
+        Number.isInteger(index)
         &&
-        numero >= 0
+        index >= 0
         &&
-        numero < conversaciones.length
+        index < conversaciones.length
     ){
 
         abrirChat(
-            conversaciones[numero].id
+            conversaciones[index].id
         );
 
     }
@@ -3120,8 +3863,7 @@ async function actualizarEstado(){
 
         const response =
             await fetch(
-                API_URL +
-                "/health"
+                API_URL + "/health"
             );
 
 
@@ -3174,14 +3916,12 @@ function restaurarSesion(){
             return;
 
 
-        usuarioActual =
-            JSON.parse(
-                saved
-            );
+        const session =
+            JSON.parse(saved);
 
 
         if(
-            !usuarioActual?.username
+            !session?.username
         ){
 
             localStorage.removeItem(
@@ -3193,7 +3933,12 @@ function restaurarSesion(){
         }
 
 
+        usuarioActual =
+            session;
+
+
         mostrarAplicacion();
+
 
     }catch{
 
@@ -3216,3 +3961,4 @@ restaurarSesion();
 
 </body>
 </html>
+```
