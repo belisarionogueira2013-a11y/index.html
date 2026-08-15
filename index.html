@@ -4,11 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
 <title>Inda AI</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -23,11 +21,9 @@
     --hover:#242424;
     --border:#2b2b2b;
     --text:#f5f5f5;
-    --muted:#858585;
 }
 
-html,
-body{
+html,body{
     width:100%;
     height:100%;
 }
@@ -44,10 +40,7 @@ body{
     height:100dvh;
 }
 
-
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 
 .sidebar{
     width:270px;
@@ -145,9 +138,9 @@ body{
 .chat-title{
     flex:1;
     min-width:0;
+    white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    white-space:nowrap;
 }
 
 .delete-chat{
@@ -160,10 +153,7 @@ body{
     opacity:1;
 }
 
-
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 
 .main{
     flex:1;
@@ -172,10 +162,7 @@ body{
     flex-direction:column;
 }
 
-
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 header{
     height:60px;
@@ -185,6 +172,7 @@ header{
     align-items:center;
     justify-content:center;
     position:relative;
+    background:var(--bg);
 }
 
 .title{
@@ -194,14 +182,6 @@ header{
 
 .mobile-menu{
     display:none;
-    position:absolute;
-    left:12px;
-    border:0;
-    background:transparent;
-    color:#ddd;
-    font-size:20px;
-    width:32px;
-    height:32px;
 }
 
 .status{
@@ -221,10 +201,7 @@ header{
     background:#777;
 }
 
-
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 
 .chat{
     flex:1;
@@ -290,10 +267,7 @@ header{
     opacity:.5;
 }
 
-
-/* =========================
-   WELCOME
-========================= */
+/* WELCOME */
 
 .welcome{
     min-height:65vh;
@@ -302,6 +276,7 @@ header{
     align-items:center;
     justify-content:center;
     text-align:center;
+    padding:30px;
 }
 
 .welcome-logo{
@@ -328,10 +303,7 @@ header{
     font-size:14px;
 }
 
-
-/* =========================
-   INPUT
-========================= */
+/* INPUT */
 
 .input-area{
     position:fixed;
@@ -339,10 +311,7 @@ header{
     right:0;
     bottom:0;
     padding:20px;
-    padding-bottom:max(
-        20px,
-        env(safe-area-inset-bottom)
-    );
+    padding-bottom:max(20px,env(safe-area-inset-bottom));
     background:linear-gradient(
         transparent,
         var(--bg) 30%
@@ -407,10 +376,7 @@ header{
     font-size:10px;
 }
 
-
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:700px){
 
@@ -434,6 +400,15 @@ header{
         display:flex;
         align-items:center;
         justify-content:center;
+        position:absolute;
+        left:12px;
+        width:32px;
+        height:32px;
+        border:0;
+        background:transparent;
+        color:#ddd;
+        font-size:20px;
+        cursor:pointer;
     }
 
     .title{
@@ -511,7 +486,7 @@ header{
         padding:
             8px
             10px
-            max(8px, env(safe-area-inset-bottom));
+            max(8px,env(safe-area-inset-bottom));
         background:
             linear-gradient(
                 transparent,
@@ -545,11 +520,6 @@ header{
     }
 }
 
-
-/* =========================
-   SMALL PHONES
-========================= */
-
 @media(max-width:380px){
 
     .chat{
@@ -570,15 +540,12 @@ header{
         font-size:25px;
     }
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="app">
-
-    <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
@@ -624,15 +591,14 @@ header{
     </aside>
 
 
-    <!-- MAIN -->
-
     <main class="main">
 
         <header>
 
             <button
                 class="mobile-menu"
-                onclick="mostrarMenuMovil()">
+                onclick="mostrarMenuMovil()"
+                aria-label="Conversaciones">
                 ☰
             </button>
 
@@ -667,8 +633,6 @@ header{
 
         </section>
 
-
-        <!-- INPUT -->
 
         <div class="input-area">
 
@@ -706,8 +670,13 @@ header{
    CONFIGURACIÓN
 ===================================================== */
 
+/*
+   NUEVO WORKER DE INDA AI
+*/
+
 const API_URL =
-    "https://index-html.belisarionogueira2013.workers.dev";
+    "https://inda-ai-api.belisarionogueira2013.workers.dev";
+
 
 const LIMITE_DIARIO = 50;
 
@@ -880,13 +849,8 @@ function obtenerUso(){
     ){
 
         const nuevo = {
-
-            fecha:
-                fechaHoy(),
-
-            preguntas:
-                0
-
+            fecha:fechaHoy(),
+            preguntas:0
         };
 
         localStorage.setItem(
@@ -950,10 +914,8 @@ function actualizarPlan(){
 
     }
 
-
     const uso =
         obtenerUso();
-
 
     const restantes =
         Math.max(
@@ -961,7 +923,6 @@ function actualizarPlan(){
             LIMITE_DIARIO -
             uso.preguntas
         );
-
 
     planValue.textContent =
         "Normal";
@@ -984,9 +945,7 @@ let conversaciones =
         ) || "[]"
     );
 
-
-let chatActual =
-    null;
+let chatActual = null;
 
 
 function guardar(){
@@ -1028,10 +987,8 @@ function nuevoChat(){
         nuevo
     );
 
-
     chatActual =
         nuevo.id;
-
 
     guardar();
 
@@ -1045,7 +1002,7 @@ function nuevoChat(){
 
 
 /* =====================================================
-   OBTENER ACTUAL
+   CHAT ACTUAL
 ===================================================== */
 
 function obtenerActual(){
@@ -1077,10 +1034,8 @@ function mostrarChat(c){
                 "div"
             );
 
-
         welcome.className =
             "welcome";
-
 
         welcome.innerHTML = `
 
@@ -1098,11 +1053,9 @@ function mostrarChat(c){
 
         `;
 
-
         chatInner.appendChild(
             welcome
         );
-
 
         return;
 
@@ -1126,7 +1079,7 @@ function mostrarChat(c){
 
 
 /* =====================================================
-   MOSTRAR MENSAJE
+   MENSAJES
 ===================================================== */
 
 function mostrarMensaje(
@@ -1138,7 +1091,6 @@ function mostrarMensaje(
         document.createElement(
             "div"
         );
-
 
     row.className =
         "message-row " +
@@ -1154,14 +1106,11 @@ function mostrarMensaje(
                 "div"
             );
 
-
         avatar.className =
             "avatar";
 
-
         avatar.textContent =
             "IA";
-
 
         row.appendChild(
             avatar
@@ -1175,20 +1124,16 @@ function mostrarMensaje(
             "div"
         );
 
-
     bubble.className =
         "message " +
         quien;
 
-
     bubble.textContent =
         texto;
-
 
     row.appendChild(
         bubble
     );
-
 
     chatInner.appendChild(
         row
@@ -1197,10 +1142,8 @@ function mostrarMensaje(
 
     requestAnimationFrame(
         () => {
-
             chat.scrollTop =
                 chat.scrollHeight;
-
         }
     );
 
@@ -1228,7 +1171,6 @@ function renderHistorial(){
                     "div"
                 );
 
-
             item.className =
                 "chat-item" +
                 (
@@ -1243,10 +1185,8 @@ function renderHistorial(){
                     "span"
                 );
 
-
             title.className =
                 "chat-title";
-
 
             title.textContent =
                 c.title;
@@ -1257,10 +1197,8 @@ function renderHistorial(){
                     "span"
                 );
 
-
             borrar.className =
                 "delete-chat";
-
 
             borrar.textContent =
                 "×";
@@ -1281,7 +1219,6 @@ function renderHistorial(){
             item.appendChild(
                 title
             );
-
 
             item.appendChild(
                 borrar
@@ -1328,7 +1265,6 @@ function abrirChat(id){
     chatActual =
         id;
 
-
     mostrarChat(c);
 
     renderHistorial();
@@ -1361,7 +1297,6 @@ function borrarChat(id){
 
             chatActual =
                 conversaciones[0].id;
-
 
             mostrarChat(
                 conversaciones[0]
@@ -1472,18 +1407,15 @@ El contador se reinicia automáticamente mañana.`,
 
 
     if(
-        c.title ===
-        "Nuevo chat"
+        c.title === "Nuevo chat"
     ){
 
         c.title =
             texto.length > 45
-
             ? texto.substring(
                 0,
                 45
               ) + "..."
-
             : texto;
 
     }
@@ -1502,7 +1434,6 @@ El contador se reinicia automáticamente mañana.`,
     input.value =
         "";
 
-
     ajustarInput();
 
 
@@ -1511,7 +1442,6 @@ El contador se reinicia automáticamente mañana.`,
             "Pensando...",
             "ai"
         );
-
 
     pensando.classList.add(
         "thinking"
@@ -1525,9 +1455,7 @@ El contador se reinicia automáticamente mañana.`,
                 API_URL +
                 "/chat",
                 {
-
-                    method:
-                        "POST",
+                    method:"POST",
 
                     headers:{
                         "Content-Type":
@@ -1544,25 +1472,22 @@ El contador se reinicia automáticamente mañana.`,
                                 c.messages
 
                         })
-
                 }
             );
 
 
         let data;
 
-
         try{
 
             data =
                 await response.json();
 
-        }
-        catch{
+        }catch{
 
             data = {
                 error:
-                    "El servidor no devolvió JSON."
+                    "El servidor devolvió una respuesta inválida."
             };
 
         }
@@ -1597,7 +1522,6 @@ El contador se reinicia automáticamente mañana.`,
             "thinking"
         );
 
-
         pensando.textContent =
             respuesta;
 
@@ -1618,18 +1542,13 @@ El contador se reinicia automáticamente mañana.`,
         guardar();
 
 
-    }
-    catch(error){
+    }catch(error){
 
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         pensando.classList.remove(
             "thinking"
         );
-
 
         pensando.textContent =
 `No pude conectarme con Inda AI.
@@ -1641,7 +1560,6 @@ ${error.message}`;
 
     send.disabled =
         false;
-
 
     input.focus();
 
@@ -1656,7 +1574,6 @@ function ajustarInput(){
 
     input.style.height =
         "auto";
-
 
     input.style.height =
         Math.min(
@@ -1702,11 +1619,8 @@ function mostrarMenuMovil(){
 
     if(
         window.innerWidth > 700
-    ){
-
+    )
         return;
-
-    }
 
 
     if(
@@ -1746,8 +1660,7 @@ function mostrarMenuMovil(){
 
 
     const numero =
-        Number(seleccion) -
-        1;
+        Number(seleccion) - 1;
 
 
     if(
@@ -1792,7 +1705,6 @@ async function actualizarEstado(){
         estado.textContent =
             "Inda AI conectada";
 
-
         dot.style.background =
             "#76c893";
 
@@ -1801,7 +1713,6 @@ async function actualizarEstado(){
 
         estado.textContent =
             "Servidor desconectado";
-
 
         dot.style.background =
             "#c86b6b";
@@ -1825,13 +1736,11 @@ if(
     chatActual =
         conversaciones[0].id;
 
-
     mostrarChat(
         conversaciones[0]
     );
 
-}
-else{
+}else{
 
     nuevoChat();
 
