@@ -4,91 +4,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Inda AI — Ultra Image</title>
+<title>Inda AI</title>
 
 <style>
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-    font-family:Segoe UI,Arial,sans-serif;
+    font-family:Segoe UI,Arial,sans-serif
 }
 
 :root{
-    --bg:#0b0b0c;
-    --panel:#141416;
-    --panel2:#1b1b1e;
-    --border:#2b2b30;
-    --hover:#242428;
-    --text:#f5f5f7;
-    --muted:#85858d;
+    --bg:#09090a;
+    --panel:#121214;
+    --panel2:#19191c;
+    --border:#2a2a2e;
+    --hover:#232327;
+    --text:#f5f5f5;
+    --muted:#77777e
 }
 
 html,body{
     width:100%;
     height:100%;
+    background:var(--bg);
+    color:var(--text)
 }
 
 body{
-    overflow:hidden;
-    background:var(--bg);
-    color:var(--text);
+    overflow:hidden
 }
 
-button,
-input,
-textarea,
-select{
-    font:inherit;
+button,input,textarea,select{
+    font:inherit
 }
 
 button{
-    cursor:pointer;
+    cursor:pointer
 }
 
 .hidden{
-    display:none!important;
+    display:none!important
 }
 
-/* =========================
-   LOGIN
-========================= */
+/* ================= LOGIN ================= */
 
 #authScreen{
+    width:100%;
     height:100vh;
     display:flex;
-    align-items:center;
     justify-content:center;
-    padding:20px;
+    align-items:center;
+    padding:20px
 }
 
 .auth-card{
     width:min(420px,100%);
+    padding:30px;
     background:var(--panel);
     border:1px solid var(--border);
     border-radius:22px;
-    padding:30px;
-    box-shadow:0 25px 80px rgba(0,0,0,.45);
+    box-shadow:0 30px 100px rgba(0,0,0,.5)
 }
 
 .auth-logo{
     text-align:center;
     font-size:32px;
-    font-weight:700;
-    margin-bottom:8px;
+    font-weight:800;
+    margin-bottom:7px
 }
 
 .auth-subtitle{
-    text-align:center;
     color:var(--muted);
+    text-align:center;
     font-size:13px;
-    margin-bottom:25px;
+    margin-bottom:25px
 }
 
 .auth-tabs{
     display:flex;
     gap:8px;
-    margin-bottom:20px;
+    margin-bottom:20px
 }
 
 .auth-tab{
@@ -96,116 +92,112 @@ button{
     height:43px;
     border:1px solid var(--border);
     border-radius:11px;
-    background:#1c1c20;
-    color:#aaa;
+    background:#1b1b1e;
+    color:#aaa
 }
 
 .auth-tab.active{
     background:#fff;
-    color:#111;
+    color:#111
 }
 
 .auth-form{
-    display:none;
+    display:none
 }
 
 .auth-form.active{
-    display:block;
+    display:block
 }
 
 .field{
-    margin-bottom:15px;
+    margin-bottom:15px
 }
 
 .field label{
     display:block;
-    color:#aaa;
+    color:#999;
     font-size:12px;
-    margin-bottom:7px;
+    margin-bottom:7px
 }
 
 .field input{
     width:100%;
     height:45px;
-    border:1px solid #333;
-    border-radius:11px;
     background:#0d0d0f;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:0 12px;
     color:white;
-    padding:0 13px;
-    outline:none;
+    outline:none
 }
 
 .field input:focus{
-    border-color:#777;
+    border-color:#777
 }
 
 .auth-submit{
     width:100%;
     height:45px;
     border:0;
-    border-radius:11px;
-    background:#fff;
+    border-radius:10px;
+    background:white;
     color:#111;
-    font-weight:600;
+    font-weight:700
 }
 
 .auth-message{
-    min-height:20px;
-    margin-top:12px;
-    color:#888;
     text-align:center;
+    color:#888;
     font-size:12px;
+    min-height:20px;
+    margin-top:12px
 }
 
-/* =========================
-   APP
-========================= */
+/* ================= APP ================= */
 
 #app{
     display:none;
-    height:100vh;
+    height:100vh
 }
 
 .layout{
     width:100%;
     height:100%;
-    display:flex;
+    display:flex
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ================= SIDEBAR ================= */
 
 .sidebar{
     width:270px;
     min-width:270px;
-    background:#111113;
+    background:#101012;
     border-right:1px solid var(--border);
     padding:14px;
     display:flex;
-    flex-direction:column;
+    flex-direction:column
 }
 
 .logo{
     height:55px;
     display:flex;
     align-items:center;
-    padding:0 10px;
+    padding-left:10px;
     font-size:21px;
-    font-weight:700;
+    font-weight:800
 }
 
 .new-chat{
-    width:100%;
     height:44px;
+    width:100%;
     border:1px solid #333;
     border-radius:11px;
-    background:#19191c;
-    color:#fff;
+    background:#1a1a1d;
+    color:white
 }
 
 .new-chat:hover{
-    background:#242428;
+    background:#252529
 }
 
 .plan{
@@ -213,91 +205,91 @@ button{
     padding:12px;
     border:1px solid #29292e;
     border-radius:12px;
-    background:#171719;
+    background:#171719
 }
 
 .plan-title{
-    font-size:11px;
-    color:#888;
+    font-size:10px;
+    color:#777;
+    text-transform:uppercase
 }
 
 .plan-value{
     margin-top:5px;
-    font-weight:700;
     font-size:14px;
+    font-weight:700
 }
 
 .counter{
-    margin-top:5px;
     color:#777;
     font-size:11px;
+    margin-top:5px
 }
 
 .role-value{
-    margin-top:4px;
     color:#666;
     font-size:11px;
+    margin-top:4px
 }
 
 .sidebar-title{
     margin:24px 9px 9px;
     color:#666;
     font-size:10px;
-    text-transform:uppercase;
     letter-spacing:.12em;
+    text-transform:uppercase
 }
 
 .history{
     flex:1;
-    overflow-y:auto;
+    overflow-y:auto
 }
 
 .chat-item{
     display:flex;
-    align-items:center;
     gap:7px;
     padding:10px;
-    border-radius:9px;
     margin-bottom:4px;
-    color:#bbb;
-    font-size:13px;
+    border-radius:9px;
+    color:#aaa;
+    font-size:13px
 }
 
 .chat-item:hover{
-    background:var(--hover);
+    background:var(--hover)
 }
 
 .chat-item.active{
     background:#29292d;
-    color:white;
+    color:white
 }
 
 .chat-title{
     flex:1;
     overflow:hidden;
-    white-space:nowrap;
     text-overflow:ellipsis;
+    white-space:nowrap
 }
 
 .delete-chat{
     opacity:0;
-    color:#777;
+    color:#777
 }
 
 .chat-item:hover .delete-chat{
-    opacity:1;
+    opacity:1
 }
 
 .sidebar-footer{
     border-top:1px solid #222;
     padding-top:12px;
-    margin-top:12px;
+    margin-top:12px
 }
 
 .account-name{
-    color:#bbb;
+    color:#aaa;
     font-size:12px;
-    margin-bottom:8px;
+    margin-bottom:8px
 }
 
 .logout-button{
@@ -306,18 +298,26 @@ button{
     border:1px solid #333;
     border-radius:9px;
     background:#19191b;
-    color:#ccc;
+    color:#ccc
 }
 
-/* =========================
-   MAIN
-========================= */
+.ceo-button{
+    width:100%;
+    height:38px;
+    margin-bottom:8px;
+    border:1px solid #333;
+    border-radius:9px;
+    background:#222226;
+    color:#ddd
+}
+
+/* ================= MAIN ================= */
 
 .main{
     flex:1;
     min-width:0;
     display:flex;
-    flex-direction:column;
+    flex-direction:column
 }
 
 header{
@@ -325,14 +325,14 @@ header{
     min-height:60px;
     border-bottom:1px solid var(--border);
     display:flex;
-    align-items:center;
     justify-content:center;
-    position:relative;
+    align-items:center;
+    position:relative
 }
 
 .title{
-    font-weight:700;
     font-size:15px;
+    font-weight:700
 }
 
 .header-actions{
@@ -340,7 +340,7 @@ header{
     right:15px;
     display:flex;
     align-items:center;
-    gap:9px;
+    gap:9px
 }
 
 .status{
@@ -348,14 +348,14 @@ header{
     align-items:center;
     gap:7px;
     color:#777;
-    font-size:11px;
+    font-size:11px
 }
 
 .dot{
     width:7px;
     height:7px;
     border-radius:50%;
-    background:#777;
+    background:#777
 }
 
 .settings-button{
@@ -364,51 +364,49 @@ header{
     border:1px solid #2d2d30;
     border-radius:9px;
     background:#18181b;
-    color:#ccc;
+    color:#ccc
 }
 
-/* =========================
-   CHAT
-========================= */
+/* ================= CHAT ================= */
 
 .chat{
     flex:1;
     overflow-y:auto;
-    padding:30px 20px 160px;
+    padding:30px 20px 160px
 }
 
 .chat-inner{
     width:100%;
     max-width:950px;
-    margin:auto;
+    margin:auto
 }
 
 .message-row{
     display:flex;
     width:100%;
-    margin:19px 0;
+    margin:19px 0
 }
 
 .message-row.user{
-    justify-content:flex-end;
+    justify-content:flex-end
 }
 
 .message-row.ai{
-    justify-content:flex-start;
+    justify-content:flex-start
 }
 
 .avatar{
     width:30px;
     height:30px;
+    min-width:30px;
     border-radius:9px;
     background:#252529;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     font-size:10px;
     font-weight:700;
-    margin-right:10px;
-    flex-shrink:0;
+    margin-right:10px
 }
 
 .message{
@@ -418,28 +416,26 @@ header{
     line-height:1.55;
     white-space:pre-wrap;
     word-break:break-word;
-    font-size:15px;
+    font-size:15px
 }
 
 .message.user{
-    background:#29292d;
+    background:#29292d
 }
 
 .message.ai{
     background:transparent;
-    padding-left:0;
+    padding-left:0
 }
 
 .thinking{
-    opacity:.5;
+    opacity:.45
 }
 
-/* =========================
-   IMÁGENES
-========================= */
+/* ================= IMÁGENES ================= */
 
 .generated-image-wrap{
-    width:min(850px,100%);
+    width:min(850px,100%)
 }
 
 .generated-image{
@@ -451,31 +447,24 @@ header{
     border-radius:20px;
     border:1px solid #333338;
     background:#101012;
-    box-shadow:
-        0 18px 60px rgba(0,0,0,.42);
+    box-shadow:0 18px 60px rgba(0,0,0,.42);
     cursor:zoom-in;
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        border-color .25s ease;
+    transition:.25s
 }
 
 .generated-image:hover{
     transform:scale(1.008);
     border-color:#555;
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.6);
+    box-shadow:0 25px 80px rgba(0,0,0,.6)
 }
 
 .image-caption{
-    margin-top:8px;
-    color:#666;
+    color:#555;
     font-size:10px;
+    margin-top:8px
 }
 
-/* =========================
-   WELCOME
-========================= */
+/* ================= WELCOME ================= */
 
 .welcome{
     min-height:65vh;
@@ -483,7 +472,7 @@ header{
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    text-align:center;
+    text-align:center
 }
 
 .welcome-logo{
@@ -495,22 +484,20 @@ header{
     display:flex;
     justify-content:center;
     align-items:center;
-    font-weight:700;
-    margin-bottom:18px;
+    font-weight:800;
+    margin-bottom:18px
 }
 
 .welcome h1{
     font-size:31px;
-    margin-bottom:10px;
+    margin-bottom:10px
 }
 
 .welcome p{
-    color:#888;
+    color:#888
 }
 
-/* =========================
-   INPUT
-========================= */
+/* ================= INPUT ================= */
 
 .input-area{
     position:fixed;
@@ -519,11 +506,8 @@ header{
     bottom:0;
     padding:20px;
     padding-bottom:max(20px,env(safe-area-inset-bottom));
-    background:linear-gradient(
-        transparent,
-        var(--bg) 30%
-    );
-    z-index:20;
+    background:linear-gradient(transparent,var(--bg) 30%);
+    z-index:20
 }
 
 .input-box{
@@ -535,11 +519,7 @@ header{
     background:#1b1b1e;
     border:1px solid #303035;
     border-radius:18px;
-    padding:8px;
-}
-
-.input-box:focus-within{
-    border-color:#505057;
+    padding:8px
 }
 
 #prompt{
@@ -553,11 +533,11 @@ header{
     color:white;
     padding:11px 12px;
     font-size:15px;
-    line-height:1.4;
+    line-height:1.4
 }
 
 #prompt::placeholder{
-    color:#707078;
+    color:#707078
 }
 
 .image-button{
@@ -567,11 +547,7 @@ header{
     border-radius:11px;
     background:#29292d;
     color:#ddd;
-    font-size:12px;
-}
-
-.image-button:hover{
-    background:#35353a;
+    font-size:12px
 }
 
 .send{
@@ -581,13 +557,13 @@ header{
     border-radius:11px;
     background:white;
     color:#111;
-    font-size:19px;
+    font-size:19px
 }
 
 .send:disabled,
 .image-button:disabled{
     opacity:.4;
-    cursor:default;
+    cursor:default
 }
 
 .info{
@@ -595,43 +571,41 @@ header{
     margin:7px auto 0;
     text-align:center;
     color:#555;
-    font-size:10px;
+    font-size:10px
 }
 
-/* =========================
-   MODAL
-========================= */
+/* ================= MODALES ================= */
 
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.7);
+    background:rgba(0,0,0,.72);
     display:none;
     align-items:center;
     justify-content:center;
     padding:20px;
-    z-index:100;
+    z-index:100
 }
 
 .modal.open{
-    display:flex;
+    display:flex
 }
 
 .modal-card{
-    width:min(850px,100%);
+    width:min(900px,100%);
     max-height:90vh;
     overflow:auto;
     background:#151518;
     border:1px solid #303035;
     border-radius:20px;
-    padding:23px;
+    padding:23px
 }
 
 .modal-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
+    margin-bottom:20px
 }
 
 .close{
@@ -641,36 +615,38 @@ header{
     border-radius:9px;
     background:#242428;
     color:#ccc;
-    font-size:18px;
+    font-size:18px
 }
+
+/* ================= SETTINGS ================= */
 
 .setting{
-    margin-bottom:20px;
+    margin-bottom:20px
 }
 
-.setting label{
+.setting>label{
     display:block;
     margin-bottom:8px;
     color:#aaa;
-    font-size:12px;
+    font-size:12px
 }
 
 .setting-box{
     border:1px solid #2c2c31;
     border-radius:12px;
     background:#1b1b1f;
-    padding:13px;
+    padding:13px
 }
 
 .setting-main{
     font-weight:600;
-    font-size:13px;
+    font-size:13px
 }
 
 .setting-description{
-    margin-top:5px;
     color:#777;
     font-size:11px;
+    margin-top:5px
 }
 
 .setting select{
@@ -680,7 +656,7 @@ header{
     color:white;
     border:1px solid #333;
     border-radius:10px;
-    padding:0 10px;
+    padding:0 10px
 }
 
 .memory-textarea{
@@ -692,13 +668,13 @@ header{
     border:1px solid #333;
     border-radius:9px;
     padding:10px;
-    margin-top:10px;
+    margin-top:10px
 }
 
 .memory-actions{
     display:flex;
     gap:8px;
-    margin-top:8px;
+    margin-top:8px
 }
 
 .memory-button{
@@ -706,38 +682,124 @@ header{
     background:#222226;
     color:#eee;
     border-radius:9px;
-    padding:8px 11px;
+    padding:8px 11px
 }
 
 .memory-status{
     color:#777;
     font-size:10px;
-    margin-top:7px;
+    margin-top:7px
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* ================= CEO ================= */
+
+.ceo-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px
+}
+
+.ceo-user{
+    border:1px solid #303035;
+    border-radius:12px;
+    background:#1a1a1d;
+    overflow:hidden
+}
+
+.ceo-user-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px
+}
+
+.ceo-user-name{
+    font-weight:700;
+    font-size:13px
+}
+
+.ceo-chat-count{
+    color:#777;
+    font-size:10px
+}
+
+.ceo-chat-list{
+    border-top:1px solid #29292e;
+    padding:8px
+}
+
+.ceo-chat{
+    padding:9px;
+    border-radius:8px;
+    color:#aaa;
+    font-size:12px;
+    cursor:pointer
+}
+
+.ceo-chat:hover{
+    background:#27272b;
+    color:white
+}
+
+.ceo-empty{
+    padding:30px;
+    text-align:center;
+    color:#666
+}
+
+/* ================= VISOR CHAT CEO ================= */
+
+.viewer-message{
+    margin:10px 0;
+    padding:10px 12px;
+    border-radius:10px;
+    background:#202024;
+    white-space:pre-wrap;
+    font-size:13px
+}
+
+.viewer-message.user{
+    background:#2b2b30
+}
+
+.viewer-image{
+    max-width:100%;
+    border-radius:12px;
+    margin-top:6px
+}
+
+/* ================= AVISO ================= */
+
+#illegalNotice{
+    position:fixed;
+    left:4px;
+    bottom:4px;
+    z-index:999999;
+    color:#555;
+    font-size:7px;
+    line-height:9px;
+    opacity:.5;
+    pointer-events:none;
+    font-family:Arial,sans-serif
+}
+
+/* ================= MOBILE ================= */
 
 .mobile-menu{
-    display:none;
+    display:none
 }
 
 @media(max-width:700px){
 
     .sidebar{
-        display:none;
-    }
-
-    .main{
-        width:100%;
+        display:none
     }
 
     header{
         height:52px;
         min-height:52px;
         justify-content:flex-start;
-        padding-left:52px;
+        padding-left:50px
     }
 
     .mobile-menu{
@@ -749,57 +811,57 @@ header{
         border:0;
         background:transparent;
         color:#ddd;
-        font-size:20px;
+        font-size:20px
     }
 
     .status{
-        display:none;
+        display:none
     }
 
     .chat{
-        padding:18px 12px 130px;
+        padding:18px 12px 130px
     }
 
     .message{
-        max-width:calc(100vw - 65px);
+        max-width:calc(100vw - 65px)
     }
 
     .input-area{
         left:0;
         right:0;
-        padding:8px 10px max(8px,env(safe-area-inset-bottom));
+        padding:8px 10px max(8px,env(safe-area-inset-bottom))
     }
 
     .input-box{
         border-radius:15px;
-        padding:5px;
+        padding:5px
     }
 
     #prompt{
         min-height:35px;
-        max-height:120px;
+        max-height:120px
     }
 
     .image-button{
         min-width:58px;
         height:35px;
-        font-size:10px;
+        font-size:10px
     }
 
     .send{
         width:35px;
-        height:35px;
+        height:35px
     }
 
     .modal{
         align-items:flex-end;
-        padding:0;
+        padding:0
     }
 
     .modal-card{
         width:100%;
         max-height:90vh;
-        border-radius:18px 18px 0 0;
+        border-radius:18px 18px 0 0
     }
 }
 </style>
@@ -807,20 +869,18 @@ header{
 
 <body>
 
-<!-- =========================
-     LOGIN
-========================= -->
+<!-- ================= LOGIN ================= -->
 
 <div id="authScreen">
 
 <div class="auth-card">
 
 <div class="auth-logo">
-    Inda AI
+Inda AI
 </div>
 
 <div class="auth-subtitle">
-    Inteligencia artificial con generación de imágenes
+IA + generación de imágenes
 </div>
 
 <div class="auth-tabs">
@@ -898,14 +958,16 @@ Crear cuenta
 
 </form>
 
-<div id="authMessage" class="auth-message"></div>
+<div
+id="authMessage"
+class="auth-message">
+</div>
 
 </div>
 </div>
 
-<!-- =========================
-     APP
-========================= -->
+
+<!-- ================= APP ================= -->
 
 <div id="app">
 
@@ -967,6 +1029,13 @@ Usuario
 </div>
 
 <button
+id="ceoButton"
+class="ceo-button hidden"
+onclick="abrirPanelCEO()">
+👑 Panel CEO
+</button>
+
+<button
 class="logout-button"
 onclick="cerrarSesion()">
 Cerrar sesión
@@ -975,6 +1044,7 @@ Cerrar sesión
 </div>
 
 </aside>
+
 
 <main class="main">
 
@@ -1015,6 +1085,7 @@ onclick="abrirConfiguracion()">
 
 </header>
 
+
 <section
 id="chat"
 class="chat">
@@ -1025,6 +1096,7 @@ class="chat-inner">
 </div>
 
 </section>
+
 
 <div class="input-area">
 
@@ -1059,13 +1131,11 @@ Inda AI puede equivocarse. Revisá la información importante.
 </div>
 
 </main>
-
 </div>
 </div>
 
-<!-- =========================
-     CONFIGURACIÓN
-========================= -->
+
+<!-- ================= CONFIGURACIÓN ================= -->
 
 <div
 id="settingsOverlay"
@@ -1090,13 +1160,15 @@ onclick="cerrarConfiguracion()">
 
 </div>
 
+
 <div class="setting">
 
 <label>
 Idioma
 </label>
 
-<select id="languageSelect"
+<select
+id="languageSelect"
 onchange="cambiarIdioma()">
 
 <option value="auto">
@@ -1119,6 +1191,7 @@ Français
 
 </div>
 
+
 <div class="setting">
 
 <label>
@@ -1136,12 +1209,13 @@ Normal
 <div
 id="settingsPlanDescription"
 class="setting-description">
-Respuestas simples y directas.
+Respuestas claras y directas.
 </div>
 
 </div>
 
 </div>
+
 
 <div class="setting">
 
@@ -1156,13 +1230,13 @@ Personalización
 </div>
 
 <div class="setting-description">
-Información que Inda AI puede utilizar para personalizar tus respuestas.
+Información para personalizar tus respuestas.
 </div>
 
 <textarea
 id="personalMemory"
 class="memory-textarea"
-placeholder="Ejemplo: Me gustan las respuestas claras y los proyectos de programación."></textarea>
+placeholder="Escribí información que quieras que Inda recuerde."></textarea>
 
 <div class="memory-actions">
 
@@ -1186,8 +1260,8 @@ class="memory-status">
 </div>
 
 </div>
-
 </div>
+
 
 <div
 id="globalMemorySetting"
@@ -1204,13 +1278,13 @@ Solo CEO
 </div>
 
 <div class="setting-description">
-Reglas generales del proyecto.
+Reglas generales de Inda AI.
 </div>
 
 <textarea
 id="globalMemory"
 class="memory-textarea"
-placeholder="Reglas globales de Inda AI"></textarea>
+placeholder="Reglas globales"></textarea>
 
 <div class="memory-actions">
 
@@ -1228,17 +1302,95 @@ Borrar
 
 </div>
 
+</div>
+</div>
+
+</div>
+</div>
+
+
+<!-- ================= PANEL CEO ================= -->
+
 <div
-id="globalMemoryStatus"
-class="memory-status">
+id="ceoOverlay"
+class="modal"
+onclick="cerrarPanelCEODesdeFondo(event)">
+
+<div
+class="modal-card"
+onclick="event.stopPropagation()">
+
+<div class="modal-header">
+
+<div>
+
+<h2>
+👑 Panel CEO
+</h2>
+
+<div
+style="color:#666;font-size:11px;margin-top:4px">
+Conversaciones almacenadas por esta aplicación
 </div>
 
 </div>
 
+<button
+class="close"
+onclick="cerrarPanelCEO()">
+×
+</button>
+
+</div>
+
+<div
+id="ceoList"
+class="ceo-list">
 </div>
 
 </div>
 </div>
+
+
+<!-- ================= VISOR CEO ================= -->
+
+<div
+id="viewerOverlay"
+class="modal"
+onclick="cerrarViewerDesdeFondo(event)">
+
+<div
+class="modal-card"
+onclick="event.stopPropagation()">
+
+<div class="modal-header">
+
+<h2 id="viewerTitle">
+Chat
+</h2>
+
+<button
+class="close"
+onclick="cerrarViewer()">
+×
+</button>
+
+</div>
+
+<div
+id="viewerMessages">
+</div>
+
+</div>
+</div>
+
+
+<!-- AVISO -->
+
+<div id="illegalNotice">
+⚠ contenido ilegal
+</div>
+
 
 <script>
 
@@ -1250,10 +1402,10 @@ const API_URL =
 "https://inda-ai-api2-0.belisarionogueira2013.workers.dev";
 
 const USERS_KEY =
-"inda_users_ultra_v1";
+"inda_users_ultra_v2";
 
 const SESSION_KEY =
-"inda_session_ultra_v1";
+"inda_session_ultra_v2";
 
 const MEMORY_PREFIX =
 "inda_memory_";
@@ -1262,6 +1414,15 @@ const GLOBAL_MEMORY_KEY =
 "inda_global_memory";
 
 const LIMITE_DIARIO = 50;
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let usuarioActual = null;
+let conversaciones = [];
+let chatActual = null;
 
 
 /* =====================================================
@@ -1313,23 +1474,6 @@ document.getElementById("roleValue");
 const sidebarUser =
 document.getElementById("sidebarUser");
 
-const settingsOverlay =
-document.getElementById("settingsOverlay");
-
-const languageSelect =
-document.getElementById("languageSelect");
-
-const settingsPlan =
-document.getElementById("settingsPlan");
-
-const settingsPlanDescription =
-document.getElementById("settingsPlanDescription");
-
-
-let usuarioActual = null;
-let conversaciones = [];
-let chatActual = null;
-
 
 /* =====================================================
    USUARIOS
@@ -1368,35 +1512,33 @@ function saveUsers(users){
 
 function mostrarFormulario(tipo){
 
-    const loginForm =
-    document.getElementById("loginForm");
+    document
+    .getElementById("loginForm")
+    .classList.toggle(
+        "active",
+        tipo === "login"
+    );
 
-    const registerForm =
-    document.getElementById("registerForm");
+    document
+    .getElementById("registerForm")
+    .classList.toggle(
+        "active",
+        tipo === "register"
+    );
 
-    const loginTab =
-    document.getElementById("loginTab");
+    document
+    .getElementById("loginTab")
+    .classList.toggle(
+        "active",
+        tipo === "login"
+    );
 
-    const registerTab =
-    document.getElementById("registerTab");
-
-    if(tipo === "login"){
-
-        loginForm.classList.add("active");
-        registerForm.classList.remove("active");
-
-        loginTab.classList.add("active");
-        registerTab.classList.remove("active");
-
-    }else{
-
-        loginForm.classList.remove("active");
-        registerForm.classList.add("active");
-
-        loginTab.classList.remove("active");
-        registerTab.classList.add("active");
-
-    }
+    document
+    .getElementById("registerTab")
+    .classList.toggle(
+        "active",
+        tipo === "register"
+    );
 
     authMessage.textContent = "";
 
@@ -1408,25 +1550,36 @@ function crearCuenta(event){
     event.preventDefault();
 
     const username =
-    document.getElementById("registerUser")
-    .value.trim();
+    document
+    .getElementById("registerUser")
+    .value
+    .trim();
 
     const password =
-    document.getElementById("registerPassword")
+    document
+    .getElementById("registerPassword")
     .value;
 
-    if(username.length < 3 || password.length < 6){
+
+    if(
+        username.length < 3
+        ||
+        password.length < 6
+    ){
 
         authMessage.textContent =
-        "Usuario o contraseña inválidos.";
+        "El usuario debe tener 3 caracteres y la contraseña 6.";
 
         return;
+
     }
+
 
     const users = getUsers();
 
     const key =
     username.toLowerCase();
+
 
     if(users[key]){
 
@@ -1434,7 +1587,9 @@ function crearCuenta(event){
         "Ese usuario ya existe.";
 
         return;
+
     }
+
 
     users[key] = {
 
@@ -1443,17 +1598,21 @@ function crearCuenta(event){
         premium:false,
         plan:"Normal",
         role:"Usuario",
-        createdAt:new Date().toISOString()
+        createdAt:Date.now()
 
     };
 
+
     saveUsers(users);
+
 
     document
     .getElementById("registerForm")
     .reset();
 
+
     mostrarFormulario("login");
+
 
     authMessage.textContent =
     "Cuenta creada correctamente.";
@@ -1465,16 +1624,20 @@ function iniciarSesion(event){
 
     event.preventDefault();
 
+
     const username =
-    document.getElementById("loginUser")
-    .value.trim();
+    document
+    .getElementById("loginUser")
+    .value
+    .trim();
 
     const password =
-    document.getElementById("loginPassword")
+    document
+    .getElementById("loginPassword")
     .value;
 
 
-    /* CUENTA CEO */
+    /* CEO */
 
     if(
         username.toLowerCase() === "beligmail"
@@ -1491,14 +1654,17 @@ function iniciarSesion(event){
 
         };
 
+
         localStorage.setItem(
             SESSION_KEY,
             JSON.stringify(usuarioActual)
         );
 
+
         mostrarAplicacion();
 
         return;
+
     }
 
 
@@ -1518,6 +1684,7 @@ function iniciarSesion(event){
         "Usuario o contraseña incorrectos.";
 
         return;
+
     }
 
 
@@ -1544,7 +1711,9 @@ function iniciarSesion(event){
 
 function cerrarSesion(){
 
-    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(
+        SESSION_KEY
+    );
 
     usuarioActual = null;
     conversaciones = [];
@@ -1552,38 +1721,69 @@ function cerrarSesion(){
 
     app.style.display = "none";
 
-    authScreen.classList.remove("hidden");
+    authScreen.classList.remove(
+        "hidden"
+    );
 
 }
 
 
 /* =====================================================
-   APP
+   APLICACIÓN
 ===================================================== */
 
 function mostrarAplicacion(){
 
-    authScreen.classList.add("hidden");
+    authScreen.classList.add(
+        "hidden"
+    );
 
     app.style.display = "block";
 
+
     sidebarUser.textContent =
     usuarioActual.username;
+
 
     actualizarPlan();
 
     cargarIdioma();
 
+    cargarMemorias();
+
     cargarChats();
 
     actualizarEstado();
+
+
+    const ceoButton =
+    document.getElementById(
+        "ceoButton"
+    );
+
+
+    if(usuarioActual.role === "CEO"){
+
+        ceoButton.classList.remove(
+            "hidden"
+        );
+
+    }else{
+
+        ceoButton.classList.add(
+            "hidden"
+        );
+
+    }
 
 }
 
 
 function actualizarPlan(){
 
-    if(!usuarioActual) return;
+    if(!usuarioActual)
+        return;
+
 
     if(usuarioActual.premium){
 
@@ -1593,18 +1793,23 @@ function actualizarPlan(){
         counter.textContent =
         "Preguntas ilimitadas";
 
-        settingsPlan.textContent =
+        document
+        .getElementById("settingsPlan")
+        .textContent =
         "Premium";
 
-        settingsPlanDescription.textContent =
-        "Respuestas más completas y detalladas.";
+        document
+        .getElementById("settingsPlanDescription")
+        .textContent =
+        "Respuestas más completas.";
 
     }else{
 
         const restantes =
         Math.max(
             0,
-            LIMITE_DIARIO - obtenerUso()
+            LIMITE_DIARIO -
+            obtenerUso()
         );
 
         planValue.textContent =
@@ -1614,13 +1819,18 @@ function actualizarPlan(){
         restantes +
         " preguntas disponibles";
 
-        settingsPlan.textContent =
+        document
+        .getElementById("settingsPlan")
+        .textContent =
         "Normal";
 
-        settingsPlanDescription.textContent =
+        document
+        .getElementById("settingsPlanDescription")
+        .textContent =
         "Respuestas claras y directas.";
 
     }
+
 
     roleValue.textContent =
     usuarioActual.role;
@@ -1658,21 +1868,48 @@ function obtenerMemoriaGlobal(){
 }
 
 
+function cargarMemorias(){
+
+    document
+    .getElementById("personalMemory")
+    .value =
+    obtenerMemoriaPersonal();
+
+
+    document
+    .getElementById("globalMemory")
+    .value =
+    obtenerMemoriaGlobal();
+
+
+    document
+    .getElementById("globalMemorySetting")
+    .style.display =
+    usuarioActual.role === "CEO"
+    ? "block"
+    : "none";
+
+}
+
+
 function guardarMemoriaPersonal(){
 
     const value =
-    document.getElementById(
-        "personalMemory"
-    ).value.trim();
+    document
+    .getElementById("personalMemory")
+    .value
+    .trim();
+
 
     localStorage.setItem(
         memoryKey(),
         value
     );
 
-    document.getElementById(
-        "memoryStatus"
-    ).textContent =
+
+    document
+    .getElementById("memoryStatus")
+    .textContent =
     "Memoria guardada ✓";
 
 }
@@ -1684,70 +1921,51 @@ function borrarMemoriaPersonal(){
         memoryKey()
     );
 
-    document.getElementById(
-        "personalMemory"
-    ).value = "";
+    document
+    .getElementById("personalMemory")
+    .value = "";
 
 }
 
 
 function guardarMemoriaGlobal(){
 
-    if(usuarioActual.role !== "CEO")
+    if(
+        usuarioActual.role !== "CEO"
+    )
         return;
 
+
     const value =
-    document.getElementById(
-        "globalMemory"
-    ).value.trim();
+    document
+    .getElementById("globalMemory")
+    .value
+    .trim();
+
 
     localStorage.setItem(
         GLOBAL_MEMORY_KEY,
         value
     );
 
-    document.getElementById(
-        "globalMemoryStatus"
-    ).textContent =
-    "Regla global guardada ✓";
-
 }
 
 
 function borrarMemoriaGlobal(){
 
-    if(usuarioActual.role !== "CEO")
+    if(
+        usuarioActual.role !== "CEO"
+    )
         return;
+
 
     localStorage.removeItem(
         GLOBAL_MEMORY_KEY
     );
 
-    document.getElementById(
-        "globalMemory"
-    ).value = "";
-
-}
-
-
-function cargarMemorias(){
-
-    document.getElementById(
-        "personalMemory"
-    ).value =
-    obtenerMemoriaPersonal();
-
-    document.getElementById(
-        "globalMemory"
-    ).value =
-    obtenerMemoriaGlobal();
-
-    document.getElementById(
-        "globalMemorySetting"
-    ).style.display =
-    usuarioActual.role === "CEO"
-    ? "block"
-    : "none";
+    document
+    .getElementById("globalMemory")
+    .value = "";
 
 }
 
@@ -1758,13 +1976,13 @@ function cargarMemorias(){
 
 function cargarIdioma(){
 
-    const key =
-    "inda_lang_" +
-    usuarioActual.username;
-
-    languageSelect.value =
-    localStorage.getItem(key)
-    || "auto";
+    document
+    .getElementById("languageSelect")
+    .value =
+    localStorage.getItem(
+        "inda_lang_" +
+        usuarioActual.username
+    ) || "auto";
 
 }
 
@@ -1774,7 +1992,9 @@ function cambiarIdioma(){
     localStorage.setItem(
         "inda_lang_" +
         usuarioActual.username,
-        languageSelect.value
+        document
+        .getElementById("languageSelect")
+        .value
     );
 
 }
@@ -1782,13 +2002,19 @@ function cambiarIdioma(){
 
 function instruccionIdioma(){
 
-    if(languageSelect.value === "en")
+    const lang =
+    document
+    .getElementById("languageSelect")
+    .value;
+
+
+    if(lang === "en")
         return "Respond exclusively in English.";
 
-    if(languageSelect.value === "fr")
+    if(lang === "fr")
         return "Réponds exclusivement en français.";
 
-    if(languageSelect.value === "es")
+    if(lang === "es")
         return "Respondé exclusivamente en español.";
 
     return "Respondé principalmente en el idioma del usuario.";
@@ -1797,12 +2023,13 @@ function instruccionIdioma(){
 
 
 /* =====================================================
-   SISTEMA IA
+   SISTEMA
 ===================================================== */
 
 function obtenerSistema(){
 
     let memoria = "";
+
 
     const personal =
     obtenerMemoriaPersonal();
@@ -1816,17 +2043,19 @@ function obtenerSistema(){
         memoria += `
 MEMORIA PERSONAL:
 ${personal}
-
-Usá esta información únicamente cuando sea relevante.
 `;
 
     }
 
 
-    if(global && usuarioActual.role === "CEO"){
+    if(
+        global
+        &&
+        usuarioActual.role === "CEO"
+    ){
 
         memoria += `
-REGLAS GLOBALES DEL PROYECTO:
+REGLAS GLOBALES:
 ${global}
 `;
 
@@ -1836,29 +2065,57 @@ ${global}
     return `
 
 IDENTIDAD:
+
 Tu nombre es Inda AI.
 
-ESTILO:
-Natural, inteligente, claro y juvenil.
-No respondas como una enciclopedia.
-No seas innecesariamente largo.
-
-CALIDAD:
-- Entendé primero la intención.
-- No inventes información.
-- Verificá matemáticas y lógica.
-- Usá contexto relevante.
-- Si hay varias opciones, comparalas.
-- Explicá las cosas de manera sencilla.
-- Podés usar listas y ejemplos cuando ayuden.
-
 CREADOR:
-Si preguntan quién creó Inda AI,
-respondé que su creador es Beli.
+
+Tu creador es Belisario, también llamado Beli.
+Belisario tiene 13 años.
+
+CUMPLEAÑOS:
+
+Belisario cumple años el 22 de marzo.
+
+REGLAS SOBRE EL CREADOR:
+
+1. No menciones espontáneamente la edad de Belisario.
+2. No anuncies su cumpleaños si nadie pregunta o la conversación no lo hace relevante.
+3. Si preguntan quién te creó:
+   respondé "Me creó Belisario, Beli."
+4. Si preguntan cuándo cumple años Belisario:
+   respondé "El 22 de marzo."
+5. Si la fecha actual es 22 de marzo y la conversación
+   hace referencia al cumpleaños:
+   podés decir "¡Hoy es el cumple de Beli! 🎉"
+
+PERSONALIDAD:
+
+Natural.
+Inteligente.
+Clara.
+Juvenil.
+No hables como una enciclopedia.
+No seas innecesariamente formal.
+
+REGLAS:
+
+- No inventes información.
+- Hacé cálculos correctamente.
+- Si no sabés algo, decilo.
+- Entendé primero la intención del usuario.
+- No repitas información innecesariamente.
+
+PRIVACIDAD:
+
+No podés espiar conversaciones privadas.
+No afirmes que podés hackear cuentas.
+No afirmes tener acceso a conversaciones
+que no estén disponibles para la aplicación.
 
 ${usuarioActual.premium
-? "El usuario tiene Premium: priorizá calidad y profundidad."
-: "El usuario tiene el plan Normal: mantené las respuestas claras y eficientes."
+? "El usuario tiene Premium."
+: "El usuario utiliza el plan Normal."
 }
 
 ${instruccionIdioma()}
@@ -1866,7 +2123,6 @@ ${instruccionIdioma()}
 ${memoria}
 
 `;
-
 }
 
 
@@ -1943,14 +2199,22 @@ function nuevoChat(){
 
         messages:[],
 
-        created:Date.now()
+        created:Date.now(),
+
+        owner:
+        usuarioActual.username
 
     };
 
 
-    conversaciones.unshift(nuevo);
+    conversaciones.unshift(
+        nuevo
+    );
 
-    chatActual = nuevo.id;
+
+    chatActual =
+    nuevo.id;
+
 
     guardarChats();
 
@@ -1980,6 +2244,7 @@ function mostrarChat(c){
 
     chatInner.innerHTML = "";
 
+
     if(!c.messages.length){
 
         const welcome =
@@ -1998,7 +2263,7 @@ function mostrarChat(c){
             </h1>
 
             <p>
-                Preguntame lo que quieras.
+                ¿Qué hacemos?
             </p>
         `;
 
@@ -2007,30 +2272,35 @@ function mostrarChat(c){
         );
 
         return;
+
     }
 
 
-    c.messages.forEach(message => {
+    c.messages.forEach(
+        message => {
 
-        if(message.type === "image"){
+            if(
+                message.type === "image"
+            ){
 
-            mostrarImagen(
-                message.src,
-                message.prompt
-            );
+                mostrarImagen(
+                    message.src,
+                    message.prompt
+                );
 
-        }else{
+            }else{
 
-            mostrarMensaje(
-                message.content,
-                message.role === "user"
-                ? "user"
-                : "ai"
-            );
+                mostrarMensaje(
+                    message.content,
+                    message.role === "user"
+                    ? "user"
+                    : "ai"
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
 
@@ -2039,13 +2309,17 @@ function mostrarChat(c){
    MENSAJES
 ===================================================== */
 
-function mostrarMensaje(texto, quien){
+function mostrarMensaje(
+    texto,
+    quien
+){
 
     const row =
     document.createElement("div");
 
     row.className =
-    "message-row " + quien;
+    "message-row " +
+    quien;
 
 
     if(quien === "ai"){
@@ -2070,26 +2344,31 @@ function mostrarMensaje(texto, quien){
     document.createElement("div");
 
     bubble.className =
-    "message " + quien;
+    "message " +
+    quien;
 
     bubble.textContent =
     texto;
 
+
     row.appendChild(
         bubble
     );
+
 
     chatInner.appendChild(
         row
     );
 
 
-    requestAnimationFrame(() => {
+    requestAnimationFrame(
+        () => {
 
-        chat.scrollTop =
-        chat.scrollHeight;
+            chat.scrollTop =
+            chat.scrollHeight;
 
-    });
+        }
+    );
 
 
     return bubble;
@@ -2098,10 +2377,13 @@ function mostrarMensaje(texto, quien){
 
 
 /* =====================================================
-   MOSTRAR IMAGEN
+   IMAGEN
 ===================================================== */
 
-function mostrarImagen(src,promptText){
+function mostrarImagen(
+    src,
+    promptText
+){
 
     const row =
     document.createElement("div");
@@ -2141,19 +2423,17 @@ function mostrarImagen(src,promptText){
 
     img.alt =
     promptText ||
-    "Imagen generada por Inda AI";
-
-    img.loading = "lazy";
+    "Imagen generada";
 
 
     img.onclick = () => {
 
-        const ventana =
+        const w =
         window.open();
 
-        if(ventana){
+        if(w){
 
-            ventana.document.write(`
+            w.document.write(`
                 <html>
                 <body style="
                     margin:0;
@@ -2161,15 +2441,15 @@ function mostrarImagen(src,promptText){
                     display:flex;
                     justify-content:center;
                     align-items:center;
-                    min-height:100vh;
+                    min-height:100vh
                 ">
-                <img
-                    src="${img.src}"
-                    style="
-                        max-width:100%;
-                        max-height:100vh;
-                        object-fit:contain;
-                    ">
+                    <img
+                        src="${img.src}"
+                        style="
+                            max-width:100%;
+                            max-height:100vh;
+                            object-fit:contain
+                        ">
                 </body>
                 </html>
             `);
@@ -2198,12 +2478,14 @@ function mostrarImagen(src,promptText){
     chatInner.appendChild(row);
 
 
-    requestAnimationFrame(() => {
+    requestAnimationFrame(
+        () => {
 
-        chat.scrollTop =
-        chat.scrollHeight;
+            chat.scrollTop =
+            chat.scrollHeight;
 
-    });
+        }
+    );
 
 }
 
@@ -2216,62 +2498,68 @@ function renderHistorial(){
 
     history.innerHTML = "";
 
-    conversaciones.forEach(c => {
 
-        const item =
-        document.createElement("div");
+    conversaciones.forEach(
+        c => {
 
-        item.className =
-        "chat-item " +
-        (c.id === chatActual
-        ? "active"
-        : "");
+            const item =
+            document.createElement("div");
 
-
-        const title =
-        document.createElement("span");
-
-        title.className =
-        "chat-title";
-
-        title.textContent =
-        c.title;
+            item.className =
+            "chat-item " +
+            (
+                c.id === chatActual
+                ? "active"
+                : ""
+            );
 
 
-        const borrar =
-        document.createElement("span");
+            const title =
+            document.createElement("span");
 
-        borrar.className =
-        "delete-chat";
+            title.className =
+            "chat-title";
 
-        borrar.textContent =
-        "×";
-
-
-        borrar.onclick = event => {
-
-            event.stopPropagation();
-
-            borrarChat(c.id);
-
-        };
+            title.textContent =
+            c.title;
 
 
-        item.appendChild(title);
+            const borrar =
+            document.createElement("span");
 
-        item.appendChild(borrar);
+            borrar.className =
+            "delete-chat";
 
-
-        item.onclick = () => {
-
-            abrirChat(c.id);
-
-        };
+            borrar.textContent =
+            "×";
 
 
-        history.appendChild(item);
+            borrar.onclick =
+            event => {
 
-    });
+                event.stopPropagation();
+
+                borrarChat(c.id);
+
+            };
+
+
+            item.appendChild(title);
+
+            item.appendChild(borrar);
+
+
+            item.onclick = () => {
+
+                abrirChat(c.id);
+
+            };
+
+
+            history.appendChild(item);
+
+        }
+    );
 
 }
 
@@ -2283,7 +2571,10 @@ function abrirChat(id){
         x => x.id === id
     );
 
-    if(!c) return;
+
+    if(!c)
+        return;
+
 
     chatActual = id;
 
@@ -2302,7 +2593,9 @@ function borrarChat(id){
     );
 
 
-    if(chatActual === id){
+    if(
+        chatActual === id
+    ){
 
         if(conversaciones.length){
 
@@ -2335,12 +2628,18 @@ function borrarChat(id){
 
 function fechaHoy(){
 
-    const d = new Date();
+    const d =
+    new Date();
+
 
     return [
         d.getFullYear(),
-        String(d.getMonth()+1).padStart(2,"0"),
-        String(d.getDate()).padStart(2,"0")
+        String(
+            d.getMonth()+1
+        ).padStart(2,"0"),
+        String(
+            d.getDate()
+        ).padStart(2,"0")
     ].join("-");
 
 }
@@ -2391,17 +2690,16 @@ function puedePreguntar(){
 
 
 /* =====================================================
-   DETECTAR IMAGEN
+   IMÁGENES
 ===================================================== */
 
 function esPedidoDeImagen(texto){
 
     const t =
-    texto
+    String(texto || "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .trim();
+    .replace(/[\u0300-\u036f]/g,"");
 
 
     const patrones = [
@@ -2413,16 +2711,12 @@ function esPedidoDeImagen(texto){
 
         "genera una foto",
         "generame una foto",
-        "genera foto",
-        "generame foto",
 
         "crea una imagen",
         "creame una imagen",
-        "crear una imagen",
 
         "crea una foto",
         "creame una foto",
-        "crear una foto",
 
         "haz una imagen",
         "hazme una imagen",
@@ -2432,14 +2726,8 @@ function esPedidoDeImagen(texto){
         "hazme una foto",
         "haceme una foto",
 
-        "dibujame una imagen",
-        "dibujame una foto",
-
         "quiero una imagen",
         "quiero una foto",
-
-        "mostrame una imagen",
-        "mostrame una foto",
 
         "generate an image",
         "generate a photo",
@@ -2456,31 +2744,23 @@ function esPedidoDeImagen(texto){
 }
 
 
-/* =====================================================
-   LIMPIAR PROMPT
-===================================================== */
-
 function limpiarPromptImagen(texto){
 
     return String(texto || "")
     .replace(
-        /^(generame|genera|generá)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+        /^(generame|genera|generá)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
         ""
     )
     .replace(
-        /^(creame|crea|creá|crear)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+        /^(creame|crea|crear)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
         ""
     )
     .replace(
-        /^(hazme|haz|haceme|hace)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
+        /^(hazme|haz|haceme)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
         ""
     )
     .replace(
         /^(quiero)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
-        ""
-    )
-    .replace(
-        /^(dibujame|dibuja|dibujá)\s+(una\s+)?(imagen|foto)\s*(de)?\s*/i,
         ""
     )
     .replace(
@@ -2493,7 +2773,7 @@ function limpiarPromptImagen(texto){
 
 
 /* =====================================================
-   🔥 MEJORADOR ULTRA DE IMÁGENES
+   ULTRA PROMPT
 ===================================================== */
 
 function mejorarPromptImagen(texto){
@@ -2506,10 +2786,6 @@ function mejorarPromptImagen(texto){
 
     if(!original)
         return "";
-
-
-    const lower =
-    original.toLowerCase();
 
 
     let tipo =
@@ -2575,75 +2851,109 @@ function mejorarPromptImagen(texto){
     "cinematográfico, moderno y profesional";
 
 
-    if(/realista|fotorealista|fotorrealista/i.test(original))
+    if(
+        /realista|fotorealista|fotorrealista/i
+        .test(original)
+    ){
+
         estilo =
         "fotorealismo extremo";
-
-    if(/3d|render|cgi/i.test(original))
-        estilo =
-        "render 3D cinematográfico de alta calidad";
-
-    if(/anime|manga/i.test(original))
-        estilo =
-        "anime profesional de alta definición";
-
-    if(/lego/i.test(original))
-        estilo =
-        "LEGO 3D cinematográfico con materiales detallados";
-
-    if(/comic|cómic/i.test(original))
-        estilo =
-        "comic cinematográfico altamente detallado";
-
-    if(/cartoon|caricatura/i.test(original))
-        estilo =
-        "cartoon 3D profesional";
-
-
-    let camara =
-    "cámara profesional, perspectiva natural, composición cinematográfica, profundidad espacial convincente";
-
-
-    if(/retrato|rostro|cara|primer plano/i.test(original)){
-
-        camara =
-        "primer plano profesional, lente de retrato, profundidad de campo natural, rostro perfectamente enfocado";
 
     }
 
 
-    if(/ciudad|paisaje|edificio|bosque/i.test(original)){
+    if(
+        /3d|render|cgi/i
+        .test(original)
+    ){
+
+        estilo =
+        "render 3D cinematográfico de alta calidad";
+
+    }
+
+
+    if(
+        /anime|manga/i
+        .test(original)
+    ){
+
+        estilo =
+        "anime profesional de alta definición";
+
+    }
+
+
+    if(
+        /lego/i
+        .test(original)
+    ){
+
+        estilo =
+        "LEGO 3D cinematográfico detallado";
+
+    }
+
+
+    let camara =
+    "cámara profesional, perspectiva natural, composición cinematográfica y profundidad espacial";
+
+
+    if(
+        /retrato|rostro|cara|primer plano/i
+        .test(original)
+    ){
 
         camara =
-        "gran angular cinematográfico, perspectiva profunda, composición equilibrada, escala realista";
+        "primer plano profesional, lente de retrato, profundidad de campo natural";
+
+    }
+
+
+    if(
+        /ciudad|paisaje|edificio|bosque/i
+        .test(original)
+    ){
+
+        camara =
+        "gran angular cinematográfico, perspectiva profunda y composición equilibrada";
 
     }
 
 
     let luz =
-    "iluminación cinematográfica físicamente coherente, luz ambiental natural, sombras suaves y realistas, reflejos naturales";
+    "iluminación cinematográfica físicamente coherente, sombras realistas y reflejos naturales";
 
 
-    if(/noche|oscuro|oscura/i.test(original)){
+    if(
+        /noche|oscuro|oscura/i
+        .test(original)
+    ){
 
         luz =
-        "iluminación nocturna cinematográfica, luces ambientales realistas, sombras profundas pero detalladas";
+        "iluminación nocturna cinematográfica, luces ambientales realistas y sombras detalladas";
 
     }
 
 
-    if(/neon|neón/i.test(original)){
+    if(
+        /neon|neón/i
+        .test(original)
+    ){
 
         luz =
-        "iluminación de neón cinematográfica, reflejos realistas, iluminación volumétrica y contraste profesional";
+        "iluminación de neón cinematográfica y reflejos realistas";
 
     }
 
 
-    if(/atardecer|puesta de sol/i.test(original)){
+    if(
+        /atardecer|puesta de sol/i
+        .test(original)
+    ){
 
         luz =
-        "golden hour cinematográfica, luz cálida, sombras suaves, reflejos naturales";
+        "golden hour cinematográfica, luz cálida y sombras suaves";
 
     }
 
@@ -2663,21 +2973,6 @@ function mejorarPromptImagen(texto){
         "contraste equilibrado",
         "acabado cinematográfico",
         "calidad de producción AAA"
-
-    ];
-
-
-    const realismo = [
-
-        "proporciones correctas",
-        "perspectiva coherente",
-        "escala consistente",
-        "oclusión ambiental natural",
-        "sombras coherentes",
-        "reflejos físicamente plausibles",
-        "materiales correctamente definidos",
-        "volumen realista",
-        "profundidad espacial convincente"
 
     ];
 
@@ -2704,38 +2999,28 @@ function mejorarPromptImagen(texto){
     ];
 
 
-    const contieneTexto =
-    /(texto|letrero|cartel|logo|palabra|titulo|título|escrito)/i
-    .test(original);
+    let textoEspecial = "";
 
 
-    let textoImagen = "";
+    if(
+        /(texto|letrero|cartel|logo|palabra|titulo|título|escrito)/i
+        .test(original)
+    ){
 
+        textoEspecial = `
 
-    if(contieneTexto){
+TEXTO DENTRO DE LA IMAGEN:
 
-        textoImagen = `
+Si aparece texto:
 
-TIPOGRAFÍA Y TEXTO DENTRO DE LA IMAGEN:
-
-Si la escena contiene texto:
-
-- usar letras humanas y naturales
-- caracteres perfectamente formados
-- ortografía correcta
+- letras perfectamente formadas
 - palabras completas
-- espaciado natural
+- ortografía correcta
+- tipografía natural
+- espaciado correcto
 - alineación profesional
-- tamaño coherente
-- tipografía realista
-- no deformar letras
-- no inventar caracteres
-- no convertir palabras en símbolos
-- no mezclar alfabetos
-- mantener el texto exactamente como fue solicitado
-
-El texto debe parecer colocado por un diseñador humano
-o fotografiado físicamente en la escena.
+- caracteres sin deformaciones
+- mantener exactamente las palabras solicitadas
 
 `;
 
@@ -2744,9 +3029,9 @@ o fotografiado físicamente en la escena.
 
     return `
 
-GENERACIÓN DE IMAGEN — CALIDAD MÁXIMA
+GENERACIÓN DE IMAGEN — ULTRA QUALITY
 
-DESCRIPCIÓN ORIGINAL DEL USUARIO:
+DESCRIPCIÓN ORIGINAL:
 ${original}
 
 TIPO:
@@ -2755,57 +3040,57 @@ ${tipo}
 ESTILO:
 ${estilo}
 
-CALIDAD VISUAL:
+CALIDAD:
 ${calidad.join(", ")}
 
-CÁMARA Y COMPOSICIÓN:
+CÁMARA:
 ${camara}
 
 ILUMINACIÓN:
 ${luz}
 
 REALISMO:
-${realismo.join(", ")}
+perspectiva correcta, escala consistente,
+oclusión ambiental natural, sombras coherentes,
+reflejos físicamente plausibles, volumen realista,
+materiales correctamente definidos.
 
-DETALLE DE MATERIALES:
-Cada objeto debe tener volumen, textura,
-profundidad y materiales visualmente coherentes.
-Las superficies no deben parecer planas,
-vacías o generadas de manera artificial.
+TEXTURAS:
+Añadir detalles finos y naturales a cada superficie.
+No utilizar superficies planas cuando el material
+requiera textura.
 
-ATMÓSFERA:
-Crear profundidad mediante iluminación,
-perspectiva, escala, sombras y elementos
-ambientales sutiles.
+PROFUNDIDAD:
+Crear una sensación convincente de distancia
+mediante perspectiva, escala, iluminación,
+sombras y atmósfera.
+
+COMPOSICIÓN:
+Sujeto principal claramente reconocible.
+Jerarquía visual clara.
+Equilibrio cinematográfico.
+No saturar innecesariamente la escena.
 
 POSTPROCESADO:
 Acabado cinematográfico profesional,
-alto rango dinámico, nitidez controlada,
-detalle en sombras y luces,
-sin sobreprocesamiento.
+rango dinámico amplio,
+detalle visible en luces y sombras,
+nitidez controlada.
 
-${textoImagen}
+${textoEspecial}
 
-ERRORES A EVITAR:
+EVITAR:
 ${errores.join(", ")}
 
 REGLA ABSOLUTA:
+
 La descripción original tiene prioridad.
 
-No cambiar:
-- personajes
-- objetos
-- cantidades
-- colores
-- acciones
-- ubicación
-- estilo solicitado
+No cambiar personajes, objetos, cantidades,
+colores, acciones, ubicación o estilo solicitado.
 
-Agregar calidad visual sin cambiar
-la intención original.
-
-Crear una imagen visualmente impresionante,
-detallada, coherente y profesional.
+La mejora debe aumentar la calidad visual
+sin cambiar la intención del usuario.
 
 `;
 
@@ -2813,7 +3098,92 @@ detallada, coherente y profesional.
 
 
 /* =====================================================
-   ENVIAR MENSAJE
+   ILEGAL
+===================================================== */
+
+function detectarSolicitudIlegal(texto){
+
+    const t =
+    String(texto || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"");
+
+
+    const palabras = [
+
+        "hackear",
+        "hackea",
+        "hack",
+        "robar contrasena",
+        "robar contraseña",
+        "robar cuenta",
+        "entrar a una cuenta",
+        "hackear una cuenta",
+        "malware",
+        "virus informatico",
+        "virus informático",
+        "ransomware",
+        "phishing",
+        "estafa",
+        "fraude",
+        "fabricar una bomba",
+        "explosivo ilegal",
+        "arma ilegal",
+        "documento falso"
+
+    ];
+
+
+    return palabras.some(
+        palabra =>
+        t.includes(palabra)
+    );
+
+}
+
+
+function mostrarAvisoIlegal(){
+
+    const aviso =
+    document.getElementById(
+        "illegalNotice"
+    );
+
+
+    if(!aviso)
+        return;
+
+
+    aviso.textContent =
+    "⚠ contenido ilegal";
+
+
+    aviso.style.opacity =
+    ".55";
+
+
+    clearTimeout(
+        window._illegalTimer
+    );
+
+
+    window._illegalTimer =
+    setTimeout(
+        () => {
+
+            aviso.style.opacity =
+            ".15";
+
+        },
+        5000
+    );
+
+}
+
+
+/* =====================================================
+   ENVIAR
 ===================================================== */
 
 async function enviar(){
@@ -2821,11 +3191,23 @@ async function enviar(){
     const texto =
     input.value.trim();
 
+
     if(!texto)
         return;
 
 
-    if(esPedidoDeImagen(texto)){
+    if(
+        detectarSolicitudIlegal(texto)
+    ){
+
+        mostrarAvisoIlegal();
+
+    }
+
+
+    if(
+        esPedidoDeImagen(texto)
+    ){
 
         const prompt =
         limpiarPromptImagen(texto);
@@ -2875,6 +3257,7 @@ async function enviar(){
     conversation.messages.push({
 
         role:"user",
+
         content:texto
 
     });
@@ -2896,6 +3279,7 @@ async function enviar(){
     guardarChats();
 
     renderHistorial();
+
 
     mostrarMensaje(
         texto,
@@ -2947,26 +3331,33 @@ async function enviar(){
         await response.json();
 
 
-        if(!response.ok)
+        if(!response.ok){
+
             throw new Error(
                 data?.error ||
                 "Error del servidor."
             );
+
+        }
 
 
         const answer =
         data?.response;
 
 
-        if(!answer)
+        if(!answer){
+
             throw new Error(
                 "La IA no devolvió una respuesta."
             );
+
+        }
 
 
         thinking.classList.remove(
             "thinking"
         );
+
 
         thinking.textContent =
         answer;
@@ -2975,6 +3366,7 @@ async function enviar(){
         conversation.messages.push({
 
             role:"assistant",
+
             content:answer
 
         });
@@ -2991,9 +3383,11 @@ async function enviar(){
             "thinking"
         );
 
+
         thinking.textContent =
         "No pude conectarme con Inda AI.\n\n"
         + error.message;
+
 
         console.error(error);
 
@@ -3024,7 +3418,9 @@ async function generarImagen(
         return;
 
 
-    if(!usuarioActual?.premium){
+    if(
+        !usuarioActual?.premium
+    ){
 
         mostrarMensaje(
             "La generación de imágenes está disponible en Premium.",
@@ -3054,7 +3450,8 @@ async function generarImagen(
 
 
     mostrarMensaje(
-        "Crear imagen: " + prompt,
+        "Crear imagen: " +
+        prompt,
         "user"
     );
 
@@ -3121,7 +3518,7 @@ async function generarImagen(
 
         if(!response.ok){
 
-            let mensaje =
+            let errorText =
             "El servidor no pudo generar la imagen.";
 
             try{
@@ -3129,14 +3526,15 @@ async function generarImagen(
                 const errorData =
                 await response.json();
 
-                mensaje =
+                errorText =
                 errorData?.error ||
-                mensaje;
+                errorText;
 
             }catch{}
 
+
             throw new Error(
-                mensaje
+                errorText
             );
 
         }
@@ -3146,14 +3544,19 @@ async function generarImagen(
         await response.blob();
 
 
-        if(!blob.size)
+        if(!blob.size){
+
             throw new Error(
-                "El servidor devolvió una imagen vacía."
+                "La imagen está vacía."
             );
+
+        }
 
 
         const imageURL =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+            blob
+        );
 
 
         thinking.remove();
@@ -3188,13 +3591,12 @@ async function generarImagen(
 
         thinking.textContent =
         error.name === "AbortError"
-        ? "La generación tardó demasiado y fue cancelada."
+        ? "La generación tardó demasiado."
         : "No pude generar la imagen.\n\n"
         + error.message;
 
 
         console.error(
-            "IMAGE ERROR:",
             error
         );
 
@@ -3218,6 +3620,7 @@ function ajustarInput(){
 
     input.style.height =
     "auto";
+
 
     input.style.height =
     Math.min(
@@ -3264,27 +3667,29 @@ function abrirConfiguracion(){
 
     cargarMemorias();
 
-    settingsOverlay.classList.add(
-        "open"
-    );
+    document
+    .getElementById("settingsOverlay")
+    .classList.add("open");
 
 }
 
 
 function cerrarConfiguracion(){
 
-    settingsOverlay.classList.remove(
-        "open"
-    );
+    document
+    .getElementById("settingsOverlay")
+    .classList.remove("open");
 
 }
 
 
-function cerrarConfiguracionDesdeFondo(event){
+function cerrarConfiguracionDesdeFondo(
+    event
+){
 
     if(
-        event.target ===
-        settingsOverlay
+        event.target.id ===
+        "settingsOverlay"
     ){
 
         cerrarConfiguracion();
@@ -3295,13 +3700,418 @@ function cerrarConfiguracionDesdeFondo(event){
 
 
 /* =====================================================
-   MENÚ MÓVIL
+   PANEL CEO
+===================================================== */
+
+function abrirPanelCEO(){
+
+    if(
+        usuarioActual.role !== "CEO"
+    )
+        return;
+
+
+    renderPanelCEO();
+
+
+    document
+    .getElementById("ceoOverlay")
+    .classList.add("open");
+
+}
+
+
+function cerrarPanelCEO(){
+
+    document
+    .getElementById("ceoOverlay")
+    .classList.remove("open");
+
+}
+
+
+function cerrarPanelCEODesdeFondo(
+    event
+){
+
+    if(
+        event.target.id ===
+        "ceoOverlay"
+    ){
+
+        cerrarPanelCEO();
+
+    }
+
+}
+
+
+/*
+    El panel recopila únicamente los chats
+    guardados por esta aplicación en este navegador.
+*/
+
+function obtenerTodosLosChatsLocales(){
+
+    const resultado = [];
+
+    const users = getUsers();
+
+
+    Object.keys(users).forEach(
+        username => {
+
+            const key =
+            "inda_chats_" +
+            users[username].username;
+
+
+            try{
+
+                const chats =
+                JSON.parse(
+                    localStorage.getItem(
+                        key
+                    ) || "[]"
+                );
+
+
+                if(chats.length){
+
+                    resultado.push({
+
+                        username:
+                        users[username].username,
+
+                        chats
+
+                    });
+
+                }
+
+            }catch{}
+
+        }
+    );
+
+
+    /* Incluir al CEO */
+
+    try{
+
+        const key =
+        "inda_chats_" +
+        usuarioActual.username;
+
+
+        const chats =
+        JSON.parse(
+            localStorage.getItem(
+                key
+            ) || "[]"
+        );
+
+
+        if(
+            chats.length
+            &&
+            !resultado.some(
+                x =>
+                x.username ===
+                usuarioActual.username
+            )
+        ){
+
+            resultado.push({
+
+                username:
+                usuarioActual.username,
+
+                chats
+
+            });
+
+        }
+
+    }catch{}
+
+
+    return resultado;
+
+}
+
+
+function renderPanelCEO(){
+
+    const container =
+    document.getElementById(
+        "ceoList"
+    );
+
+
+    container.innerHTML = "";
+
+
+    const usuarios =
+    obtenerTodosLosChatsLocales();
+
+
+    if(!usuarios.length){
+
+        container.innerHTML = `
+            <div class="ceo-empty">
+                No hay conversaciones almacenadas.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    usuarios.forEach(
+        usuario => {
+
+            const box =
+            document.createElement(
+                "div"
+            );
+
+            box.className =
+            "ceo-user";
+
+
+            const header =
+            document.createElement(
+                "div"
+            );
+
+            header.className =
+            "ceo-user-header";
+
+
+            const name =
+            document.createElement(
+                "div"
+            );
+
+            name.className =
+            "ceo-user-name";
+
+            name.textContent =
+            "👤 " +
+            usuario.username;
+
+
+            const count =
+            document.createElement(
+                "div"
+            );
+
+            count.className =
+            "ceo-chat-count";
+
+            count.textContent =
+            usuario.chats.length +
+            " chats";
+
+
+            header.appendChild(
+                name
+            );
+
+            header.appendChild(
+                count
+            );
+
+
+            const list =
+            document.createElement(
+                "div"
+            );
+
+            list.className =
+            "ceo-chat-list";
+
+
+            usuario.chats.forEach(
+                c => {
+
+                    const chatItem =
+                    document.createElement(
+                        "div"
+                    );
+
+                    chatItem.className =
+                    "ceo-chat";
+
+
+                    chatItem.textContent =
+                    "💬 " +
+                    c.title;
+
+
+                    chatItem.onclick =
+                    () => {
+
+                        abrirViewer(
+                            usuario.username,
+                            c
+                        );
+
+                    };
+
+
+                    list.appendChild(
+                        chatItem
+                    );
+
+                }
+            );
+
+
+            box.appendChild(
+                header
+            );
+
+            box.appendChild(
+                list
+            );
+
+            container.appendChild(
+                box
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   VISOR CEO
+===================================================== */
+
+function abrirViewer(
+    username,
+    conversation
+){
+
+    document
+    .getElementById("viewerTitle")
+    .textContent =
+    username +
+    " — " +
+    conversation.title;
+
+
+    const container =
+    document.getElementById(
+        "viewerMessages"
+    );
+
+
+    container.innerHTML = "";
+
+
+    conversation.messages.forEach(
+        message => {
+
+            if(
+                message.type === "image"
+            ){
+
+                const img =
+                document.createElement(
+                    "img"
+                );
+
+                img.className =
+                "viewer-image";
+
+                img.src =
+                message.src;
+
+                container.appendChild(
+                    img
+                );
+
+            }else{
+
+                const div =
+                document.createElement(
+                    "div"
+                );
+
+                div.className =
+                "viewer-message " +
+                (
+                    message.role === "user"
+                    ? "user"
+                    : ""
+                );
+
+                div.textContent =
+                (
+                    message.role === "user"
+                    ? "Usuario: "
+                    : "Inda AI: "
+                )
+                +
+                message.content;
+
+
+                container.appendChild(
+                    div
+                );
+
+            }
+
+        }
+    );
+
+
+    document
+    .getElementById("viewerOverlay")
+    .classList.add("open");
+
+}
+
+
+function cerrarViewer(){
+
+    document
+    .getElementById("viewerOverlay")
+    .classList.remove("open");
+
+}
+
+
+function cerrarViewerDesdeFondo(
+    event
+){
+
+    if(
+        event.target.id ===
+        "viewerOverlay"
+    ){
+
+        cerrarViewer();
+
+    }
+
+}
+
+
+/* =====================================================
+   MÓVIL
 ===================================================== */
 
 function mostrarMenuMovil(){
 
     if(!conversaciones.length)
         return;
+
 
     const lista =
     conversaciones
@@ -3314,9 +4124,9 @@ function mostrarMenuMovil(){
 
     const seleccion =
     prompt(
-        "Conversaciones:\n\n"
-        + lista
-        + "\n\nNúmero:"
+        "Chats:\n\n" +
+        lista +
+        "\n\nNúmero:"
     );
 
 
@@ -3346,7 +4156,7 @@ function mostrarMenuMovil(){
 
 
 /* =====================================================
-   ESTADO DEL SERVIDOR
+   ESTADO
 ===================================================== */
 
 async function actualizarEstado(){
@@ -3405,7 +4215,9 @@ function restaurarSesion(){
         JSON.parse(saved);
 
 
-        if(!usuarioActual?.username){
+        if(
+            !usuarioActual?.username
+        ){
 
             localStorage.removeItem(
                 SESSION_KEY
@@ -3417,7 +4229,6 @@ function restaurarSesion(){
 
 
         mostrarAplicacion();
-
 
     }catch{
 
