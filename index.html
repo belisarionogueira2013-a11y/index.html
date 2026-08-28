@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -719,6 +718,54 @@ header{
     padding:0 10px;
 }
 
+.memory-box{
+    margin-top:10px;
+    padding:12px;
+    border:1px solid #2d2d2d;
+    border-radius:10px;
+    background:#151515;
+}
+
+.memory-textarea{
+    width:100%;
+    min-height:95px;
+    resize:vertical;
+    border:1px solid #333;
+    border-radius:8px;
+    background:#0f0f0f;
+    color:#eee;
+    padding:10px;
+    font:inherit;
+    font-size:12px;
+    box-sizing:border-box;
+}
+
+.memory-actions{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+}
+
+.memory-button{
+    border:1px solid #333;
+    border-radius:8px;
+    background:#202020;
+    color:#eee;
+    padding:8px 11px;
+    cursor:pointer;
+}
+
+.memory-button:hover{
+    background:#292929;
+}
+
+.memory-status{
+    margin-top:7px;
+    color:#777;
+    font-size:10px;
+    min-height:14px;
+}
+
 .setting-box{
     border:1px solid #2b2b2b;
     border-radius:10px;
@@ -1371,6 +1418,123 @@ header{
     </div>
 
 
+    <div class="setting">
+
+        <label>
+            🧠 Memoria de Inda AI
+        </label>
+
+        <div class="setting-box">
+
+            <div class="setting-main">
+                Personalización
+            </div>
+
+            <div class="setting-description">
+                Inda AI puede recordar preferencias e información que vos decidas guardar.
+            </div>
+
+            <div class="memory-box">
+
+                <textarea
+                    id="personalMemory"
+                    class="memory-textarea"
+                    placeholder="Ejemplo:
+Me gusta que me expliquen las cosas con ejemplos.
+Estoy haciendo un proyecto llamado Inda AI.
+Prefiero respuestas claras y directas."
+                ></textarea>
+
+                <div class="memory-actions">
+
+                    <button
+                        class="memory-button"
+                        onclick="guardarMemoriaPersonal()"
+                    >
+                        Guardar memoria
+                    </button>
+
+                    <button
+                        class="memory-button"
+                        onclick="borrarMemoriaPersonal()"
+                    >
+                        Borrar
+                    </button>
+
+                </div>
+
+                <div
+                    id="memoryStatus"
+                    class="memory-status"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="setting"
+        id="globalMemorySetting"
+    >
+
+        <label>
+            🌐 Reglas globales de Inda AI
+        </label>
+
+        <div class="setting-box">
+
+            <div class="setting-main">
+                Solo CEO
+            </div>
+
+            <div class="setting-description">
+                Se aplican a todos los usuarios. Úsalas para reglas de tu proyecto,
+                no para reemplazar hechos reales sin indicarlo.
+            </div>
+
+            <div class="memory-box">
+
+                <textarea
+                    id="globalMemory"
+                    class="memory-textarea"
+                    placeholder="Ejemplo:
+En este proyecto, el nombre del asistente es Inda AI.
+Las respuestas deben usar el formato definido por el creador."
+                ></textarea>
+
+                <div class="memory-actions">
+
+                    <button
+                        class="memory-button"
+                        onclick="guardarMemoriaGlobal()"
+                    >
+                        Guardar regla global
+                    </button>
+
+                    <button
+                        class="memory-button"
+                        onclick="borrarMemoriaGlobal()"
+                    >
+                        Borrar
+                    </button>
+
+                </div>
+
+                <div
+                    id="globalMemoryStatus"
+                    class="memory-status"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <div
         id="ceoSection"
         class="ceo-section"
@@ -1469,6 +1633,30 @@ const USERS_KEY =
 
 const SESSION_KEY =
     "inda_session_final_v3";
+
+/*
+ * MEMORIA:
+ * Cada usuario tiene su propia memoria.
+ * Las reglas globales son independientes y solo se editan desde CEO.
+ */
+
+/*
+ * CUENTA GOOGLE:
+ *
+ * El HTML no puede verificar por sí solo que "beligmail" sea una cuenta
+ * real de Google. Para reconocimiento real con Google hace falta OAuth
+ * y verificación en el backend/Worker.
+ *
+ * La cuenta local "beligmail" ya queda reconocida por su perfil y memoria.
+ * Si después agregás OAuth, el backend debe devolver un usuario verificado
+ * y este frontend puede usar ese identificador como clave de memoria.
+ */
+
+const PERSONAL_MEMORY_PREFIX =
+    "inda_memoria_personal_";
+
+const GLOBAL_MEMORY_KEY =
+    "inda_memoria_global_v1";
 
 const LIMITE_DIARIO =
     50;
@@ -1857,6 +2045,10 @@ function iniciarSesion(event){
         username:
             user.username,
 
+        displayName:
+            user.displayName ||
+            user.username,
+
         plan:
             user.plan || "Normal",
 
@@ -1929,6 +2121,7 @@ function mostrarAplicacion(){
 
 
     sidebarUser.textContent =
+        usuarioActual.displayName ||
         usuarioActual.username;
 
 
@@ -2325,6 +2518,374 @@ que utilice el usuario.
 
 
 /* =====================================================
+   MEMORIA Y PERSONALIZACIÓN
+===================================================== */
+
+function memoriaPersonalKey(){
+
+    return (
+        PERSONAL_MEMORY_PREFIX +
+        String(
+            usuarioActual?.username ||
+            "anonimo"
+        ).toLowerCase()
+    );
+
+}
+
+
+function obtenerMemoriaPersonal(){
+
+    try{
+
+        return localStorage.getItem(
+            memoriaPersonalKey()
+        ) || "";
+
+    }catch{
+
+        return "";
+
+    }
+
+}
+
+
+function obtenerMemoriaGlobal(){
+
+    try{
+
+        return localStorage.getItem(
+            GLOBAL_MEMORY_KEY
+        ) || "";
+
+    }catch{
+
+        return "";
+
+    }
+
+}
+
+
+function cargarMemorias(){
+
+    const personal =
+        document.getElementById(
+            "personalMemory"
+        );
+
+    const global =
+        document.getElementById(
+            "globalMemory"
+        );
+
+    if(personal){
+
+        personal.value =
+            obtenerMemoriaPersonal();
+
+    }
+
+    if(global){
+
+        global.value =
+            obtenerMemoriaGlobal();
+
+    }
+
+    const globalSetting =
+        document.getElementById(
+            "globalMemorySetting"
+        );
+
+    if(globalSetting){
+
+        globalSetting.style.display =
+            usuarioActual?.role === "CEO"
+                ? "block"
+                : "none";
+
+    }
+
+}
+
+
+function guardarMemoriaPersonal(){
+
+    if(!usuarioActual)
+        return;
+
+    const box =
+        document.getElementById(
+            "personalMemory"
+        );
+
+    const status =
+        document.getElementById(
+            "memoryStatus"
+        );
+
+    const value =
+        box?.value.trim() || "";
+
+    if(value.length > 8000){
+
+        if(status)
+            status.textContent =
+                "La memoria es demasiado larga.";
+
+        return;
+
+    }
+
+    localStorage.setItem(
+        memoriaPersonalKey(),
+        value
+    );
+
+    if(status)
+        status.textContent =
+            "Memoria personal guardada ✓";
+
+}
+
+
+function borrarMemoriaPersonal(){
+
+    localStorage.removeItem(
+        memoriaPersonalKey()
+    );
+
+    const box =
+        document.getElementById(
+            "personalMemory"
+        );
+
+    const status =
+        document.getElementById(
+            "memoryStatus"
+        );
+
+    if(box)
+        box.value = "";
+
+    if(status)
+        status.textContent =
+            "Memoria personal borrada.";
+
+}
+
+
+function guardarMemoriaGlobal(){
+
+    if(
+        usuarioActual?.role !== "CEO"
+    )
+        return;
+
+    const box =
+        document.getElementById(
+            "globalMemory"
+        );
+
+    const status =
+        document.getElementById(
+            "globalMemoryStatus"
+        );
+
+    const value =
+        box?.value.trim() || "";
+
+    if(value.length > 8000){
+
+        if(status)
+            status.textContent =
+                "La memoria global es demasiado larga.";
+
+        return;
+
+    }
+
+    localStorage.setItem(
+        GLOBAL_MEMORY_KEY,
+        value
+    );
+
+    if(status)
+        status.textContent =
+            "Regla global guardada ✓";
+
+}
+
+
+function borrarMemoriaGlobal(){
+
+    if(
+        usuarioActual?.role !== "CEO"
+    )
+        return;
+
+    localStorage.removeItem(
+        GLOBAL_MEMORY_KEY
+    );
+
+    const box =
+        document.getElementById(
+            "globalMemory"
+        );
+
+    const status =
+        document.getElementById(
+            "globalMemoryStatus"
+        );
+
+    if(box)
+        box.value = "";
+
+    if(status)
+        status.textContent =
+            "Regla global borrada.";
+
+}
+
+
+function detectarEnsenanza(texto){
+
+    const t =
+        String(texto || "").trim();
+
+    /*
+     * Solo guardamos automáticamente cuando el usuario
+     * usa una frase inequívoca de enseñanza. Esto evita
+     * convertir cualquier "no" de una conversación en memoria.
+     */
+    const patrones = [
+        /^recorda(?: que)?\s*[:\-]?\s*(.+)$/i,
+        /^recordá(?: que)?\s*[:\-]?\s*(.+)$/i,
+        /^recuerda(?: que)?\s*[:\-]?\s*(.+)$/i,
+        /^acordate(?: que)?\s*[:\-]?\s*(.+)$/i,
+        /^guard[aá](?: esto)?\s*[:\-]?\s*(.+)$/i,
+        /^aprende(?: que)?\s*[:\-]?\s*(.+)$/i,
+        /^aprendé(?: que)?\s*[:\-]?\s*(.+)$/i,
+        /^a partir de ahora(?:,)?\s*(.+)$/i
+    ];
+
+    for(
+        const patron of patrones
+    ){
+
+        const match =
+            t.match(patron);
+
+        if(match){
+
+            return match[1].trim();
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+function agregarMemoriaPersonal(dato){
+
+    if(
+        !usuarioActual ||
+        !dato
+    )
+        return false;
+
+    const actual =
+        obtenerMemoriaPersonal();
+
+    const linea =
+        "- " + dato.trim();
+
+    const lineas =
+        actual
+            .split(/\n+/)
+            .map(x => x.trim())
+            .filter(Boolean);
+
+    const existe =
+        lineas.some(
+            x =>
+                x.toLowerCase()
+                ===
+                linea.toLowerCase()
+        );
+
+    if(!existe)
+        lineas.push(linea);
+
+    const resultado =
+        lineas
+            .slice(-80)
+            .join("\n");
+
+    localStorage.setItem(
+        memoriaPersonalKey(),
+        resultado
+    );
+
+    cargarMemorias();
+
+    return true;
+
+}
+
+
+function instruccionesMemoria(){
+
+    const personal =
+        obtenerMemoriaPersonal();
+
+    const global =
+        obtenerMemoriaGlobal();
+
+    let salida = "";
+
+    if(personal){
+
+        salida += `
+
+MEMORIA PERSONAL DEL USUARIO:
+${personal}
+
+Usá esta información para personalizar las respuestas cuando sea relevante.
+No la menciones como "memoria" salvo que el usuario pregunte.
+`;
+
+    }
+
+    if(
+        global &&
+        usuarioActual?.role === "CEO"
+    ){
+
+        salida += `
+
+REGLAS GLOBALES DEL PROYECTO:
+${global}
+
+Estas reglas son configuraciones del proyecto creadas por el CEO.
+Si una regla contradice un hecho del mundo real, distinguí entre
+"regla del proyecto" y "hecho real" en vez de presentarlos engañosamente
+como si fueran lo mismo.
+`;
+
+    }
+
+    return salida;
+
+}
+
+
+/* =====================================================
    SISTEMA IA
 ===================================================== */
 
@@ -2400,6 +2961,8 @@ No menciones esto si no preguntan.
 ${plan}
 
 ${instruccionIdioma()}
+
+${instruccionesMemoria()}
 
 `;
 }
@@ -3782,79 +4345,61 @@ async function generarImagen(
     try{
 
         let response = null;
-        let ultimoError = null;
 
-        // Reintentamos una vez si hay un fallo temporal de red.
-        for(let intento = 1; intento <= 2; intento++){
+        try{
 
-            try{
+            const controller =
+                new AbortController();
 
-                const controller =
-                    new AbortController();
+            const timeout =
+                setTimeout(
+                    () => controller.abort(),
+                    115000
+                );
 
-                const timeout =
-                    setTimeout(
-                        () => controller.abort(),
-                        120000
-                    );
+            response =
+                await fetch(
+                    API_URL +
+                    "/image",
+                    {
 
-                response =
-                    await fetch(
-                        API_URL +
-                        "/image",
-                        {
+                        method:
+                            "POST",
 
-                            method:
-                                "POST",
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
 
-                            headers:{
-                                "Content-Type":
-                                    "application/json"
-                            },
+                        body:
+                            JSON.stringify({
+                                prompt:
+                                    mejorarPromptImagen(prompt)
+                            }),
 
-                            body:
-                                JSON.stringify({
-                                    prompt:
-                                        mejorarPromptImagen(prompt)
-                                }),
+                        signal:
+                            controller.signal
 
-                            signal:
-                                controller.signal
+                    }
+                );
 
-                        }
-                    );
+            clearTimeout(timeout);
 
-                clearTimeout(timeout);
+        }catch(error){
 
-                if(response.ok)
-                    break;
+            throw new Error(
+                error.name === "AbortError"
+                    ? "La generación tardó demasiado y se canceló antes de superar los 2 minutos."
+                    : error.message
+            );
 
-                let errorMessage =
-                    "No se pudo generar la imagen.";
+        }
 
-                try{
+        if(!response){
 
-                    const data =
-                        await response.json();
-
-                    errorMessage =
-                        data?.error ||
-                        errorMessage;
-
-                }catch{}
-
-                throw new Error(errorMessage);
-
-            }catch(error){
-
-                ultimoError = error;
-
-                if(intento < 2)
-                    await new Promise(
-                        resolve => setTimeout(resolve, 900)
-                    );
-
-            }
+            throw new Error(
+                "No se pudo conectar con el generador de imágenes."
+            );
 
         }
 
@@ -4217,5 +4762,3 @@ restaurarSesion();
 </body>
 </html>
 ```
-Inda_AI_mejorada.html
-HTML
