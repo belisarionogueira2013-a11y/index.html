@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#09090b">
-<title>Inda AI Ultra</title>
+<title>Inda AI Ultra Max</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 :root{
@@ -54,8 +54,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo">Inda AI <span class="auth-badge">ULTRA</span></div>
-    <div class="auth-subtitle">Chat largo + imágenes + investigación previa</div>
+    <div class="auth-logo">Inda AI <span class="auth-badge">ULTRA MAX</span></div>
+    <div class="auth-subtitle">Chat largo + imágenes de calidad extrema + investigación previa</div>
     <div class="auth-tabs">
       <button id="loginTab" class="auth-tab active" onclick="mostrarFormulario('login')">Iniciar sesión</button>
       <button id="registerTab" class="auth-tab" onclick="mostrarFormulario('register')">Crear cuenta</button>
@@ -77,7 +77,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 <div id="app">
   <div class="layout">
     <aside class="sidebar">
-      <div class="logo">Inda AI <small>ULTRA</small></div>
+      <div class="logo">Inda AI <small>ULTRA MAX</small></div>
       <button class="new-chat" onclick="nuevoChat()">+ Nuevo chat</button>
       <div class="plan">
         <div class="plan-title">Plan</div><div id="planValue" class="plan-value">Normal</div>
@@ -131,6 +131,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
       <div class="toggle-row"><div><div class="setting-main">Fotorealismo por defecto</div><div class="setting-description">Si pedís “foto de un perro”, prioriza que parezca una foto real.</div></div><label class="switch"><input id="realisticImages" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div>
       <div style="height:12px"></div>
       <div class="toggle-row"><div><div class="setting-main">Investigar antes de crear</div><div class="setting-description">Intenta usar /research o /search de tu Worker antes de generar la imagen.</div></div><label class="switch"><input id="researchImages" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div>
+      <div style="height:12px"></div>
+      <div class="toggle-row"><div><div class="setting-main">🔥 Calidad extrema</div><div class="setting-description">Prioriza calidad sobre velocidad: optimiza el prompt con IA, pide el mejor modelo disponible y puede hacer más de un intento.</div></div><label class="switch"><input id="extremeImages" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div>
     </div></div>
 
     <div class="setting"><div class="notice"><b>Importante:</b> un HTML solo no puede “googlear” de forma segura y universal. Para búsqueda real, tu Worker debe implementar <code>/research</code> o <code>/search</code>. Este archivo ya intenta esos endpoints y no finge que investigó si no existen.</div></div>
@@ -166,6 +168,7 @@ let conversaciones = [];
 let chatActual = null;
 let activeController = null;
 let generando = false;
+let cancelacionSolicitada = false;
 
 const $ = id => document.getElementById(id);
 const authScreen=$("authScreen"), app=$("app"), authMessage=$("authMessage"), history=$("history"), chat=$("chat"), chatInner=$("chatInner"), input=$("prompt"), send=$("send"), imageButton=$("imageButton"), stopButton=$("stopButton"), estado=$("estado"), dot=$("dot"), planValue=$("planValue"), counter=$("counter"), roleValue=$("roleValue"), sidebarUser=$("sidebarUser");
@@ -178,11 +181,11 @@ async function copiarTexto(text){try{await navigator.clipboard.writeText(text);t
 async function sha256(text){const data=new TextEncoder().encode(text);const hash=await crypto.subtle.digest("SHA-256",data);return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,"0")).join("")}
 function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].includes(u.protocol)?u.href:null}catch{return null}}
 function setBusy(v){generando=v;send.disabled=v;imageButton.disabled=v;stopButton.classList.toggle("hidden",!v)}
-function detenerGeneracion(){if(activeController)activeController.abort();activeController=null;setBusy(false);toast("Generación detenida")}
+function detenerGeneracion(){cancelacionSolicitada=true;if(activeController)activeController.abort();activeController=null;setBusy(false);toast("Generación detenida")}
 function scrollBottom(){requestAnimationFrame(()=>chat.scrollTop=chat.scrollHeight)}
-function getPrefs(){if(!usuarioActual)return {language:"auto",length:"ultra",teen:true,realistic:true,research:true};try{return {...{language:"auto",length:"ultra",teen:true,realistic:true,research:true},...JSON.parse(localStorage.getItem(PREFS_PREFIX+usuarioActual.username.toLowerCase())||"{}")}}catch{return {language:"auto",length:"ultra",teen:true,realistic:true,research:true}}}
-function guardarPreferencias(){if(!usuarioActual)return;const p={language:$("languageSelect").value,length:$("lengthSelect").value,teen:$("teenMode").checked,realistic:$("realisticImages").checked,research:$("researchImages").checked};localStorage.setItem(PREFS_PREFIX+usuarioActual.username.toLowerCase(),JSON.stringify(p))}
-function cargarPreferencias(){const p=getPrefs();$("languageSelect").value=p.language;$("lengthSelect").value=p.length;$("teenMode").checked=p.teen;$("realisticImages").checked=p.realistic;$("researchImages").checked=p.research}
+function getPrefs(){if(!usuarioActual)return {language:"auto",length:"ultra",teen:true,realistic:true,research:true,extreme:true};try{return {...{language:"auto",length:"ultra",teen:true,realistic:true,research:true,extreme:true},...JSON.parse(localStorage.getItem(PREFS_PREFIX+usuarioActual.username.toLowerCase())||"{}")}}catch{return {language:"auto",length:"ultra",teen:true,realistic:true,research:true,extreme:true}}}
+function guardarPreferencias(){if(!usuarioActual)return;const p={language:$("languageSelect").value,length:$("lengthSelect").value,teen:$("teenMode").checked,realistic:$("realisticImages").checked,research:$("researchImages").checked,extreme:$("extremeImages").checked};localStorage.setItem(PREFS_PREFIX+usuarioActual.username.toLowerCase(),JSON.stringify(p))}
+function cargarPreferencias(){const p=getPrefs();$("languageSelect").value=p.language;$("lengthSelect").value=p.length;$("teenMode").checked=p.teen;$("realisticImages").checked=p.realistic;$("researchImages").checked=p.research;$("extremeImages").checked=p.extreme!==false}
 
 /* ================= USERS / AUTH ================= */
 function getUsers(){let users={};try{users=JSON.parse(localStorage.getItem(USERS_KEY)||"{}")||{}}catch{}if(!Object.keys(users).length){try{const legacy=JSON.parse(localStorage.getItem(LEGACY_USERS_KEY)||"{}")||{};users=legacy;if(Object.keys(legacy).length)saveUsers(users)}catch{}}return users}
@@ -253,7 +256,7 @@ function mostrarMensaje(texto,quien,id=uid("msg"),saveActions=true){const row=do
 function crearAccionesMensaje(id,texto){const actions=document.createElement("div");actions.className="message-actions";const copy=document.createElement("button");copy.className="action-btn";copy.textContent="⧉ Copiar";copy.onclick=()=>{const m=buscarMensajePorId(id);copiarTexto(m?.content||texto)};const cont=document.createElement("button");cont.className="action-btn";cont.textContent="↳ Continuar";cont.onclick=()=>continuarRespuesta(id,cont);actions.append(copy,cont);return actions}
 function buscarMensajePorId(id){for(const c of conversaciones){const m=c.messages.find(x=>x.id===id);if(m)return m}return null}
 function reemplazarAccionesDeBurbuja(bubble,id){const stack=bubble.parentElement;const old=stack.querySelector(".message-actions");if(old)old.remove();stack.appendChild(crearAccionesMensaje(id,bubble.textContent))}
-function mostrarImagen(src,promptText,research=null,id=uid("img"),saveActions=true){const row=document.createElement("div");row.className="message-row ai";const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent="IA";row.appendChild(avatar);const stack=document.createElement("div");stack.className="message-stack generated-image-wrap";const img=document.createElement("img");img.className="generated-image";img.src=src;img.alt=promptText||"Imagen generada";img.onclick=()=>{const w=window.open();if(w){w.document.write(`<html><body style="margin:0;background:#000;display:grid;place-items:center;min-height:100vh"><img src="${img.src}" style="max-width:100%;max-height:100vh;object-fit:contain"></body></html>`)}};const caption=document.createElement("div");caption.className="image-caption";caption.textContent="Imagen generada por Inda AI";stack.append(img,caption);const meta=document.createElement("div");meta.className="image-meta";meta.innerHTML=`<span class="meta-pill">ultra</span><span class="meta-pill">${getPrefs().realistic?"realismo alto":"estilo libre"}</span>${research?.used?'<span class="meta-pill">investigada</span>':''}`;stack.appendChild(meta);if(research?.used)stack.appendChild(crearResearchCard(research));const actions=document.createElement("div");actions.className="message-actions";const copyPrompt=document.createElement("button");copyPrompt.className="action-btn";copyPrompt.textContent="⧉ Copiar pedido";copyPrompt.onclick=()=>copiarTexto(promptText||"");actions.appendChild(copyPrompt);stack.appendChild(actions);row.appendChild(stack);chatInner.appendChild(row);scrollBottom()}
+function mostrarImagen(src,promptText,research=null,id=uid("img"),saveActions=true){const row=document.createElement("div");row.className="message-row ai";const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent="IA";row.appendChild(avatar);const stack=document.createElement("div");stack.className="message-stack generated-image-wrap";const img=document.createElement("img");img.className="generated-image";img.src=src;img.alt=promptText||"Imagen generada";img.onclick=()=>{const w=window.open();if(w){w.document.write(`<html><body style="margin:0;background:#000;display:grid;place-items:center;min-height:100vh"><img src="${img.src}" style="max-width:100%;max-height:100vh;object-fit:contain"></body></html>`)}};const caption=document.createElement("div");caption.className="image-caption";caption.textContent="Imagen generada por Inda AI";stack.append(img,caption);const meta=document.createElement("div");meta.className="image-meta";meta.innerHTML=`<span class="meta-pill">${getPrefs().extreme?"ultra max":"ultra"}</span><span class="meta-pill">${getPrefs().realistic?"realismo alto":"estilo libre"}</span>${research?.used?'<span class="meta-pill">investigada</span>':''}${research?.render?.width?`<span class="meta-pill">${research.render.width}×${research.render.height}</span>`:""}`;stack.appendChild(meta);if(research?.used)stack.appendChild(crearResearchCard(research));const actions=document.createElement("div");actions.className="message-actions";const copyPrompt=document.createElement("button");copyPrompt.className="action-btn";copyPrompt.textContent="⧉ Copiar pedido";copyPrompt.onclick=()=>copiarTexto(promptText||"");actions.appendChild(copyPrompt);stack.appendChild(actions);row.appendChild(stack);chatInner.appendChild(row);scrollBottom()}
 function crearResearchCard(r){const card=document.createElement("div");card.className="research-card";const summary=(r.summary||r.context||"").slice(0,900);card.innerHTML=`<strong>Investigación previa:</strong> ${summary?escapeHtml(summary):"Se obtuvo contexto web."}`;if(Array.isArray(r.sources)&&r.sources.length){const links=document.createElement("div");links.className="research-links";r.sources.slice(0,5).forEach(s=>{const url=safeUrl(typeof s==="string"?s:(s.url||s.link||""));if(!url)return;const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=(typeof s==="string"?s:(s.title||s.name||url));links.appendChild(a)});card.appendChild(links)}return card}
 function escapeHtml(str){return String(str).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 
@@ -270,6 +273,62 @@ function limpiarPromptImagen(texto){return String(texto||"").replace(/^(generame
 
 /* ================= WEB RESEARCH FOR IMAGES ================= */
 async function investigarAntesDeImagen(query,statusBubble){if(!getPrefs().research)return {used:false,summary:"",sources:[]};const endpoints=["/research","/search"];for(const endpoint of endpoints){try{statusBubble.textContent=`Investigando antes de crear la imagen… (${endpoint})`;const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),22000);const res=await fetch(API_URL+endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query,purpose:"image_reference",provider:"google",max_results:6}),signal:controller.signal});clearTimeout(timer);if(!res.ok)continue;const data=await res.json();const summary=data.summary||data.context||data.answer||data.response||"";const results=data.results||data.sources||data.links||[];const sources=Array.isArray(results)?results.map(x=>typeof x==="string"?x:{title:x.title||x.name||"Fuente",url:x.url||x.link||x.href||""}).filter(x=>typeof x==="string"||x.url):[];if(summary||sources.length)return {used:true,summary,sources,endpoint}}catch(e){if(e.name==="AbortError")console.warn("Research timeout",endpoint);else console.warn("Research failed",endpoint,e)}}statusBubble.textContent="Tu Worker todavía no tiene búsqueda web real. Voy a crear la imagen sin fingir que Googleé.";return {used:false,summary:"",sources:[],missingEndpoint:true}}
+
+function detectarFormatoImagen(texto){const t=String(texto||"").toLowerCase();if(/(vertical|retrato|portrait|story|historia de instagram|9:16)/i.test(t))return {size:"1024x1536",aspect:"2:3"};if(/(cuadrad|square|1:1|instagram post)/i.test(t))return {size:"1536x1536",aspect:"1:1"};return {size:"1536x1024",aspect:"3:2"}}
+
+async function optimizarPromptImagenConIA(original,research,statusBubble){
+  if(!getPrefs().extreme)return mejorarPromptImagen(original,research);
+  statusBubble.textContent="Diseñando el prompt fotográfico con IA…";
+  const contexto=research?.used?(research.summary||"").slice(0,7000):"";
+  const sys=`Sos un director de fotografía y prompt engineer de máximo nivel. Tu trabajo es convertir el pedido del usuario en UN ÚNICO prompt final para un generador de imágenes. Priorizá fidelidad al pedido, realismo fotográfico cuando se pide una foto, anatomía correcta, materiales naturales, iluminación creíble, lente/cámara coherentes, composición profesional y ausencia de artefactos. No cambies cantidades, colores, sujetos, acción ni lugar. Si hay contexto investigado, usalo solo para exactitud visual. Devolvé solamente el prompt final, sin títulos, sin markdown y sin explicaciones.`;
+  const user=`PEDIDO ORIGINAL:
+${original}
+
+CONTEXTO INVESTIGADO:
+${contexto||"No disponible"}
+
+Generá el mejor prompt posible para una imagen premium.`;
+  try{
+    const controller=new AbortController();activeController=controller;
+    const timer=setTimeout(()=>controller.abort(),120000);
+    const res=await fetch(API_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:sys,messages:[{role:"user",content:user}],max_output_tokens:8000,response_mode:"image_prompt_max"}),signal:controller.signal});
+    clearTimeout(timer);
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data?.error||"No se pudo optimizar el prompt");
+    const out=String(data?.response??data?.answer??data?.content??"").trim();
+    if(out.length>80)return out+"\n\n"+mejorarPromptImagen(original,research);
+  }catch(e){if(cancelacionSolicitada)throw e;console.warn("Prompt optimizer failed",e)}
+  return mejorarPromptImagen(original,research);
+}
+
+function obtenerDimensionesImagen(src){return new Promise(resolve=>{const im=new Image();const t=setTimeout(()=>resolve({w:0,h:0}),15000);im.onload=()=>{clearTimeout(t);resolve({w:im.naturalWidth||0,h:im.naturalHeight||0})};im.onerror=()=>{clearTimeout(t);resolve({w:0,h:0})};im.src=src})}
+
+async function pedirImagenCalidadMaxima(payload,statusBubble){
+  const intentos=getPrefs().extreme?2:1;
+  const candidatos=[];
+  let ultimoError=null;
+  for(let i=1;i<=intentos;i++){
+    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
+    statusBubble.textContent=intentos>1?`Renderizando candidato ${i} de ${intentos} en calidad máxima…`:`Renderizando en calidad máxima…`;
+    const controller=new AbortController();activeController=controller;
+    const timeout=setTimeout(()=>controller.abort(),900000);
+    try{
+      const response=await fetch(API_URL+"/image",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...payload,quality:"max",priority:"quality",model_preference:"best_available",render_mode:"maximum_quality",detail:"maximum",reasoning_effort:"high",enhance:true,upsample:true,output_format:"png",compression:0,attempt:i}),signal:controller.signal});
+      clearTimeout(timeout);
+      if(!response.ok){let text="El servidor no pudo generar la imagen.";try{const d=await response.json();text=d?.error||text}catch{}throw new Error(text)}
+      let src="",serverScore=0;
+      const type=response.headers.get("content-type")||"";
+      if(type.includes("application/json")){const d=await response.json();src=d.image_url||d.url||d.image||d.data||"";serverScore=Number(d.quality_score||d.score||0);if(src&&!src.startsWith("data:")&&!safeUrl(src))throw new Error("El servidor devolvió una URL de imagen inválida.")}
+      else{const blob=await response.blob();if(!blob.size)throw new Error("La imagen está vacía.");src=await blobToDataURL(blob)}
+      const dim=await obtenerDimensionesImagen(src);
+      const pixelScore=(dim.w||0)*(dim.h||0);
+      candidatos.push({src,dim,score:serverScore>0?serverScore*1e12:pixelScore});
+    }catch(e){clearTimeout(timeout);ultimoError=e;if(cancelacionSolicitada||e.name==="AbortError")throw e;console.warn("Image attempt failed",i,e)}
+  }
+  if(!candidatos.length)throw ultimoError||new Error("No se pudo generar la imagen.");
+  candidatos.sort((a,b)=>b.score-a.score);
+  return candidatos[0];
+}
 
 /* ================= IMAGE PROMPT ================= */
 function mejorarPromptImagen(texto,research){const original=String(texto||"").replace(/\s+/g," ").trim();const p=getPrefs();const wantsStyle=/(anime|manga|lego|ilustracion|ilustración|dibujo|cartoon|3d|render|acuarela|oleo|óleo|pixel art)/i.test(original);const animal=/(perro|gato|caballo|animal|dog|cat|horse)/i.test(original);const person=/(persona|hombre|mujer|niño|niña|retrato|rostro|cara)/i.test(original);const place=/(ciudad|edificio|calle|paisaje|bosque|montaña|playa|casa|arquitectura)/i.test(original);let style;if(wantsStyle)style="Respetar exactamente el estilo artístico pedido por el usuario.";else if(p.realistic)style="FOTOGRAFÍA EXTREMADAMENTE REALISTA, aspecto de cámara real, nada de apariencia de ilustración o CGI.";else style="Calidad visual profesional y estilo coherente con el pedido.";let specifics="";if(animal)specifics+=" Anatomía animal correcta, pelaje natural con hebras visibles, ojos húmedos con reflejos reales, patas correctas, proporciones naturales, movimiento creíble.";if(person)specifics+=" Anatomía humana natural, piel con textura real, manos y dedos correctos, ojos simétricos, expresión creíble.";if(place)specifics+=" Perspectiva arquitectónica correcta, escala coherente, materiales reales, luz y sombras físicamente plausibles.";const factual=research?.used&&research.summary?`\nCONTEXTO FACTUAL INVESTIGADO ANTES DE GENERAR:\n${research.summary.slice(0,5000)}\nUsá este contexto solo para mejorar exactitud visual. No agregues datos que contradigan el pedido.`:"";return `
@@ -333,7 +392,42 @@ async function continuarRespuesta(messageId,button){if(generando)return;const co
 
 /* ================= IMAGE API ================= */
 async function blobToDataURL(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(blob)})}
-async function generarImagen(promptForzado=null){const prompt=(promptForzado||input.value.trim());if(!prompt||generando)return;if(!usuarioActual?.premium){mostrarMensaje("La generación de imágenes está disponible en Premium.","ai");return}input.value="";ajustarInput();if(!chatActual)nuevoChat();const conversation=obtenerActual();setBusy(true);const userText="Crear imagen: "+prompt,uidUser=uid("msg");conversation.messages.push({id:uidUser,role:"user",content:userText});mostrarMensaje(userText,"user",uidUser);if(conversation.title==="Nuevo chat")conversation.title=("Imagen: "+prompt).slice(0,50);const thinkingId=uid("msg"),thinking=mostrarMensaje("Preparando imagen…","ai",thinkingId);thinking.classList.add("thinking","typing-cursor");try{const research=await investigarAntesDeImagen(prompt,thinking);thinking.textContent=research.used?"Encontré contexto. Generando una imagen ultra realista…":"Generando imagen ultra realista…";activeController=new AbortController();const timeout=setTimeout(()=>activeController?.abort(),210000);const enhancedPrompt=mejorarPromptImagen(prompt,research);const response=await fetch(API_URL+"/image",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:enhancedPrompt,original_prompt:prompt,quality:"ultra",realism:getPrefs().realistic?"photorealistic":"auto",research:research.used?research:null,size:"1536x1024"}),signal:activeController.signal});clearTimeout(timeout);if(!response.ok){let text="El servidor no pudo generar la imagen.";try{const d=await response.json();text=d?.error||text}catch{}throw new Error(text)}let src="";const type=response.headers.get("content-type")||"";if(type.includes("application/json")){const d=await response.json();src=d.image_url||d.url||d.image||d.data||"";if(src&&src.startsWith("data:")){}else if(src&&!safeUrl(src))throw new Error("El servidor devolvió una URL de imagen inválida.")}else{const blob=await response.blob();if(!blob.size)throw new Error("La imagen está vacía.");src=await blobToDataURL(blob)}thinking.parentElement.parentElement.remove();const imgId=uid("img");mostrarImagen(src,prompt,research,imgId);conversation.messages.push({id:imgId,type:"image",role:"assistant",src,prompt,research});incrementarUso();guardarChats()}catch(error){thinking.classList.remove("thinking","typing-cursor");thinking.textContent=error.name==="AbortError"?"Generación detenida.":"No pude generar la imagen.\n\n"+error.message;console.error(error)}finally{activeController=null;setBusy(false);renderHistorial();input.focus()}}
+async function generarImagen(promptForzado=null){
+  const prompt=(promptForzado||input.value.trim());
+  if(!prompt||generando)return;
+  if(!usuarioActual?.premium){mostrarMensaje("La generación de imágenes está disponible en Premium.","ai");return}
+  cancelacionSolicitada=false;
+  input.value="";ajustarInput();
+  if(!chatActual)nuevoChat();
+  const conversation=obtenerActual();
+  setBusy(true);
+  const userText="Crear imagen: "+prompt,uidUser=uid("msg");
+  conversation.messages.push({id:uidUser,role:"user",content:userText});
+  mostrarMensaje(userText,"user",uidUser);
+  if(conversation.title==="Nuevo chat")conversation.title=("Imagen: "+prompt).slice(0,50);
+  const thinkingId=uid("msg"),thinking=mostrarMensaje("Preparando imagen en calidad máxima…","ai",thinkingId);
+  thinking.classList.add("thinking","typing-cursor");
+  try{
+    const research=await investigarAntesDeImagen(prompt,thinking);
+    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
+    const masterPrompt=await optimizarPromptImagenConIA(prompt,research,thinking);
+    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
+    const formato=detectarFormatoImagen(prompt);
+    const candidato=await pedirImagenCalidadMaxima({prompt:masterPrompt,original_prompt:prompt,realism:getPrefs().realistic?"photorealistic":"auto",research:research.used?research:null,size:formato.size,aspect_ratio:formato.aspect},thinking);
+    thinking.parentElement.parentElement.remove();
+    const imgId=uid("img");
+    const metaResearch={...research,render:{width:candidato.dim.w,height:candidato.dim.h,extreme:getPrefs().extreme}};
+    mostrarImagen(candidato.src,prompt,metaResearch,imgId);
+    conversation.messages.push({id:imgId,type:"image",role:"assistant",src:candidato.src,prompt,research:metaResearch});
+    incrementarUso();guardarChats();
+  }catch(error){
+    thinking.classList.remove("thinking","typing-cursor");
+    thinking.textContent=(cancelacionSolicitada||error.name==="AbortError")?"Generación detenida.":"No pude generar la imagen.\n\n"+error.message;
+    console.error(error);
+  }finally{
+    activeController=null;cancelacionSolicitada=false;setBusy(false);renderHistorial();input.focus();
+  }
+}
 
 /* ================= COPY CHAT ================= */
 function copiarChatCompleto(){const c=obtenerActual();if(!c||!c.messages.length){toast("No hay nada para copiar");return}const text=c.messages.map(m=>{if(m.type==="image")return `Inda AI [imagen]: ${m.prompt||"Imagen"}`;return (m.role==="user"?"Usuario: ":"Inda AI: ")+m.content}).join("\n\n");copiarTexto(text)}
