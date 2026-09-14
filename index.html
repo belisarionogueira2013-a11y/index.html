@@ -231,6 +231,19 @@ CALIDAD
 - Para información actual, no afirmes que buscaste en internet a menos que el backend realmente te haya dado resultados web.
 - Si una respuesta necesita ser muy larga, priorizá terminar ideas completas y dejá puntos claros para poder continuar sin repetir.
 
+MARVEL — CONOCIMIENTO ESPECIALIZADO SIEMPRE ACTIVO
+- Tenés conocimiento especializado de Marvel: cómics, personajes, equipos, organizaciones, razas, especies, poderes, habilidades, artefactos, armas, vehículos, lugares, dimensiones, universos, realidades alternativas, eventos, cronologías, relaciones, identidades, versiones, películas, series, animación y videojuegos.
+- Tu referencia prioritaria para lore de Marvel Comics es Marvel Database (marvel.fandom.com/wiki/Marvel_Database) y sus páginas relacionadas.
+- Cuando haya contexto web de Marvel Database disponible, usalo como fuente principal para precisión y desambiguación.
+- Diferenciá SIEMPRE entre continuidades: Earth-616, MCU/Earth-199999 o la designación que corresponda, Ultimate, 2099, What If...?, universos alternativos, juegos, series y películas.
+- Si un personaje tiene varias versiones, no mezcles sus poderes, historia, familiares, trajes, muertes, resurrecciones ni afiliaciones.
+- Para comparaciones de poder, explicá qué versión estás usando y basate en hazañas, poderes, limitaciones y contexto, no solo en fama.
+- Para preguntas de historia o cronología, priorizá eventos y relaciones correctas de la continuidad indicada.
+- Si el usuario dice solo un nombre ambiguo, inferí la versión más probable por contexto; si realmente cambia la respuesta de forma importante, aclaralo brevemente dentro de la respuesta.
+- Nunca digas frases como “sé muchísimo de Marvel”, “soy experto en Marvel” o “conozco todo Marvel”. Simplemente respondé bien, como conocimiento normal.
+- No inventes números de cómic, fechas, universos, poderes o parentescos. Si una afirmación muy específica no está respaldada por el contexto disponible, marcala con cautela.
+- Cuando el backend pueda investigar, para preguntas Marvel priorizá buscar en Marvel Database antes de responder.
+
 PRIVACIDAD
 No afirmes que hackeás, espiás o accedés a cuentas o conversaciones que la aplicación no te haya entregado.
 
@@ -253,7 +266,7 @@ function borrarChat(id){conversaciones=conversaciones.filter(c=>c.id!==id);if(ch
 function renderHistorial(){history.innerHTML="";conversaciones.forEach(c=>{const item=document.createElement("div");item.className="chat-item "+(c.id===chatActual?"active":"");const title=document.createElement("span");title.className="chat-title";title.textContent=c.title;const borrar=document.createElement("span");borrar.className="delete-chat";borrar.textContent="×";borrar.onclick=e=>{e.stopPropagation();borrarChat(c.id)};item.append(title,borrar);item.onclick=()=>abrirChat(c.id);history.appendChild(item)})}
 
 /* ================= RENDER MESSAGES ================= */
-function mostrarChat(c){chatInner.innerHTML="";if(!c.messages.length){const welcome=document.createElement("div");welcome.className="welcome";welcome.innerHTML=`<div class="welcome-logo">IA</div><h1>Inda AI</h1><p>Preguntame, pedime una foto o haceme crear algo.</p><div class="chips"><button class="chip" data-p="foto de un perro corriendo en la playa">📸 Foto realista de un perro</button><button class="chip" data-p="explicame agujeros negros como si tuviera 13 años">🪐 Explicame agujeros negros</button><button class="chip" data-p="inventame un juego de superpoderes">🎮 Inventame un juego</button></div>`;welcome.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{input.value=b.dataset.p;ajustarInput();enviar()});chatInner.appendChild(welcome);return}c.messages.forEach(m=>{if(m.type==="image")mostrarImagen(m.src,m.prompt,m.research,m.id,false);else mostrarMensaje(m.content,m.role==="user"?"user":"ai",m.id,false)});scrollBottom()}
+function mostrarChat(c){chatInner.innerHTML="";if(!c.messages.length){const welcome=document.createElement("div");welcome.className="welcome";welcome.innerHTML=`<div class="welcome-logo">IA</div><h1>Inda AI</h1><p>Escribí lo que quieras. Marvel está integrado como conocimiento especializado y también podés pedir fotos realistas.</p>`;chatInner.appendChild(welcome);return}c.messages.forEach(m=>{if(m.type==="image")mostrarImagen(m.src,m.prompt,m.research,m.id,false);else mostrarMensaje(m.content,m.role==="user"?"user":"ai",m.id,false)});scrollBottom()}
 function mostrarMensaje(texto,quien,id=uid("msg"),saveActions=true){const row=document.createElement("div");row.className="message-row "+quien;if(quien==="ai"){const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent="IA";row.appendChild(avatar)}const stack=document.createElement("div");stack.className="message-stack";const bubble=document.createElement("div");bubble.className="message "+quien;bubble.textContent=texto;bubble.dataset.messageId=id;stack.appendChild(bubble);if(quien==="ai"&&saveActions){stack.appendChild(crearAccionesMensaje(id,texto))}else if(quien==="ai"){stack.appendChild(crearAccionesMensaje(id,texto))}row.appendChild(stack);chatInner.appendChild(row);scrollBottom();return bubble}
 function crearAccionesMensaje(id,texto){const actions=document.createElement("div");actions.className="message-actions";const copy=document.createElement("button");copy.className="action-btn";copy.textContent="⧉ Copiar";copy.onclick=()=>{const m=buscarMensajePorId(id);copiarTexto(m?.content||texto)};const cont=document.createElement("button");cont.className="action-btn";cont.textContent="↳ Continuar";cont.onclick=()=>continuarRespuesta(id,cont);actions.append(copy,cont);return actions}
 function buscarMensajePorId(id){for(const c of conversaciones){const m=c.messages.find(x=>x.id===id);if(m)return m}return null}
@@ -262,20 +275,11 @@ function mostrarImagen(src,promptText,research=null,id=uid("img"),saveActions=tr
 function crearResearchCard(r){
   const card=document.createElement("div");card.className="research-card";
   const summary=(r.summary||r.context||"").slice(0,900);
-  card.innerHTML=`<strong>Investigación previa:</strong> ${summary?escapeHtml(summary):"Se obtuvo contexto para mejorar la exactitud visual."}`;
-  if(Array.isArray(r.realImages)&&r.realImages.length){
-    const title=document.createElement("div");title.className="reference-title";title.textContent="📷 Fotos reales usadas como referencia";card.appendChild(title);
-    const grid=document.createElement("div");grid.className="reference-grid";
-    r.realImages.slice(0,6).forEach(ref=>{
-      const url=safeUrl(ref.url||ref.image||"");const thumb=safeUrl(ref.thumbnail||ref.thumb||"")||url;if(!url||!thumb)return;
-      const a=document.createElement("a");a.className="reference-photo";a.href=url;a.target="_blank";a.rel="noopener noreferrer";
-      const img=document.createElement("img");img.src=thumb;img.alt=ref.title||"Referencia real";img.loading="lazy";img.referrerPolicy="no-referrer";
-      const label=document.createElement("span");label.className="reference-source";label.textContent=ref.source||ref.title||"foto real";
-      a.append(img,label);grid.appendChild(a);
-    });
-    card.appendChild(grid);
-  }
-  if(Array.isArray(r.sources)&&r.sources.length){const links=document.createElement("div");links.className="research-links";r.sources.slice(0,5).forEach(s=>{const url=safeUrl(typeof s==="string"?s:(s.url||s.link||""));if(!url)return;const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=(typeof s==="string"?s:(s.title||s.name||url));links.appendChild(a)});card.appendChild(links)}
+  const refsCount=Array.isArray(r.realImages)?r.realImages.length:0;
+  let html=`<strong>Investigación previa:</strong> ${summary?escapeHtml(summary):"Se obtuvo contexto para mejorar la exactitud visual."}`;
+  if(refsCount)html+=`<br><strong>Referencias reales usadas:</strong> ${refsCount} foto${refsCount===1?"":"s"}.`;
+  if(r.realReferencesUsed)html+=`<br><strong>Modo de fidelidad:</strong> máximo parecido posible.`;
+  card.innerHTML=html;
   return card;
 }
 function escapeHtml(str){return String(str).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
@@ -375,7 +379,7 @@ ${contexto||"No disponible"}
 FOTOS REALES DE REFERENCIA ENCONTRADAS:
 ${referencias||"No disponibles"}
 
-Usá esas referencias para entender apariencia, anatomía, materiales, ambiente, iluminación y detalles reales, pero generá una imagen nueva y no copies literalmente una sola fotografía.
+Usá esas referencias para entender apariencia, anatomía, materiales, ambiente, iluminación y detalles reales. Si el usuario pidió una foto, priorizá que el resultado se vea lo más igual posible al aspecto real del tema o a las características compartidas por las referencias. Generá una imagen nueva, con variación mínima y fidelidad visual máxima, sin meter cambios innecesarios.
 
 Generá el mejor prompt posible para una imagen premium.`;
   try{
@@ -394,7 +398,7 @@ Generá el mejor prompt posible para una imagen premium.`;
 function obtenerDimensionesImagen(src){return new Promise(resolve=>{const im=new Image();const t=setTimeout(()=>resolve({w:0,h:0}),15000);im.onload=()=>{clearTimeout(t);resolve({w:im.naturalWidth||0,h:im.naturalHeight||0})};im.onerror=()=>{clearTimeout(t);resolve({w:0,h:0})};im.src=src})}
 
 async function pedirImagenCalidadMaxima(payload,statusBubble){
-  const intentos=getPrefs().extreme?2:1;
+  const intentos=getPrefs().extreme?3:1;
   const candidatos=[];
   let ultimoError=null;
   for(let i=1;i<=intentos;i++){
@@ -421,7 +425,7 @@ async function pedirImagenCalidadMaxima(payload,statusBubble){
 }
 
 /* ================= IMAGE PROMPT ================= */
-function mejorarPromptImagen(texto,research){const original=String(texto||"").replace(/\s+/g," ").trim();const p=getPrefs();const wantsStyle=/(anime|manga|lego|ilustracion|ilustración|dibujo|cartoon|3d|render|acuarela|oleo|óleo|pixel art)/i.test(original);const animal=/(perro|gato|caballo|animal|dog|cat|horse)/i.test(original);const person=/(persona|hombre|mujer|niño|niña|retrato|rostro|cara)/i.test(original);const place=/(ciudad|edificio|calle|paisaje|bosque|montaña|playa|casa|arquitectura)/i.test(original);let style;if(wantsStyle)style="Respetar exactamente el estilo artístico pedido por el usuario.";else if(p.realistic)style="FOTOGRAFÍA EXTREMADAMENTE REALISTA, aspecto de cámara real, nada de apariencia de ilustración o CGI.";else style="Calidad visual profesional y estilo coherente con el pedido.";let specifics="";if(animal)specifics+=" Anatomía animal correcta, pelaje natural con hebras visibles, ojos húmedos con reflejos reales, patas correctas, proporciones naturales, movimiento creíble.";if(person)specifics+=" Anatomía humana natural, piel con textura real, manos y dedos correctos, ojos simétricos, expresión creíble.";if(place)specifics+=" Perspectiva arquitectónica correcta, escala coherente, materiales reales, luz y sombras físicamente plausibles.";const factual=research?.used&&research.summary?`\nCONTEXTO FACTUAL INVESTIGADO ANTES DE GENERAR:\n${research.summary.slice(0,5000)}\nUsá este contexto solo para mejorar exactitud visual. No agregues datos que contradigan el pedido.`:"";return `
+function mejorarPromptImagen(texto,research){const original=String(texto||"").replace(/\s+/g," ").trim();const p=getPrefs();const wantsStyle=/(anime|manga|lego|ilustracion|ilustración|dibujo|cartoon|3d|render|acuarela|oleo|óleo|pixel art)/i.test(original);const animal=/(perro|gato|caballo|animal|dog|cat|horse)/i.test(original);const person=/(persona|hombre|mujer|niño|niña|retrato|rostro|cara)/i.test(original);const place=/(ciudad|edificio|calle|paisaje|bosque|montaña|playa|casa|arquitectura)/i.test(original);let style;if(wantsStyle)style="Respetar exactamente el estilo artístico pedido por el usuario.";else if(p.realistic)style="FOTOGRAFÍA EXTREMADAMENTE REALISTA, aspecto de cámara real, máxima fidelidad visual, variación mínima, nada de apariencia de ilustración o CGI.";else style="Calidad visual profesional y estilo coherente con el pedido.";let specifics="";if(animal)specifics+=" Anatomía animal correcta, pelaje natural con hebras visibles, ojos húmedos con reflejos reales, patas correctas, proporciones naturales, movimiento creíble.";if(person)specifics+=" Anatomía humana natural, piel con textura real, manos y dedos correctos, ojos simétricos, expresión creíble.";if(place)specifics+=" Perspectiva arquitectónica correcta, escala coherente, materiales reales, luz y sombras físicamente plausibles.";const factual=research?.used&&research.summary?`\nCONTEXTO FACTUAL INVESTIGADO ANTES DE GENERAR:\n${research.summary.slice(0,5000)}\nUsá este contexto solo para mejorar exactitud visual. No agregues datos que contradigan el pedido.`:"";return `
 INDIA AI — IMAGE MASTER PROMPT
 
 PEDIDO ORIGINAL DEL USUARIO (MANDATORIO):
@@ -467,16 +471,124 @@ EVITAR:
 ${factual}
 
 REFERENCIAS REALES:
-Si se proporcionan fotos reales de referencia, usalas como grounding visual para anatomía, materiales, proporciones, ambiente y características del mundo real. No copies una fotografía concreta de forma literal: generá una composición nueva coherente con el pedido.
+Si se proporcionan fotos reales de referencia, usalas como grounding visual fuerte para anatomía, materiales, proporciones, ambiente y características del mundo real. Intentá que el resultado se parezca al máximo posible al aspecto real y a las características compartidas por las referencias, con variación mínima y sin estilizar de más.
 
 REGLA ABSOLUTA:
 No cambies el sujeto, cantidad, colores, acción, lugar ni estilo pedido por el usuario. Si pidió una foto, debe parecer una fotografía real capturada con una cámara real.
 `}
 
+
+/* ================= MARVEL KNOWLEDGE ================= */
+function esPreguntaMarvel(texto){
+  const t=normalizeText(texto);
+  const terms=[
+    "marvel","mcu","earth-616","earth 616","earth-199999","earth 199999",
+    "avengers","x-men","xmen","spider-man","spiderman","peter parker","miles morales",
+    "iron man","tony stark","captain america","steve rogers","thor","hulk","bruce banner",
+    "wolverine","logan","deadpool","daredevil","punisher","fantastic four","4 fantasticos",
+    "doctor doom","dr doom","victor von doom","thanos","galactus","silver surfer",
+    "scarlet witch","wanda maximoff","vision","loki","magneto","professor x","charles xavier",
+    "venom","carnage","symbiote","simbionte","moon knight","ghost rider","blade",
+    "black panther","wakanda","doctor strange","stephen strange","kang","celestials",
+    "celestiales","eternals","eternos","infinity stones","gemas del infinito",
+    "secret wars","civil war","house of m","secret invasion","age of ultron",
+    "multiverse","multiverso","mutant","mutante","adamantium","vibranium"
+  ];
+  return terms.some(x=>t.includes(x));
+}
+
+function formatearFuentesMarvel(results=[]){
+  if(!Array.isArray(results)) return [];
+  return results.map(x=>{
+    if(typeof x==="string") return {title:"Marvel Database",url:x};
+    return {
+      title:String(x?.title||x?.name||"Marvel Database").slice(0,180),
+      url:String(x?.url||x?.link||x?.href||"").trim(),
+      snippet:String(x?.snippet||x?.description||x?.text||"").slice(0,1200)
+    };
+  }).filter(x=>x.url||x.snippet);
+}
+
+async function investigarMarvel(query){
+  const searchQuery=`site:marvel.fandom.com/wiki/ ${query}`;
+  const attempts=[
+    {endpoint:"/research",body:{query:searchQuery,purpose:"marvel_knowledge",provider:"google",max_results:12,preferred_domain:"marvel.fandom.com"}},
+    {endpoint:"/search",body:{query:searchQuery,purpose:"marvel_knowledge",provider:"google",max_results:12,preferred_domain:"marvel.fandom.com"}}
+  ];
+
+  for(const a of attempts){
+    try{
+      const controller=new AbortController();
+      activeController=controller;
+      const timer=setTimeout(()=>controller.abort(),30000);
+      const res=await fetch(API_URL+a.endpoint,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(a.body),
+        signal:controller.signal
+      });
+      clearTimeout(timer);
+      if(!res.ok) continue;
+      const data=await res.json().catch(()=>({}));
+      const summary=String(data.summary||data.context||data.answer||data.response||"").trim();
+      const sources=formatearFuentesMarvel(data.results||data.sources||data.links||[]);
+      if(summary||sources.length){
+        return {used:true,summary,sources,endpoint:a.endpoint};
+      }
+    }catch(e){
+      if(e.name==="AbortError" && cancelacionSolicitada) throw e;
+      console.warn("Marvel research failed",a.endpoint,e);
+    }
+  }
+  return {used:false,summary:"",sources:[]};
+}
+
+function contextoMarvelParaSistema(r){
+  if(!r?.used) return `
+MODO MARVEL ACTIVO:
+La pregunta es sobre Marvel. Respondé usando tu conocimiento especializado, separando correctamente continuidades y versiones. No presumas cuánto sabés. Si un dato extremadamente específico no es seguro, no lo inventes.
+`;
+  const fuentes=(r.sources||[]).slice(0,10).map((s,i)=>
+    `${i+1}. ${s.title||"Marvel Database"}${s.url?` — ${s.url}`:""}${s.snippet?`\n   ${s.snippet}`:""}`
+  ).join("\n");
+  return `
+MODO MARVEL ACTIVO — INVESTIGACIÓN PREVIA REALIZADA:
+Usá este contexto como grounding. Priorizá Marvel Database y no mezcles realidades.
+
+CONTEXTO:
+${(r.summary||"").slice(0,12000)}
+
+FUENTES:
+${fuentes||"Sin lista de URLs devuelta por el backend."}
+
+REGLAS:
+- Respondé directamente; no digas “investigué” salvo que sea útil mencionarlo.
+- No digas “sé mucho de Marvel” ni frases parecidas.
+- Si las fuentes contradicen conocimiento previo, priorizá el contexto recuperado.
+- No inventes hechos que no estén respaldados por el contexto o por conocimiento sólido.
+`;
+}
+
 /* ================= CHAT API ================= */
 function getMaxOutputTokens(){const mode=getPrefs().length;if(mode==="normal")return 12000;if(mode==="long")return 24000;return 48000}
 async function callChat(messages,extraSystem=""){activeController=new AbortController();const response=await fetch(API_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:obtenerSistema(extraSystem),messages,max_output_tokens:getMaxOutputTokens(),response_mode:getPrefs().length}),signal:activeController.signal});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data?.error||"Error del servidor.");const answer=data?.response??data?.answer??data?.content;if(!answer)throw new Error("La IA no devolvió una respuesta.");return String(answer)}
-async function enviar(){const texto=input.value.trim();if(!texto||generando)return;if(esPedidoDeImagen(texto)){input.value="";ajustarInput();await generarImagen(limpiarPromptImagen(texto));return}if(!puedePreguntar()){input.value="";mostrarMensaje("Llegaste al límite de preguntas de hoy.","ai");return}if(!chatActual)nuevoChat();const conversation=obtenerActual();input.value="";ajustarInput();setBusy(true);const userId=uid("msg");conversation.messages.push({id:userId,role:"user",content:texto});if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;guardarChats();renderHistorial();mostrarMensaje(texto,"user",userId);const aiId=uid("msg"),thinking=mostrarMensaje("Pensando…","ai",aiId);thinking.classList.add("thinking","typing-cursor");try{const mode=getPrefs().length;let combined="";const first=await callChat(conversation.messages,mode==="ultra"?"La respuesta puede ser muy extensa. Entregá la primera parte completa y coherente; no resumas para ahorrar espacio.":mode==="infinite"?"Respondé con todo lo que entre en esta parte. La interfaz permite continuar la misma respuesta sin límite manual.":"");combined=first;thinking.classList.remove("thinking","typing-cursor");thinking.textContent=combined;
+async function enviar(){const texto=input.value.trim();if(!texto||generando)return;if(esPedidoDeImagen(texto)){input.value="";ajustarInput();await generarImagen(limpiarPromptImagen(texto));return}if(!puedePreguntar()){input.value="";mostrarMensaje("Llegaste al límite de preguntas de hoy.","ai");return}if(!chatActual)nuevoChat();const conversation=obtenerActual();input.value="";ajustarInput();setBusy(true);const userId=uid("msg");conversation.messages.push({id:userId,role:"user",content:texto});if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;guardarChats();renderHistorial();mostrarMensaje(texto,"user",userId);const aiId=uid("msg"),thinking=mostrarMensaje("Pensando…","ai",aiId);thinking.classList.add("thinking","typing-cursor");try{const mode=getPrefs().length;
+      let combined="";
+      let extraSystem=mode==="ultra"
+        ?"La respuesta puede ser muy extensa. Entregá la primera parte completa y coherente; no resumas para ahorrar espacio."
+        :mode==="infinite"
+          ?"Respondé con todo lo que entre en esta parte. La interfaz permite continuar la misma respuesta sin límite manual."
+          :"";
+      if(esPreguntaMarvel(texto)){
+        thinking.textContent="Buscando datos de Marvel…";
+        const marvelResearch=await investigarMarvel(texto);
+        extraSystem += "\n\n" + contextoMarvelParaSistema(marvelResearch);
+        thinking.textContent="Pensando…";
+      }
+      const first=await callChat(conversation.messages,extraSystem);
+      combined=first;
+      thinking.classList.remove("thinking","typing-cursor");
+      thinking.textContent=combined;
       if(mode==="ultra"&&!/\[FIN\]\s*$/i.test(combined)){thinking.classList.add("typing-cursor");const temp=[...conversation.messages,{role:"assistant",content:combined},{role:"user",content:"CONTINUÁ EXACTAMENTE desde donde terminaste. No repitas nada. Completá lo pendiente con el mismo nivel de detalle. Si realmente terminaste, cerrá con [FIN]."}];try{const second=await callChat(temp,"Esto es una continuación automática de una respuesta larga. No reinicies, no resumas y no repitas.");combined += "\n\n"+second;thinking.textContent=combined}catch(e){if(e.name!=="AbortError")console.warn(e)}finally{thinking.classList.remove("typing-cursor")}}
       combined=combined.replace(/\n?\[FIN\]\s*$/i,"").trim();thinking.textContent=combined;conversation.messages.push({id:aiId,role:"assistant",content:combined});reemplazarAccionesDeBurbuja(thinking,aiId);incrementarUso();guardarChats();
     }catch(error){thinking.classList.remove("thinking","typing-cursor");thinking.textContent=error.name==="AbortError"?"Generación detenida.":"No pude conectarme con Inda AI.\n\n"+error.message;console.error(error)}finally{activeController=null;setBusy(false);input.focus()}}
@@ -522,8 +634,13 @@ async function generarImagen(promptForzado=null){
       visual_references:research.realImages||[],
       use_reference_images:refUrls.length>0,
       reference_mode:"visual_grounding",
-      reference_strength:"high",
+      reference_strength:"very_high",
       reference_purpose:"real-world appearance and photographic realism",
+      fidelity_mode:"maximum",
+      match_reference_appearance:true,
+      photographic_consistency:"strict",
+      variation:"minimal",
+      strict_realism:true,
       create_new_image:true,
       do_not_copy_single_reference:true
     },thinking);
