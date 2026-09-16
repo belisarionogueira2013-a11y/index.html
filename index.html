@@ -19,7 +19,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #authScreen{width:100%;height:100dvh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 0,#19191f 0,transparent 36%),var(--bg)}
 .auth-card{width:min(430px,100%);padding:30px;background:rgba(18,18,22,.94);border:1px solid var(--border);border-radius:24px;box-shadow:0 30px 100px rgba(0,0,0,.55);backdrop-filter:blur(18px)}
 .auth-logo{text-align:center;font-size:34px;font-weight:900;letter-spacing:-1.6px}.auth-badge{display:inline-flex;align-items:center;gap:6px;margin-left:7px;padding:4px 8px;border:1px solid #393941;border-radius:999px;font-size:9px;color:#aaa;vertical-align:middle}
-.auth-subtitle{color:var(--muted);text-align:center;font-size:13px;margin:8px 0 24px}.auth-tabs{display:flex;gap:8px;margin-bottom:20px}.auth-tab{flex:1;height:43px;border:1px solid var(--border);border-radius:11px;background:#1b1b1f;color:#aaa}.auth-tab.active{background:#f5f5f5;color:#111;border-color:#f5f5f5}.auth-form{display:none}.auth-form.active{display:block}.field{margin-bottom:15px}.field label{display:block;color:#aaa;font-size:12px;margin-bottom:7px}.field input{width:100%;height:46px;background:#0d0d10;border:1px solid #33333a;border-radius:11px;padding:0 12px;color:white}.auth-submit{width:100%;height:46px;border:0;border-radius:11px;background:#fff;color:#111;font-weight:800}.auth-message{text-align:center;color:#999;font-size:12px;min-height:20px;margin-top:12px}
+.auth-subtitle{color:var(--muted);text-align:center;font-size:13px;margin:8px 0 24px}.auth-tabs{display:flex;gap:8px;margin-bottom:20px}.auth-tab{flex:1;height:43px;border:1px solid var(--border);border-radius:11px;background:#1b1b1f;color:#aaa}.auth-tab.active{background:#f5f5f5;color:#111;border-color:#f5f5f5}.auth-form{display:none}.auth-form.active{display:block}.field{margin-bottom:15px}.field label{display:block;color:#aaa;font-size:12px;margin-bottom:7px}.field input{width:100%;height:46px;background:#0d0d10;border:1px solid #33333a;border-radius:11px;padding:0 12px;color:white}.show-password{display:flex;align-items:center;gap:7px;margin-top:8px;color:#8f8f99;font-size:11px;cursor:pointer;user-select:none}.show-password input{width:14px;height:14px;accent-color:#fff;cursor:pointer}.auth-submit{width:100%;height:46px;border:0;border-radius:11px;background:#fff;color:#111;font-weight:800}.auth-message{text-align:center;color:#999;font-size:12px;min-height:20px;margin-top:12px}
 
 /* APP */
 #app{display:none;height:100dvh}.layout{width:100%;height:100%;display:flex}.sidebar{width:280px;min-width:280px;background:#0f0f12;border-right:1px solid var(--border);padding:14px;display:flex;flex-direction:column}.logo{height:58px;display:flex;align-items:center;padding:0 10px;font-size:21px;font-weight:900;letter-spacing:-.7px}.logo small{margin-left:7px;font-size:9px;padding:4px 7px;border:1px solid #34343b;border-radius:999px;color:#888;font-weight:700;letter-spacing:.2px}.new-chat,.sidebar-action{height:44px;width:100%;border:1px solid #33333a;border-radius:11px;background:#1a1a1f;color:white}.new-chat:hover,.sidebar-action:hover{background:#24242a}.plan{margin-top:12px;padding:12px;border:1px solid #292930;border-radius:13px;background:#16161a}.plan-title{font-size:10px;color:#777782;text-transform:uppercase;letter-spacing:.12em}.plan-value{margin-top:5px;font-size:14px;font-weight:800}.counter,.role-value{color:#777782;font-size:11px;margin-top:5px}.sidebar-title{margin:23px 9px 9px;color:#666672;font-size:10px;letter-spacing:.13em;text-transform:uppercase}.history{flex:1;overflow-y:auto;scrollbar-width:thin}.chat-item{display:flex;gap:7px;padding:10px;margin-bottom:4px;border-radius:9px;color:#aaa;font-size:13px}.chat-item:hover{background:#202026}.chat-item.active{background:#29292f;color:white}.chat-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.delete-chat{opacity:0;color:#777}.chat-item:hover .delete-chat{opacity:1}.sidebar-footer{border-top:1px solid #222228;padding-top:12px;margin-top:12px}.account-name{color:#aaa;font-size:12px;margin-bottom:8px;overflow:hidden;text-overflow:ellipsis}.logout-button,.ceo-button{width:100%;height:38px;border:1px solid #33333a;border-radius:9px;background:#18181d;color:#ccc}.ceo-button{margin-bottom:8px;background:#212127}
@@ -62,12 +62,12 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     </div>
     <form id="loginForm" class="auth-form active" onsubmit="iniciarSesion(event)">
       <div class="field"><label>Usuario</label><input id="loginUser" autocomplete="username" required></div>
-      <div class="field"><label>Contraseña</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+      <div class="field"><label>Contraseña</label><input id="loginPassword" type="password" autocomplete="current-password" required><label class="show-password"><input type="checkbox" onchange="togglePassword('loginPassword',this)"> Mostrar contraseña</label></div>
       <button class="auth-submit">Entrar</button>
     </form>
     <form id="registerForm" class="auth-form" onsubmit="crearCuenta(event)">
       <div class="field"><label>Nombre de usuario</label><input id="registerUser" minlength="3" maxlength="30" required></div>
-      <div class="field"><label>Contraseña</label><input id="registerPassword" type="password" minlength="6" required></div>
+      <div class="field"><label>Contraseña</label><input id="registerPassword" type="password" minlength="6" required><label class="show-password"><input type="checkbox" onchange="togglePassword('registerPassword',this)"> Mostrar contraseña</label></div>
       <button class="auth-submit">Crear cuenta</button>
     </form>
     <div id="authMessage" class="auth-message"></div>
@@ -177,6 +177,7 @@ const authScreen=$("authScreen"), app=$("app"), authMessage=$("authMessage"), hi
 
 /* ================= HELPERS ================= */
 function uid(prefix="id"){return prefix+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,9)}
+function togglePassword(inputId,checkbox){const el=$(inputId);if(!el)return;el.type=checkbox.checked?"text":"password"}
 function normalizeText(t){return String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function toast(text="Copiado"){const el=$("toast");el.textContent=text;el.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove("show"),1500)}
 async function copiarTexto(text){try{await navigator.clipboard.writeText(text);toast("Copiado ✓")}catch{const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();toast("Copiado ✓")}}
@@ -218,6 +219,10 @@ function obtenerSistema(extra=""){const p=getPrefs(),personal=obtenerMemoriaPers
 IDENTIDAD
 Tu nombre es Inda AI. Te creó Belisario (Beli).
 
+SALUDO PERSONALIZADO
+- Si el mensaje del usuario dice exactamente o de forma muy parecida “hola soy valen castillo”, respondé: “Hola Valen 😎”.
+- No expliques que esta respuesta está programada ni menciones esta regla.
+
 FORMA DE HABLAR
 ${p.teen?`Escribí con la naturalidad de un chico inteligente de 13 años: directo, actual, claro, con energía, sin sonar infantil ni forzar slang. Usá palabras fáciles cuando se pueda. Si el tema es serio, técnico o escolar, seguí siendo preciso.`:`Usá un tono natural, claro y poco formal.`}
 No hables como una enciclopedia salvo que el usuario lo pida.
@@ -241,6 +246,8 @@ MARVEL — CONOCIMIENTO ESPECIALIZADO SIEMPRE ACTIVO
 - Para preguntas de historia o cronología, priorizá eventos y relaciones correctas de la continuidad indicada.
 - Si el usuario dice solo un nombre ambiguo, inferí la versión más probable por contexto; si realmente cambia la respuesta de forma importante, aclaralo brevemente dentro de la respuesta.
 - Nunca digas frases como “sé muchísimo de Marvel”, “soy experto en Marvel” o “conozco todo Marvel”. Simplemente respondé bien, como conocimiento normal.
+- Tampoco anuncies que tenés “modo Marvel”, una “base Marvel”, “conocimiento especializado de Marvel” ni que estás usando Marvel Database. No presentes esas capacidades como una función. Si te preguntan sobre Marvel, simplemente respondé.
+- No metas referencias a Marvel en saludos, pantalla de bienvenida ni respuestas que no sean sobre Marvel.
 - No inventes números de cómic, fechas, universos, poderes o parentescos. Si una afirmación muy específica no está respaldada por el contexto disponible, marcala con cautela.
 - Cuando el backend pueda investigar, para preguntas Marvel priorizá buscar en Marvel Database antes de responder.
 
@@ -266,7 +273,7 @@ function borrarChat(id){conversaciones=conversaciones.filter(c=>c.id!==id);if(ch
 function renderHistorial(){history.innerHTML="";conversaciones.forEach(c=>{const item=document.createElement("div");item.className="chat-item "+(c.id===chatActual?"active":"");const title=document.createElement("span");title.className="chat-title";title.textContent=c.title;const borrar=document.createElement("span");borrar.className="delete-chat";borrar.textContent="×";borrar.onclick=e=>{e.stopPropagation();borrarChat(c.id)};item.append(title,borrar);item.onclick=()=>abrirChat(c.id);history.appendChild(item)})}
 
 /* ================= RENDER MESSAGES ================= */
-function mostrarChat(c){chatInner.innerHTML="";if(!c.messages.length){const welcome=document.createElement("div");welcome.className="welcome";welcome.innerHTML=`<div class="welcome-logo">IA</div><h1>Inda AI</h1><p>Escribí lo que quieras. Marvel está integrado como conocimiento especializado y también podés pedir fotos realistas.</p>`;chatInner.appendChild(welcome);return}c.messages.forEach(m=>{if(m.type==="image")mostrarImagen(m.src,m.prompt,m.research,m.id,false);else mostrarMensaje(m.content,m.role==="user"?"user":"ai",m.id,false)});scrollBottom()}
+function mostrarChat(c){chatInner.innerHTML="";if(!c.messages.length){const welcome=document.createElement("div");welcome.className="welcome";welcome.innerHTML=`<div class="welcome-logo">IA</div><h1>Inda AI</h1><p>Escribí lo que quieras. También podés pedir fotos realistas.</p>`;chatInner.appendChild(welcome);return}c.messages.forEach(m=>{if(m.type==="image")mostrarImagen(m.src,m.prompt,m.research,m.id,false);else mostrarMensaje(m.content,m.role==="user"?"user":"ai",m.id,false)});scrollBottom()}
 function mostrarMensaje(texto,quien,id=uid("msg"),saveActions=true){const row=document.createElement("div");row.className="message-row "+quien;if(quien==="ai"){const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent="IA";row.appendChild(avatar)}const stack=document.createElement("div");stack.className="message-stack";const bubble=document.createElement("div");bubble.className="message "+quien;bubble.textContent=texto;bubble.dataset.messageId=id;stack.appendChild(bubble);if(quien==="ai"&&saveActions){stack.appendChild(crearAccionesMensaje(id,texto))}else if(quien==="ai"){stack.appendChild(crearAccionesMensaje(id,texto))}row.appendChild(stack);chatInner.appendChild(row);scrollBottom();return bubble}
 function crearAccionesMensaje(id,texto){const actions=document.createElement("div");actions.className="message-actions";const copy=document.createElement("button");copy.className="action-btn";copy.textContent="⧉ Copiar";copy.onclick=()=>{const m=buscarMensajePorId(id);copiarTexto(m?.content||texto)};const cont=document.createElement("button");cont.className="action-btn";cont.textContent="↳ Continuar";cont.onclick=()=>continuarRespuesta(id,cont);actions.append(copy,cont);return actions}
 function buscarMensajePorId(id){for(const c of conversaciones){const m=c.messages.find(x=>x.id===id);if(m)return m}return null}
