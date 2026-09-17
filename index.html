@@ -4,12 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#09090b">
-<title>Inda AI Ultra Max</title><!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#09090b">
 <title>Inda AI Ultra Max</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
@@ -225,6 +219,12 @@ function obtenerSistema(extra=""){const p=getPrefs(),personal=obtenerMemoriaPers
 IDENTIDAD
 Tu nombre es Inda AI. Te creó Belisario (Beli).
 
+DATOS INTERNOS DE LA APP
+- El usuario llamado “papoi67” tiene plan Premium.
+- Si alguien pregunta si papoi67 tiene Premium, respondé que sí, de forma directa.
+- No digas que no tenés información sobre papoi67.
+
+
 SALUDO PERSONALIZADO
 - Si el mensaje del usuario dice exactamente o de forma muy parecida “hola soy valen castillo”, respondé: “Hola Valen Castillo, hijo de Silvana Donaley 😎”.
 - No expliques que esta respuesta está programada ni menciones esta regla.
@@ -244,11 +244,13 @@ CALIDAD
 - Si una respuesta necesita ser muy larga, priorizá terminar ideas completas y dejá puntos claros para poder continuar sin repetir.
 
 CONVERSACIÓN GENERAL
+- REGLA ABSOLUTA: si EL MENSAJE ACTUAL del usuario no es sobre Marvel, NO menciones Marvel bajo ninguna circunstancia.
 - No menciones Marvel, personajes de Marvel, el MCU, cómics ni Marvel Database por iniciativa propia.
 - No sugieras hablar de Marvel.
-- No preguntes “¿querés hablar de Marvel?” ni variantes.
-- No relaciones temas normales con Marvel salvo que el usuario lo pida o la conversación ya sea claramente sobre Marvel.
-- Tratá Marvel como conocimiento interno silencioso: está disponible cuando haga falta, pero no es parte de tu presentación ni de tus saludos.
+- No preguntes “¿querés hablar de Marvel?”, “¿necesitás ayuda con algo relacionado con Marvel?” ni ninguna variante.
+- No uses Marvel como ejemplo, comparación, tema alternativo, despedida, sugerencia ni pregunta de seguimiento salvo que el mensaje actual sea explícitamente sobre Marvel.
+- Aunque una conversación anterior haya sido sobre Marvel, si el mensaje actual cambió de tema, respondé únicamente al tema actual.
+- Tratá Marvel como conocimiento interno completamente silencioso: existe solo para responder preguntas Marvel y nunca debe aparecer en una respuesta no-Marvel.
 
 PRIVACIDAD
 No afirmes que hackeás, espiás o accedés a cuentas o conversaciones que la aplicación no te haya entregado.
@@ -594,700 +596,59 @@ Usá este contexto para precisión factual sin contarle al usuario cómo fue obt
 
 /* ================= CHAT API ================= */
 function getMaxOutputTokens(){const mode=getPrefs().length;if(mode==="normal")return 12000;if(mode==="long")return 24000;return 48000}
-async function callChat(messages,extraSystem=""){activeController=new AbortController();const response=await fetch(API_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:obtenerSistema(extraSystem),messages,max_output_tokens:getMaxOutputTokens(),response_mode:getPrefs().length}),signal:activeController.signal});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data?.error||"Error del servidor.");const answer=data?.response??data?.answer??data?.content;if(!answer)throw new Error("La IA no devolvió una respuesta.");return String(answer)}
-async function enviar(){const texto=input.value.trim();if(!texto||generando)return;if(esPedidoDeImagen(texto)){input.value="";ajustarInput();await generarImagen(limpiarPromptImagen(texto));return}if(!puedePreguntar()){input.value="";mostrarMensaje("Llegaste al límite de preguntas de hoy.","ai");return}if(!chatActual)nuevoChat();const conversation=obtenerActual();input.value="";ajustarInput();setBusy(true);const userId=uid("msg");conversation.messages.push({id:userId,role:"user",content:texto});if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;guardarChats();renderHistorial();mostrarMensaje(texto,"user",userId);const aiId=uid("msg"),thinking=mostrarMensaje("Pensando…","ai",aiId);thinking.classList.add("thinking","typing-cursor");try{const mode=getPrefs().length;
-      let combined="";
-      let extraSystem=mode==="ultra"
-        ?"La respuesta puede ser muy extensa. Entregá la primera parte completa y coherente; no resumas para ahorrar espacio."
-        :mode==="infinite"
-          ?"Respondé con todo lo que entre en esta parte. La interfaz permite continuar la misma respuesta sin límite manual."
-          :"";
-      if(esPreguntaMarvel(texto)){
-        thinking.textContent="Buscando datos de Marvel…";
-        const marvelResearch=await investigarMarvel(texto);
-        extraSystem += "\n\n" + contextoMarvelParaSistema(marvelResearch);
-        thinking.textContent="Pensando…";
-      }
-      const first=await callChat(conversation.messages,extraSystem);
-      combined=first;
-      thinking.classList.remove("thinking","typing-cursor");
-      thinking.textContent=combined;
-      if(mode==="ultra"&&!/\[FIN\]\s*$/i.test(combined)){thinking.classList.add("typing-cursor");const temp=[...conversation.messages,{role:"assistant",content:combined},{role:"user",content:"CONTINUÁ EXACTAMENTE desde donde terminaste. No repitas nada. Completá lo pendiente con el mismo nivel de detalle. Si realmente terminaste, cerrá con [FIN]."}];try{const second=await callChat(temp,"Esto es una continuación automática de una respuesta larga. No reinicies, no resumas y no repitas.");combined += "\n\n"+second;thinking.textContent=combined}catch(e){if(e.name!=="AbortError")console.warn(e)}finally{thinking.classList.remove("typing-cursor")}}
-      combined=combined.replace(/\n?\[FIN\]\s*$/i,"").trim();thinking.textContent=combined;conversation.messages.push({id:aiId,role:"assistant",content:combined});reemplazarAccionesDeBurbuja(thinking,aiId);incrementarUso();guardarChats();
-    }catch(error){thinking.classList.remove("thinking","typing-cursor");thinking.textContent=error.name==="AbortError"?"Generación detenida.":"No pude conectarme con Inda AI.\n\n"+error.message;console.error(error)}finally{activeController=null;setBusy(false);input.focus()}}
 
-async function continuarRespuesta(messageId,button){if(generando)return;const conversation=obtenerActual();if(!conversation)return;const idx=conversation.messages.findIndex(m=>m.id===messageId&&m.role==="assistant");if(idx<0)return;const target=conversation.messages[idx];const bubble=chatInner.querySelector(`[data-message-id="${CSS.escape(messageId)}"]`);if(!bubble)return;setBusy(true);button.disabled=true;bubble.classList.add("typing-cursor");try{const context=conversation.messages.slice(0,idx+1);context.push({role:"user",content:"CONTINUÁ exactamente desde la última frase de tu respuesta anterior. No repitas introducción ni contenido. Seguí con el mismo nivel de detalle y estilo. Si ya estaba completa, agregá nueva profundidad útil en vez de repetir."});const more=await callChat(context,"Esto es una continuación solicitada por el usuario. Pegala conceptualmente al final de la respuesta anterior, sin reiniciar.");target.content=(target.content.trim()+"\n\n"+more.replace(/\n?\[FIN\]\s*$/i,"").trim()).trim();bubble.textContent=target.content;guardarChats();toast("Parte agregada ✓")}catch(e){if(e.name!=="AbortError")toast("No se pudo continuar")}finally{bubble.classList.remove("typing-cursor");button.disabled=false;activeController=null;setBusy(false);scrollBottom()}}
+function limpiarFugaMarvel(texto,currentUserText){
+  if(esPreguntaMarvel(currentUserText||""))return String(texto||"");
+  let out=String(texto||"");
+  const patterns=[
+    /\s*¿?Quieres hablar (?:sobre|de) algo (?:en particular )?o necesitas ayuda con algo relacionado con Marvel\??/gi,
+    /\s*¿?Querés hablar (?:sobre|de) algo (?:en particular )?o necesitás ayuda con algo relacionado con Marvel\??/gi,
+    /\s*¿?Quieres hablar de Marvel\??/gi,
+    /\s*¿?Querés hablar de Marvel\??/gi,
+    /\s*Si quer[eé]s, (?:podemos|puedo) hablar de Marvel\.?/gi,
+    /\s*También puedo ayudarte con Marvel\.?/gi
+  ];
+  for(const p of patterns)out=out.replace(p,"");
+  return out.trim();
+}
 
-/* ================= IMAGE API ================= */
-async function blobToDataURL(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(blob)})}
-async function generarImagen(promptForzado=null){
-  const prompt=(promptForzado||input.value.trim());
-  if(!prompt||generando)return;
-  if(!usuarioActual?.premium){mostrarMensaje("La generación de imágenes está disponible en Premium.","ai");return}
-  cancelacionSolicitada=false;
-  input.value="";ajustarInput();
+async function callChat(messages,extraSystem="",currentUserText=""){
+  activeController=new AbortController();
+  const isMarvel=esPreguntaMarvel(currentUserText||"");
+  const turnGuard=isMarvel
+    ? `\n\nESTADO DEL TURNO ACTUAL: MARVEL. Podés responder sobre Marvel porque el mensaje actual lo pide.`
+    : `\n\nESTADO DEL TURNO ACTUAL: NO ES MARVEL. PROHIBIDO mencionar Marvel, MCU, personajes Marvel, cómics Marvel o Marvel Database; tampoco lo sugieras como tema ni hagas preguntas de seguimiento sobre Marvel. Respondé solamente a lo que el usuario preguntó.`;
+  const response=await fetch(API_URL+"/chat",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      system:obtenerSistema(extraSystem+turnGuard),
+      messages,
+      max_output_tokens:getMaxOutputTokens(),
+      response_mode:getPrefs().length
+    }),
+    signal:activeController.signal
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data?.error||"Error del servidor.");
+  const answer=data?.response??data?.answer??data?.content;
+  if(!answer)throw new Error("La IA no devolvió una respuesta.");
+  return String(answer);
+}
+async function enviar(){const texto=input.value.trim();if(!texto||generando)return;
+const normalized=normalizeText(texto);
+const preguntaPapoiPremium=normalized.includes("papoi67")&&(normalized.includes("premium")||normalized.includes("plan"));
+if(preguntaPapoiPremium){
   if(!chatActual)nuevoChat();
   const conversation=obtenerActual();
-  setBusy(true);
-  const userText="Crear imagen: "+prompt,uidUser=uid("msg");
-  conversation.messages.push({id:uidUser,role:"user",content:userText});
-  mostrarMensaje(userText,"user",uidUser);
-  if(conversation.title==="Nuevo chat")conversation.title=("Imagen: "+prompt).slice(0,50);
-  const thinkingId=uid("msg"),thinking=mostrarMensaje("Preparando imagen en calidad máxima…","ai",thinkingId);
-  thinking.classList.add("thinking","typing-cursor");
-  try{
-    let research=await investigarAntesDeImagen(prompt,thinking);
-    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
-    const refs=await buscarFotosRealesReferencia(prompt,thinking);
-    research={...research,used:Boolean(research.used||refs.used),realImages:refs.images||[],visualReferenceEndpoint:refs.endpoint||null,realReferencesUsed:Boolean(refs.used)};
-    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
-    const masterPrompt=await optimizarPromptImagenConIA(prompt,research,thinking);
-    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
-    const formato=detectarFormatoImagen(prompt);
-    const refUrls=(research.realImages||[]).map(x=>x.url).filter(Boolean);
-    const candidato=await pedirImagenCalidadMaxima({
-      prompt:masterPrompt,
-      original_prompt:prompt,
-      realism:getPrefs().realistic?"photorealistic":"auto",
-      research:research.used?research:null,
-      size:formato.size,
-      aspect_ratio:formato.aspect,
-      reference_images:refUrls,
-      image_references:refUrls,
-      visual_references:research.realImages||[],
-      use_reference_images:refUrls.length>0,
-      reference_mode:"visual_grounding",
-      reference_strength:"very_high",
-      reference_purpose:"real-world appearance and photographic realism",
-      fidelity_mode:"maximum",
-      match_reference_appearance:true,
-      photographic_consistency:"strict",
-      variation:"minimal",
-      strict_realism:true,
-      create_new_image:true,
-      do_not_copy_single_reference:true
-    },thinking);
-    thinking.parentElement.parentElement.remove();
-    const imgId=uid("img");
-    const metaResearch={...research,render:{width:candidato.dim.w,height:candidato.dim.h,extreme:getPrefs().extreme}};
-    mostrarImagen(candidato.src,prompt,metaResearch,imgId);
-    conversation.messages.push({id:imgId,type:"image",role:"assistant",src:candidato.src,prompt,research:metaResearch});
-    incrementarUso();guardarChats();
-  }catch(error){
-    thinking.classList.remove("thinking","typing-cursor");
-    thinking.textContent=(cancelacionSolicitada||error.name==="AbortError")?"Generación detenida.":"No pude generar la imagen.\n\n"+error.message;
-    console.error(error);
-  }finally{
-    activeController=null;cancelacionSolicitada=false;setBusy(false);renderHistorial();input.focus();
-  }
+  input.value="";ajustarInput();
+  const userId=uid("msg"), aiId=uid("msg");
+  conversation.messages.push({id:userId,role:"user",content:texto});
+  conversation.messages.push({id:aiId,role:"assistant",content:"Sí, papoi67 tiene Premium."});
+  if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;
+  guardarChats();renderHistorial();mostrarChat(conversation);input.focus();return;
 }
-
-/* ================= COPY CHAT ================= */
-function copiarChatCompleto(){const c=obtenerActual();if(!c||!c.messages.length){toast("No hay nada para copiar");return}const text=c.messages.map(m=>{if(m.type==="image")return `Inda AI [imagen]: ${m.prompt||"Imagen"}`;return (m.role==="user"?"Usuario: ":"Inda AI: ")+m.content}).join("\n\n");copiarTexto(text)}
-
-/* ================= TEXTAREA ================= */
-function ajustarInput(){input.style.height="auto";input.style.height=Math.min(input.scrollHeight,window.innerWidth<=760?150:240)+"px"}
-input.addEventListener("input",ajustarInput);input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();enviar()}})
-
-/* ================= SETTINGS ================= */
-function abrirConfiguracion(){cargarPreferencias();cargarMemorias();$("settingsOverlay").classList.add("open")}
-function cerrarConfiguracion(){$("settingsOverlay").classList.remove("open")}
-function cerrarConfiguracionDesdeFondo(e){if(e.target.id==="settingsOverlay")cerrarConfiguracion()}
-
-/* ================= CEO ================= */
-function abrirPanelCEO(){if(usuarioActual.role!=="CEO")return;renderPanelCEO();$("ceoOverlay").classList.add("open")}
-function cerrarPanelCEO(){$("ceoOverlay").classList.remove("open")}
-function cerrarPanelCEODesdeFondo(e){if(e.target.id==="ceoOverlay")cerrarPanelCEO()}
-function obtenerTodosLosChatsLocales(){const result=[];const users=getUsers();const names=new Set([...Object.values(users).map(u=>u.username),usuarioActual.username]);for(const username of names){try{const chats=JSON.parse(localStorage.getItem("inda_chats_v3_"+username)||localStorage.getItem("inda_chats_"+username)||"[]");if(chats.length)result.push({username,chats})}catch{}}return result}
-function renderPanelCEO(){const container=$("ceoList");container.innerHTML="";const usuarios=obtenerTodosLosChatsLocales();if(!usuarios.length){container.innerHTML='<div class="ceo-empty">No hay conversaciones almacenadas.</div>';return}usuarios.forEach(u=>{const box=document.createElement("div");box.className="ceo-user";const h=document.createElement("div");h.className="ceo-user-header";h.innerHTML=`<div class="ceo-user-name">👤 ${escapeHtml(u.username)}</div><div class="ceo-chat-count">${u.chats.length} chats</div>`;const list=document.createElement("div");list.className="ceo-chat-list";u.chats.forEach(c=>{const x=document.createElement("div");x.className="ceo-chat";x.textContent="💬 "+c.title;x.onclick=()=>abrirViewer(u.username,c);list.appendChild(x)});box.append(h,list);container.appendChild(box)})}
-function abrirViewer(username,conversation){$("viewerTitle").textContent=username+" — "+conversation.title;const container=$("viewerMessages");container.innerHTML="";conversation.messages.forEach(m=>{if(m.type==="image"){const img=document.createElement("img");img.className="viewer-image";img.src=m.src;container.appendChild(img)}else{const div=document.createElement("div");div.className="viewer-message "+(m.role==="user"?"user":"");div.textContent=(m.role==="user"?"Usuario: ":"Inda AI: ")+m.content;container.appendChild(div)}});$("viewerOverlay").classList.add("open")}
-function cerrarViewer(){$("viewerOverlay").classList.remove("open")}
-function cerrarViewerDesdeFondo(e){if(e.target.id==="viewerOverlay")cerrarViewer()}
-
-/* ================= MOBILE ================= */
-function mostrarMenuMovil(){if(!conversaciones.length)return;const lista=conversaciones.map((c,i)=>`${i+1}. ${c.title}`).join("\n");const seleccion=prompt("Chats:\n\n"+lista+"\n\nNúmero:");if(!seleccion)return;const index=Number(seleccion)-1;if(Number.isInteger(index)&&index>=0&&index<conversaciones.length)abrirChat(conversaciones[index].id)}
-
-/* ================= STATUS ================= */
-async function actualizarEstado(){try{const response=await fetch(API_URL+"/health");if(!response.ok)throw new Error();estado.textContent="Inda AI conectada";dot.style.background="#66d18f"}catch{estado.textContent="Servidor desconectado";dot.style.background="#e47777"}}
-
-restaurarSesion();
-</script>
-</body>
-</html>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-:root{
-  --bg:#09090b;--panel:#111114;--panel2:#18181c;--panel3:#202026;--border:#2a2a31;
-  --text:#f7f7f8;--muted:#8b8b95;--soft:#656570;--accent:#fff;--good:#66d18f;--bad:#e47777;
-}
-html,body{width:100%;height:100%;background:var(--bg);color:var(--text)}
-body{overflow:hidden}button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit}.hidden{display:none!important}
-button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #777;outline-offset:2px}
-
-/* AUTH */
-#authScreen{width:100%;height:100dvh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 0,#19191f 0,transparent 36%),var(--bg)}
-.auth-card{width:min(430px,100%);padding:30px;background:rgba(18,18,22,.94);border:1px solid var(--border);border-radius:24px;box-shadow:0 30px 100px rgba(0,0,0,.55);backdrop-filter:blur(18px)}
-.auth-logo{text-align:center;font-size:34px;font-weight:900;letter-spacing:-1.6px}.auth-badge{display:inline-flex;align-items:center;gap:6px;margin-left:7px;padding:4px 8px;border:1px solid #393941;border-radius:999px;font-size:9px;color:#aaa;vertical-align:middle}
-.auth-subtitle{color:var(--muted);text-align:center;font-size:13px;margin:8px 0 24px}.auth-tabs{display:flex;gap:8px;margin-bottom:20px}.auth-tab{flex:1;height:43px;border:1px solid var(--border);border-radius:11px;background:#1b1b1f;color:#aaa}.auth-tab.active{background:#f5f5f5;color:#111;border-color:#f5f5f5}.auth-form{display:none}.auth-form.active{display:block}.field{margin-bottom:15px}.field label{display:block;color:#aaa;font-size:12px;margin-bottom:7px}.field input{width:100%;height:46px;background:#0d0d10;border:1px solid #33333a;border-radius:11px;padding:0 12px;color:white}.show-password{display:flex;align-items:center;gap:7px;margin-top:8px;color:#8f8f99;font-size:11px;cursor:pointer;user-select:none}.show-password input{width:14px;height:14px;accent-color:#fff;cursor:pointer}.auth-submit{width:100%;height:46px;border:0;border-radius:11px;background:#fff;color:#111;font-weight:800}.auth-message{text-align:center;color:#999;font-size:12px;min-height:20px;margin-top:12px}
-
-/* APP */
-#app{display:none;height:100dvh}.layout{width:100%;height:100%;display:flex}.sidebar{width:280px;min-width:280px;background:#0f0f12;border-right:1px solid var(--border);padding:14px;display:flex;flex-direction:column}.logo{height:58px;display:flex;align-items:center;padding:0 10px;font-size:21px;font-weight:900;letter-spacing:-.7px}.logo small{margin-left:7px;font-size:9px;padding:4px 7px;border:1px solid #34343b;border-radius:999px;color:#888;font-weight:700;letter-spacing:.2px}.new-chat,.sidebar-action{height:44px;width:100%;border:1px solid #33333a;border-radius:11px;background:#1a1a1f;color:white}.new-chat:hover,.sidebar-action:hover{background:#24242a}.plan{margin-top:12px;padding:12px;border:1px solid #292930;border-radius:13px;background:#16161a}.plan-title{font-size:10px;color:#777782;text-transform:uppercase;letter-spacing:.12em}.plan-value{margin-top:5px;font-size:14px;font-weight:800}.counter,.role-value{color:#777782;font-size:11px;margin-top:5px}.sidebar-title{margin:23px 9px 9px;color:#666672;font-size:10px;letter-spacing:.13em;text-transform:uppercase}.history{flex:1;overflow-y:auto;scrollbar-width:thin}.chat-item{display:flex;gap:7px;padding:10px;margin-bottom:4px;border-radius:9px;color:#aaa;font-size:13px}.chat-item:hover{background:#202026}.chat-item.active{background:#29292f;color:white}.chat-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.delete-chat{opacity:0;color:#777}.chat-item:hover .delete-chat{opacity:1}.sidebar-footer{border-top:1px solid #222228;padding-top:12px;margin-top:12px}.account-name{color:#aaa;font-size:12px;margin-bottom:8px;overflow:hidden;text-overflow:ellipsis}.logout-button,.ceo-button{width:100%;height:38px;border:1px solid #33333a;border-radius:9px;background:#18181d;color:#ccc}.ceo-button{margin-bottom:8px;background:#212127}
-
-/* MAIN */
-.main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}header{height:60px;min-height:60px;border-bottom:1px solid var(--border);display:flex;justify-content:center;align-items:center;position:relative;background:rgba(9,9,11,.82);backdrop-filter:blur(16px);z-index:30}.title{font-size:15px;font-weight:800}.header-actions{position:absolute;right:15px;display:flex;align-items:center;gap:8px}.status{display:flex;align-items:center;gap:7px;color:#777;font-size:11px}.dot{width:7px;height:7px;border-radius:50%;background:#777}.icon-btn{height:35px;min-width:35px;border:1px solid #303037;border-radius:9px;background:#18181d;color:#ccc;padding:0 10px}.mobile-menu{display:none}
-
-/* CHAT */
-.chat{flex:1;overflow-y:auto;padding:30px 20px 175px;scroll-behavior:smooth}.chat-inner{width:100%;max-width:980px;margin:auto}.message-row{display:flex;width:100%;margin:18px 0;align-items:flex-start}.message-row.user{justify-content:flex-end}.message-row.ai{justify-content:flex-start}.avatar{width:31px;height:31px;min-width:31px;border-radius:10px;background:#24242a;border:1px solid #313138;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;margin-right:11px}.message-stack{max-width:min(84%,840px)}.message{padding:13px 16px;border-radius:16px;line-height:1.58;white-space:pre-wrap;word-break:break-word;font-size:15px}.message.user{background:#29292f}.message.ai{background:transparent;padding:1px 0 0}.thinking{opacity:.55}.message-actions{display:flex;gap:6px;margin-top:8px;opacity:.78;flex-wrap:wrap}.action-btn{height:29px;border:1px solid #2c2c33;background:#151519;border-radius:8px;padding:0 9px;color:#8e8e98;font-size:10px}.action-btn:hover{color:#fff;background:#212127}.research-card{margin-top:9px;border:1px solid #2b2b31;background:#121216;border-radius:11px;padding:10px 12px;color:#8f8f99;font-size:11px;line-height:1.45}.research-card strong{color:#c8c8ce}.research-links{margin-top:6px;display:flex;flex-direction:column;gap:4px}.research-links a{color:#bcbcc4;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.research-links a:hover{text-decoration:underline}.reference-title{margin-top:10px;color:#c9c9cf;font-weight:700}.reference-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:8px}.reference-photo{display:block;position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:9px;border:1px solid #303037;background:#0d0d10}.reference-photo img{width:100%;height:100%;object-fit:cover;display:block}.reference-photo:hover{border-color:#5a5a64}.reference-source{position:absolute;left:5px;right:5px;bottom:5px;padding:3px 5px;border-radius:5px;background:rgba(0,0,0,.65);color:#ddd;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.typing-cursor::after{content:"▋";margin-left:2px;animation:blink .7s infinite}@keyframes blink{50%{opacity:0}}
-
-/* WELCOME */
-.welcome{min-height:64vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}.welcome-logo{width:72px;height:72px;border-radius:22px;background:linear-gradient(145deg,#23232a,#151519);border:1px solid #34343c;display:grid;place-items:center;font-weight:900;margin-bottom:18px;box-shadow:0 20px 60px rgba(0,0,0,.35)}.welcome h1{font-size:34px;letter-spacing:-1.5px;margin-bottom:9px}.welcome p{color:#888894;font-size:14px}.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px}.chip{border:1px solid #303037;background:#16161a;border-radius:999px;padding:8px 11px;color:#aaa;font-size:11px;cursor:pointer}.chip:hover{background:#202026;color:#fff}
-
-/* IMAGES */
-.generated-image-wrap{width:min(860px,100%)}.generated-image{display:block;width:100%;max-width:860px;min-height:240px;object-fit:contain;border-radius:20px;border:1px solid #33333a;background:#101013;box-shadow:0 18px 60px rgba(0,0,0,.42);cursor:zoom-in;transition:.2s}.generated-image:hover{transform:scale(1.004);border-color:#52525b}.image-caption{color:#666671;font-size:10px;margin-top:8px}.image-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.meta-pill{font-size:9px;color:#888;padding:4px 7px;border:1px solid #2d2d34;border-radius:999px}
-
-/* INPUT */
-.input-area{position:absolute;left:0;right:0;bottom:0;padding:26px 20px max(18px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 25%);z-index:20}.input-box{max-width:980px;margin:auto;display:flex;align-items:flex-end;gap:7px;background:#1b1b20;border:1px solid #323239;border-radius:19px;padding:8px;box-shadow:0 20px 80px rgba(0,0,0,.28)}#prompt{flex:1;resize:none;min-height:42px;max-height:240px;border:0;outline:0;background:transparent;color:white;padding:11px 12px;font-size:15px;line-height:1.42}#prompt::placeholder{color:#70707a}.image-button{height:40px;min-width:78px;border:1px solid #3a3a42;border-radius:11px;background:#292930;color:#ddd;font-size:12px}.send{width:40px;height:40px;border:0;border-radius:11px;background:white;color:#111;font-size:19px}.stop{width:40px;height:40px;border:1px solid #4a3030;border-radius:11px;background:#2d1d1d;color:#f1b5b5;font-size:14px}.send:disabled,.image-button:disabled{opacity:.4;cursor:default}.info{max-width:980px;margin:7px auto 0;text-align:center;color:#55555f;font-size:10px}
-
-/* MODALS */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.74);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.open{display:flex}.modal-card{width:min(900px,100%);max-height:90vh;overflow:auto;background:#151519;border:1px solid #303037;border-radius:21px;padding:23px;box-shadow:0 40px 130px rgba(0,0,0,.65)}.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close{width:34px;height:34px;border:0;border-radius:9px;background:#24242a;color:#ccc;font-size:18px}.setting{margin-bottom:20px}.setting>label{display:block;margin-bottom:8px;color:#aaa;font-size:12px}.setting-box{border:1px solid #2c2c33;border-radius:13px;background:#1b1b20;padding:13px}.setting-main{font-weight:700;font-size:13px}.setting-description{color:#777782;font-size:11px;margin-top:5px;line-height:1.45}.setting select{width:100%;height:42px;background:#1c1c21;color:white;border:1px solid #33333b;border-radius:10px;padding:0 10px}.memory-textarea{width:100%;min-height:105px;resize:vertical;background:#0e0e11;color:#eee;border:1px solid #33333a;border-radius:10px;padding:10px;margin-top:10px}.memory-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.memory-button{border:1px solid #33333a;background:#222228;color:#eee;border-radius:9px;padding:8px 11px}.memory-status{color:#777782;font-size:10px;margin-top:7px}.toggle-row{display:flex;justify-content:space-between;gap:15px;align-items:center}.switch{position:relative;width:44px;height:24px;min-width:44px}.switch input{display:none}.slider{position:absolute;inset:0;background:#313139;border-radius:999px;transition:.2s}.slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#bbb;border-radius:50%;transition:.2s}.switch input:checked+.slider{background:#f3f3f3}.switch input:checked+.slider:before{transform:translateX(20px);background:#111}.notice{padding:10px 12px;border:1px solid #3a3330;background:#201b19;border-radius:10px;color:#aa9b91;font-size:11px;line-height:1.45}
-
-/* CEO */
-.ceo-list{display:flex;flex-direction:column;gap:9px}.ceo-user{border:1px solid #303037;border-radius:12px;background:#1a1a1f;overflow:hidden}.ceo-user-header{display:flex;justify-content:space-between;align-items:center;padding:12px}.ceo-user-name{font-weight:800;font-size:13px}.ceo-chat-count{color:#777;font-size:10px}.ceo-chat-list{border-top:1px solid #292930;padding:8px}.ceo-chat{padding:9px;border-radius:8px;color:#aaa;font-size:12px;cursor:pointer}.ceo-chat:hover{background:#27272d;color:white}.ceo-empty{padding:30px;text-align:center;color:#666}.viewer-message{margin:10px 0;padding:10px 12px;border-radius:10px;background:#202026;white-space:pre-wrap;font-size:13px}.viewer-message.user{background:#2b2b31}.viewer-image{max-width:100%;border-radius:12px;margin-top:6px}
-
-.toast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%) translateY(20px);background:#f4f4f4;color:#111;border-radius:999px;padding:9px 14px;font-size:11px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:999}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media(max-width:760px){.reference-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar{display:none}header{height:52px;min-height:52px;justify-content:flex-start;padding-left:50px}.mobile-menu{display:block;position:absolute;left:10px;width:34px;height:34px;border:0;background:transparent;color:#ddd;font-size:20px}.status{display:none}.chat{padding:18px 12px 145px}.message-stack{max-width:calc(100vw - 66px)}.input-area{padding:10px 10px max(9px,env(safe-area-inset-bottom))}.input-box{border-radius:16px;padding:5px}#prompt{min-height:36px;max-height:150px}.image-button{min-width:61px;height:36px;font-size:10px}.send,.stop{width:36px;height:36px}.modal{align-items:flex-end;padding:0}.modal-card{width:100%;max-height:92vh;border-radius:18px 18px 0 0}.copy-chat-text{display:none}}
-</style>
-</head>
-<body>
-
-<div id="authScreen">
-  <div class="auth-card">
-    <div class="auth-logo">Inda AI <span class="auth-badge">ULTRA MAX</span></div>
-    <div class="auth-subtitle">Chat largo + imágenes de calidad extrema + investigación previa</div>
-    <div class="auth-tabs">
-      <button id="loginTab" class="auth-tab active" onclick="mostrarFormulario('login')">Iniciar sesión</button>
-      <button id="registerTab" class="auth-tab" onclick="mostrarFormulario('register')">Crear cuenta</button>
-    </div>
-    <form id="loginForm" class="auth-form active" onsubmit="iniciarSesion(event)">
-      <div class="field"><label>Usuario</label><input id="loginUser" autocomplete="username" required></div>
-      <div class="field"><label>Contraseña</label><input id="loginPassword" type="password" autocomplete="current-password" required><label class="show-password"><input type="checkbox" onchange="togglePassword('loginPassword',this)"> Mostrar contraseña</label></div>
-      <button class="auth-submit">Entrar</button>
-    </form>
-    <form id="registerForm" class="auth-form" onsubmit="crearCuenta(event)">
-      <div class="field"><label>Nombre de usuario</label><input id="registerUser" minlength="3" maxlength="30" required></div>
-      <div class="field"><label>Contraseña</label><input id="registerPassword" type="password" minlength="6" required><label class="show-password"><input type="checkbox" onchange="togglePassword('registerPassword',this)"> Mostrar contraseña</label></div>
-      <button class="auth-submit">Crear cuenta</button>
-    </form>
-    <div id="authMessage" class="auth-message"></div>
-  </div>
-</div>
-
-<div id="app">
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="logo">Inda AI <small>ULTRA MAX</small></div>
-      <button class="new-chat" onclick="nuevoChat()">+ Nuevo chat</button>
-      <div class="plan">
-        <div class="plan-title">Plan</div><div id="planValue" class="plan-value">Normal</div>
-        <div id="counter" class="counter">50 preguntas disponibles</div><div id="roleValue" class="role-value">Usuario</div>
-      </div>
-      <div class="sidebar-title">Conversaciones</div><div id="history" class="history"></div>
-      <div class="sidebar-footer">
-        <div id="sidebarUser" class="account-name">Usuario</div>
-        <button id="ceoButton" class="ceo-button hidden" onclick="abrirPanelCEO()">👑 Panel CEO</button>
-        <button class="logout-button" onclick="cerrarSesion()">Cerrar sesión</button>
-      </div>
-    </aside>
-
-    <main class="main">
-      <header>
-        <button class="mobile-menu" onclick="mostrarMenuMovil()">☰</button>
-        <div class="title">Inda AI Ultra</div>
-        <div class="header-actions">
-          <div class="status"><div id="dot" class="dot"></div><span id="estado">Comprobando...</span></div>
-          <button class="icon-btn" onclick="copiarChatCompleto()" title="Copiar chat">⧉ <span class="copy-chat-text">Copiar chat</span></button>
-          <button class="icon-btn" onclick="abrirConfiguracion()" title="Configuración">⚙</button>
-        </div>
-      </header>
-
-      <section id="chat" class="chat"><div id="chatInner" class="chat-inner"></div></section>
-
-      <div class="input-area">
-        <div class="input-box">
-          <textarea id="prompt" rows="1" placeholder="Preguntale algo a Inda AI..." autocomplete="off"></textarea>
-          <button id="imageButton" class="image-button" onclick="generarImagen()">Imagen</button>
-          <button id="stopButton" class="stop hidden" onclick="detenerGeneracion()">■</button>
-          <button id="send" class="send" onclick="enviar()">↑</button>
-        </div>
-        <div class="info">Sin límite de caracteres en el cuadro. “∞” permite seguir una respuesta tantas veces como quieras.</div>
-      </div>
-    </main>
-  </div>
-</div>
-
-<div id="settingsOverlay" class="modal" onclick="cerrarConfiguracionDesdeFondo(event)">
-  <div class="modal-card" onclick="event.stopPropagation()">
-    <div class="modal-header"><h2>Configuración</h2><button class="close" onclick="cerrarConfiguracion()">×</button></div>
-
-    <div class="setting"><label>Idioma</label><select id="languageSelect" onchange="guardarPreferencias()"><option value="auto">Automático</option><option value="es">Español</option><option value="en">English</option><option value="fr">Français</option></select></div>
-
-    <div class="setting"><label>Largo de respuestas</label><select id="lengthSelect" onchange="guardarPreferencias()"><option value="normal">Normal</option><option value="long">Larga</option><option value="ultra">Ultra larga (≈ 2 partes)</option><option value="infinite">∞ Continuable sin límite</option></select><div class="setting-description">“∞” no significa que un modelo pueda devolver infinitos tokens en una sola llamada. Significa que podés seguir agregando partes a la misma respuesta sin un tope del HTML.</div></div>
-
-    <div class="setting"><label>Personalidad</label><div class="setting-box toggle-row"><div><div class="setting-main">Modo 13 años</div><div class="setting-description">Natural, claro, actual, poco formal y sin sonar infantil.</div></div><label class="switch"><input id="teenMode" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div></div>
-
-    <div class="setting"><label>Imágenes</label><div class="setting-box">
-      <div class="toggle-row"><div><div class="setting-main">Fotorealismo por defecto</div><div class="setting-description">Si pedís “foto de un perro”, prioriza que parezca una foto real.</div></div><label class="switch"><input id="realisticImages" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div>
-      <div style="height:12px"></div>
-      <div class="toggle-row"><div><div class="setting-main">Investigar antes de crear</div><div class="setting-description">Intenta usar /research o /search de tu Worker antes de generar la imagen.</div></div><label class="switch"><input id="researchImages" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div>
-      <div style="height:12px"></div>
-      <div class="toggle-row"><div><div class="setting-main">📷 Basarse en fotos reales</div><div class="setting-description">Busca fotos reales del tema, las usa como referencias visuales y después genera una imagen nueva.</div></div><label class="switch"><input id="referenceImages" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div>
-      <div style="height:12px"></div>
-      <div class="toggle-row"><div><div class="setting-main">🔥 Calidad extrema</div><div class="setting-description">Prioriza calidad sobre velocidad: optimiza el prompt con IA, pide el mejor modelo disponible y puede hacer más de un intento.</div></div><label class="switch"><input id="extremeImages" type="checkbox" checked onchange="guardarPreferencias()"><span class="slider"></span></label></div>
-    </div></div>
-
-    <div class="setting"><div class="notice"><b>Importante:</b> para basarse de verdad en fotos reales, tu Worker debe ofrecer búsqueda de imágenes, por ejemplo <code>/image-search</code>, <code>/search-images</code> o <code>/images/search</code>. Este HTML prueba esos endpoints y también puede usar <code>/search</code> en modo imágenes. Las referencias se envían luego a <code>/image</code> como <code>reference_images</code>. Si el Worker todavía no soporta eso, la app no va a fingir que usó fotos reales.</div></div>
-
-    <div class="setting"><label>Plan</label><div class="setting-box"><div id="settingsPlan" class="setting-main">Normal</div><div id="settingsPlanDescription" class="setting-description">Respuestas claras y directas.</div></div></div>
-
-    <div class="setting"><label>🧠 Memoria personal</label><div class="setting-box"><div class="setting-main">Personalización</div><div class="setting-description">Información que Inda puede usar para adaptar respuestas.</div><textarea id="personalMemory" class="memory-textarea" placeholder="Escribí cosas que quieras que Inda recuerde."></textarea><div class="memory-actions"><button class="memory-button" onclick="guardarMemoriaPersonal()">Guardar</button><button class="memory-button" onclick="borrarMemoriaPersonal()">Borrar</button></div><div id="memoryStatus" class="memory-status"></div></div></div>
-
-    <div id="globalMemorySetting" class="setting"><label>🌐 Reglas globales</label><div class="setting-box"><div class="setting-main">Solo CEO</div><div class="setting-description">Reglas generales de Inda AI.</div><textarea id="globalMemory" class="memory-textarea" placeholder="Reglas globales"></textarea><div class="memory-actions"><button class="memory-button" onclick="guardarMemoriaGlobal()">Guardar</button><button class="memory-button" onclick="borrarMemoriaGlobal()">Borrar</button></div></div></div>
-  </div>
-</div>
-
-<div id="ceoOverlay" class="modal" onclick="cerrarPanelCEODesdeFondo(event)"><div class="modal-card" onclick="event.stopPropagation()"><div class="modal-header"><div><h2>👑 Panel CEO</h2><div style="color:#666;font-size:11px;margin-top:4px">Chats almacenados por esta app en este navegador</div></div><button class="close" onclick="cerrarPanelCEO()">×</button></div><div id="ceoList" class="ceo-list"></div></div></div>
-<div id="viewerOverlay" class="modal" onclick="cerrarViewerDesdeFondo(event)"><div class="modal-card" onclick="event.stopPropagation()"><div class="modal-header"><h2 id="viewerTitle">Chat</h2><button class="close" onclick="cerrarViewer()">×</button></div><div id="viewerMessages"></div></div></div>
-<div id="toast" class="toast">Copiado</div>
-
-<script>
-/* ================= CONFIG ================= */
-const API_URL = "https://inda-ai-api2-0.belisarionogueira2013.workers.dev";
-const USERS_KEY = "inda_users_ultra_v3";
-const LEGACY_USERS_KEY = "inda_users_ultra_v2";
-const SESSION_KEY = "inda_session_ultra_v3";
-const MEMORY_PREFIX = "inda_memory_v3_";
-const GLOBAL_MEMORY_KEY = "inda_global_memory_v3";
-const PREFS_PREFIX = "inda_prefs_v3_";
-const LIMITE_DIARIO = 50;
-const CEO_USER = "beligmail";
-/* Hash SHA-256: evita dejar la contraseña del CEO escrita literalmente en el HTML. Sigue sin ser seguridad real: el frontend nunca debe ser la autoridad final. */
-const CEO_PASSWORD_SHA256 = "84fc6cebf7edf2cc21f9ea8c3b5a568ebeeaf2aa5d9850d7a2b185f5d0922efa";
-
-let usuarioActual = null;
-let conversaciones = [];
-let chatActual = null;
-let activeController = null;
-let generando = false;
-let cancelacionSolicitada = false;
-
-const $ = id => document.getElementById(id);
-const authScreen=$("authScreen"), app=$("app"), authMessage=$("authMessage"), history=$("history"), chat=$("chat"), chatInner=$("chatInner"), input=$("prompt"), send=$("send"), imageButton=$("imageButton"), stopButton=$("stopButton"), estado=$("estado"), dot=$("dot"), planValue=$("planValue"), counter=$("counter"), roleValue=$("roleValue"), sidebarUser=$("sidebarUser");
-
-/* ================= HELPERS ================= */
-function uid(prefix="id"){return prefix+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,9)}
-function togglePassword(inputId,checkbox){const el=$(inputId);if(!el)return;el.type=checkbox.checked?"text":"password"}
-function normalizeText(t){return String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
-function toast(text="Copiado"){const el=$("toast");el.textContent=text;el.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove("show"),1500)}
-async function copiarTexto(text){try{await navigator.clipboard.writeText(text);toast("Copiado ✓")}catch{const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();toast("Copiado ✓")}}
-async function sha256(text){const data=new TextEncoder().encode(text);const hash=await crypto.subtle.digest("SHA-256",data);return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,"0")).join("")}
-function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].includes(u.protocol)?u.href:null}catch{return null}}
-function setBusy(v){generando=v;send.disabled=v;imageButton.disabled=v;stopButton.classList.toggle("hidden",!v)}
-function detenerGeneracion(){cancelacionSolicitada=true;if(activeController)activeController.abort();activeController=null;setBusy(false);toast("Generación detenida")}
-function scrollBottom(){requestAnimationFrame(()=>chat.scrollTop=chat.scrollHeight)}
-function getPrefs(){if(!usuarioActual)return {language:"auto",length:"ultra",teen:true,realistic:true,research:true,references:true,extreme:true};try{return {...{language:"auto",length:"ultra",teen:true,realistic:true,research:true,references:true,extreme:true},...JSON.parse(localStorage.getItem(PREFS_PREFIX+usuarioActual.username.toLowerCase())||"{}")}}catch{return {language:"auto",length:"ultra",teen:true,realistic:true,research:true,references:true,extreme:true}}}
-function guardarPreferencias(){if(!usuarioActual)return;const p={language:$("languageSelect").value,length:$("lengthSelect").value,teen:$("teenMode").checked,realistic:$("realisticImages").checked,research:$("researchImages").checked,references:$("referenceImages").checked,extreme:$("extremeImages").checked};localStorage.setItem(PREFS_PREFIX+usuarioActual.username.toLowerCase(),JSON.stringify(p))}
-function cargarPreferencias(){const p=getPrefs();$("languageSelect").value=p.language;$("lengthSelect").value=p.length;$("teenMode").checked=p.teen;$("realisticImages").checked=p.realistic;$("researchImages").checked=p.research;$("referenceImages").checked=p.references!==false;$("extremeImages").checked=p.extreme!==false}
-
-/* ================= USERS / AUTH ================= */
-function getUsers(){let users={};try{users=JSON.parse(localStorage.getItem(USERS_KEY)||"{}")||{}}catch{}if(!Object.keys(users).length){try{const legacy=JSON.parse(localStorage.getItem(LEGACY_USERS_KEY)||"{}")||{};users=legacy;if(Object.keys(legacy).length)saveUsers(users)}catch{}}return users}
-function saveUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
-function mostrarFormulario(tipo){$("loginForm").classList.toggle("active",tipo==="login");$("registerForm").classList.toggle("active",tipo==="register");$("loginTab").classList.toggle("active",tipo==="login");$("registerTab").classList.toggle("active",tipo==="register");authMessage.textContent=""}
-async function crearCuenta(event){event.preventDefault();const username=$("registerUser").value.trim(),password=$("registerPassword").value;if(username.length<3||password.length<6){authMessage.textContent="El usuario debe tener 3 caracteres y la contraseña 6.";return}const users=getUsers(),key=username.toLowerCase();if(users[key]){authMessage.textContent="Ese usuario ya existe.";return}users[key]={username,passwordHash:await sha256(password),premium:key==="papoi67",plan:key==="papoi67"?"Premium":"Normal",role:"Usuario",createdAt:Date.now()};saveUsers(users);$("registerForm").reset();mostrarFormulario("login");authMessage.textContent="Cuenta creada correctamente."}
-async function iniciarSesion(event){event.preventDefault();const username=$("loginUser").value.trim(),password=$("loginPassword").value,key=username.toLowerCase(),hash=await sha256(password);if(key===CEO_USER&&hash===CEO_PASSWORD_SHA256){usuarioActual={username:CEO_USER,premium:true,plan:"Premium",role:"CEO"};localStorage.setItem(SESSION_KEY,JSON.stringify(usuarioActual));mostrarAplicacion();return}const users=getUsers(),user=users[key];if(!user){authMessage.textContent="Usuario o contraseña incorrectos.";return}let ok=false;if(user.passwordHash)ok=user.passwordHash===hash;else if(user.password)ok=user.password===password;if(!ok){authMessage.textContent="Usuario o contraseña incorrectos.";return}if(!user.passwordHash){user.passwordHash=hash;delete user.password;users[key]=user;saveUsers(users)}usuarioActual={username:user.username,premium:(user.premium===true||key==="papoi67"),plan:(user.premium===true||key==="papoi67")?"Premium":(user.plan||"Normal"),role:user.role||"Usuario"};localStorage.setItem(SESSION_KEY,JSON.stringify(usuarioActual));mostrarAplicacion()}
-function cerrarSesion(){localStorage.removeItem(SESSION_KEY);usuarioActual=null;conversaciones=[];chatActual=null;app.style.display="none";authScreen.classList.remove("hidden")}
-function restaurarSesion(){try{const saved=localStorage.getItem(SESSION_KEY);if(!saved)return;usuarioActual=JSON.parse(saved);if(!usuarioActual?.username){localStorage.removeItem(SESSION_KEY);return}mostrarAplicacion()}catch{localStorage.removeItem(SESSION_KEY)}}
-
-/* ================= APP ================= */
-function mostrarAplicacion(){authScreen.classList.add("hidden");app.style.display="block";sidebarUser.textContent=usuarioActual.username;actualizarPlan();cargarPreferencias();cargarMemorias();cargarChats();actualizarEstado();$("ceoButton").classList.toggle("hidden",usuarioActual.role!=="CEO")}
-function actualizarPlan(){if(!usuarioActual)return;if(usuarioActual.premium){planValue.textContent="Premium";counter.textContent="Preguntas ilimitadas";$("settingsPlan").textContent="Premium";$("settingsPlanDescription").textContent="Respuestas largas, continuación e imágenes."}else{const restantes=Math.max(0,LIMITE_DIARIO-obtenerUso());planValue.textContent="Normal";counter.textContent=restantes+" preguntas disponibles";$("settingsPlan").textContent="Normal";$("settingsPlanDescription").textContent="Respuestas claras y directas."}roleValue.textContent=usuarioActual.role}
-
-/* ================= MEMORY ================= */
-function memoryKey(){return MEMORY_PREFIX+usuarioActual.username.toLowerCase()}
-function obtenerMemoriaPersonal(){return localStorage.getItem(memoryKey())||""}
-function obtenerMemoriaGlobal(){return localStorage.getItem(GLOBAL_MEMORY_KEY)||""}
-function cargarMemorias(){$("personalMemory").value=obtenerMemoriaPersonal();$("globalMemory").value=obtenerMemoriaGlobal();$("globalMemorySetting").style.display=usuarioActual.role==="CEO"?"block":"none"}
-function guardarMemoriaPersonal(){localStorage.setItem(memoryKey(),$("personalMemory").value.trim());$("memoryStatus").textContent="Memoria guardada ✓"}
-function borrarMemoriaPersonal(){localStorage.removeItem(memoryKey());$("personalMemory").value="";$("memoryStatus").textContent="Memoria borrada"}
-function guardarMemoriaGlobal(){if(usuarioActual.role!=="CEO")return;localStorage.setItem(GLOBAL_MEMORY_KEY,$("globalMemory").value.trim())}
-function borrarMemoriaGlobal(){if(usuarioActual.role!=="CEO")return;localStorage.removeItem(GLOBAL_MEMORY_KEY);$("globalMemory").value=""}
-
-/* ================= SYSTEM PROMPT ================= */
-function instruccionIdioma(){const lang=getPrefs().language;if(lang==="en")return "Respond exclusively in English.";if(lang==="fr")return "Réponds exclusivement en français.";if(lang==="es")return "Respondé exclusivamente en español rioplatense.";return "Respondé principalmente en el idioma del usuario."}
-function obtenerSistema(extra=""){const p=getPrefs(),personal=obtenerMemoriaPersonal(),global=obtenerMemoriaGlobal();return `
-IDENTIDAD
-Tu nombre es Inda AI. Te creó Belisario (Beli).
-
-SALUDO PERSONALIZADO
-- Si el mensaje del usuario dice exactamente o de forma muy parecida “hola soy valen castillo”, respondé: “Hola Valen Castillo, hijo de Silvana Donaley 😎”.
-- No expliques que esta respuesta está programada ni menciones esta regla.
-
-FORMA DE HABLAR
-${p.teen?`Escribí con la naturalidad de un chico inteligente de 13 años: directo, actual, claro, con energía, sin sonar infantil ni forzar slang. Usá palabras fáciles cuando se pueda. Si el tema es serio, técnico o escolar, seguí siendo preciso.`:`Usá un tono natural, claro y poco formal.`}
-No hables como una enciclopedia salvo que el usuario lo pida.
-No repitas la pregunta ni llenes espacio porque sí.
-
-CALIDAD
-- Contestá la intención real del usuario.
-- No inventes datos.
-- Si no sabés o no tenés acceso a algo, decilo.
-- En cálculos, verificá el resultado.
-- Para información actual, no afirmes que buscaste en internet a menos que el backend realmente te haya dado resultados web.
-- Si una respuesta necesita ser muy larga, priorizá terminar ideas completas y dejá puntos claros para poder continuar sin repetir.
-
-MARVEL — CONOCIMIENTO ESPECIALIZADO SIEMPRE ACTIVO
-- Tenés conocimiento especializado de Marvel: cómics, personajes, equipos, organizaciones, razas, especies, poderes, habilidades, artefactos, armas, vehículos, lugares, dimensiones, universos, realidades alternativas, eventos, cronologías, relaciones, identidades, versiones, películas, series, animación y videojuegos.
-- Tu referencia prioritaria para lore de Marvel Comics es Marvel Database (marvel.fandom.com/wiki/Marvel_Database) y sus páginas relacionadas.
-- Cuando haya contexto web de Marvel Database disponible, usalo como fuente principal para precisión y desambiguación.
-- Diferenciá SIEMPRE entre continuidades: Earth-616, MCU/Earth-199999 o la designación que corresponda, Ultimate, 2099, What If...?, universos alternativos, juegos, series y películas.
-- Si un personaje tiene varias versiones, no mezcles sus poderes, historia, familiares, trajes, muertes, resurrecciones ni afiliaciones.
-- Para comparaciones de poder, explicá qué versión estás usando y basate en hazañas, poderes, limitaciones y contexto, no solo en fama.
-- Para preguntas de historia o cronología, priorizá eventos y relaciones correctas de la continuidad indicada.
-- Si el usuario dice solo un nombre ambiguo, inferí la versión más probable por contexto; si realmente cambia la respuesta de forma importante, aclaralo brevemente dentro de la respuesta.
-- Nunca digas frases como “sé muchísimo de Marvel”, “soy experto en Marvel” o “conozco todo Marvel”. Simplemente respondé bien, como conocimiento normal.
-- Tampoco anuncies que tenés “modo Marvel”, una “base Marvel”, “conocimiento especializado de Marvel” ni que estás usando Marvel Database. No presentes esas capacidades como una función. Si te preguntan sobre Marvel, simplemente respondé.
-- No metas referencias a Marvel en saludos, pantalla de bienvenida ni respuestas que no sean sobre Marvel.
-- No inventes números de cómic, fechas, universos, poderes o parentescos. Si una afirmación muy específica no está respaldada por el contexto disponible, marcala con cautela.
-- Cuando el backend pueda investigar, para preguntas Marvel priorizá buscar en Marvel Database antes de responder.
-
-PRIVACIDAD
-No afirmes que hackeás, espiás o accedés a cuentas o conversaciones que la aplicación no te haya entregado.
-
-${usuarioActual.premium?"El usuario tiene Premium.":"El usuario usa el plan Normal."}
-${instruccionIdioma()}
-${personal?`\nMEMORIA PERSONAL DEL USUARIO:\n${personal}\n`:""}
-${global&&usuarioActual.role==="CEO"?`\nREGLAS GLOBALES DEL CEO:\n${global}\n`:""}
-${extra}
-`}
-
-/* ================= CHATS ================= */
-function chatsKey(){return "inda_chats_v3_"+usuarioActual.username}
-function legacyChatsKey(){return "inda_chats_"+usuarioActual.username}
-function cargarChats(){try{conversaciones=JSON.parse(localStorage.getItem(chatsKey())||"null");if(!Array.isArray(conversaciones)){conversaciones=JSON.parse(localStorage.getItem(legacyChatsKey())||"[]");guardarChats()}}catch{conversaciones=[]}if(conversaciones.length){chatActual=conversaciones[0].id;mostrarChat(conversaciones[0])}else nuevoChat();renderHistorial()}
-function guardarChats(){try{localStorage.setItem(chatsKey(),JSON.stringify(conversaciones))}catch(e){console.warn("No se pudo guardar todo el historial",e)}}
-function nuevoChat(){const nuevo={id:uid("chat"),title:"Nuevo chat",messages:[],created:Date.now(),owner:usuarioActual.username};conversaciones.unshift(nuevo);chatActual=nuevo.id;guardarChats();renderHistorial();mostrarChat(nuevo);input.focus()}
-function obtenerActual(){return conversaciones.find(c=>c.id===chatActual)}
-function abrirChat(id){const c=conversaciones.find(x=>x.id===id);if(!c)return;chatActual=id;mostrarChat(c);renderHistorial()}
-function borrarChat(id){conversaciones=conversaciones.filter(c=>c.id!==id);if(chatActual===id){if(conversaciones.length){chatActual=conversaciones[0].id;mostrarChat(conversaciones[0])}else nuevoChat()}guardarChats();renderHistorial()}
-function renderHistorial(){history.innerHTML="";conversaciones.forEach(c=>{const item=document.createElement("div");item.className="chat-item "+(c.id===chatActual?"active":"");const title=document.createElement("span");title.className="chat-title";title.textContent=c.title;const borrar=document.createElement("span");borrar.className="delete-chat";borrar.textContent="×";borrar.onclick=e=>{e.stopPropagation();borrarChat(c.id)};item.append(title,borrar);item.onclick=()=>abrirChat(c.id);history.appendChild(item)})}
-
-/* ================= RENDER MESSAGES ================= */
-function mostrarChat(c){chatInner.innerHTML="";if(!c.messages.length){const welcome=document.createElement("div");welcome.className="welcome";welcome.innerHTML=`<div class="welcome-logo">IA</div><h1>Inda AI</h1><p>Escribí lo que quieras. También podés pedir fotos realistas.</p>`;chatInner.appendChild(welcome);return}c.messages.forEach(m=>{if(m.type==="image")mostrarImagen(m.src,m.prompt,m.research,m.id,false);else mostrarMensaje(m.content,m.role==="user"?"user":"ai",m.id,false)});scrollBottom()}
-function mostrarMensaje(texto,quien,id=uid("msg"),saveActions=true){const row=document.createElement("div");row.className="message-row "+quien;if(quien==="ai"){const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent="IA";row.appendChild(avatar)}const stack=document.createElement("div");stack.className="message-stack";const bubble=document.createElement("div");bubble.className="message "+quien;bubble.textContent=texto;bubble.dataset.messageId=id;stack.appendChild(bubble);if(quien==="ai"&&saveActions){stack.appendChild(crearAccionesMensaje(id,texto))}else if(quien==="ai"){stack.appendChild(crearAccionesMensaje(id,texto))}row.appendChild(stack);chatInner.appendChild(row);scrollBottom();return bubble}
-function crearAccionesMensaje(id,texto){const actions=document.createElement("div");actions.className="message-actions";const copy=document.createElement("button");copy.className="action-btn";copy.textContent="⧉ Copiar";copy.onclick=()=>{const m=buscarMensajePorId(id);copiarTexto(m?.content||texto)};const cont=document.createElement("button");cont.className="action-btn";cont.textContent="↳ Continuar";cont.onclick=()=>continuarRespuesta(id,cont);actions.append(copy,cont);return actions}
-function buscarMensajePorId(id){for(const c of conversaciones){const m=c.messages.find(x=>x.id===id);if(m)return m}return null}
-function reemplazarAccionesDeBurbuja(bubble,id){const stack=bubble.parentElement;const old=stack.querySelector(".message-actions");if(old)old.remove();stack.appendChild(crearAccionesMensaje(id,bubble.textContent))}
-function mostrarImagen(src,promptText,research=null,id=uid("img"),saveActions=true){const row=document.createElement("div");row.className="message-row ai";const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent="IA";row.appendChild(avatar);const stack=document.createElement("div");stack.className="message-stack generated-image-wrap";const img=document.createElement("img");img.className="generated-image";img.src=src;img.alt=promptText||"Imagen generada";img.onclick=()=>{const w=window.open();if(w){w.document.write(`<html><body style="margin:0;background:#000;display:grid;place-items:center;min-height:100vh"><img src="${img.src}" style="max-width:100%;max-height:100vh;object-fit:contain"></body></html>`)}};const caption=document.createElement("div");caption.className="image-caption";caption.textContent="Imagen generada por Inda AI";stack.append(img,caption);const meta=document.createElement("div");meta.className="image-meta";meta.innerHTML=`<span class="meta-pill">${getPrefs().extreme?"ultra max":"ultra"}</span><span class="meta-pill">${getPrefs().realistic?"realismo alto":"estilo libre"}</span>${research?.used?'<span class="meta-pill">investigada</span>':''}${research?.realImages?.length?`<span class="meta-pill">${research.realImages.length} refs reales</span>`:''}${research?.render?.width?`<span class="meta-pill">${research.render.width}×${research.render.height}</span>`:""}`;stack.appendChild(meta);if(research?.used)stack.appendChild(crearResearchCard(research));const actions=document.createElement("div");actions.className="message-actions";const copyPrompt=document.createElement("button");copyPrompt.className="action-btn";copyPrompt.textContent="⧉ Copiar pedido";copyPrompt.onclick=()=>copiarTexto(promptText||"");actions.appendChild(copyPrompt);stack.appendChild(actions);row.appendChild(stack);chatInner.appendChild(row);scrollBottom()}
-function crearResearchCard(r){
-  const card=document.createElement("div");card.className="research-card";
-  const summary=(r.summary||r.context||"").slice(0,900);
-  const refsCount=Array.isArray(r.realImages)?r.realImages.length:0;
-  let html=`<strong>Investigación previa:</strong> ${summary?escapeHtml(summary):"Se obtuvo contexto para mejorar la exactitud visual."}`;
-  if(refsCount)html+=`<br><strong>Referencias reales usadas:</strong> ${refsCount} foto${refsCount===1?"":"s"}.`;
-  if(r.realReferencesUsed)html+=`<br><strong>Modo de fidelidad:</strong> máximo parecido posible.`;
-  card.innerHTML=html;
-  return card;
-}
-function escapeHtml(str){return String(str).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
-
-/* ================= USAGE ================= */
-function fechaHoy(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
-function usoKey(){return "inda_uso_v3_"+usuarioActual.username+"_"+fechaHoy()}
-function obtenerUso(){return Number(localStorage.getItem(usoKey())||"0")}
-function incrementarUso(){localStorage.setItem(usoKey(),String(obtenerUso()+1));actualizarPlan()}
-function puedePreguntar(){return usuarioActual.premium||obtenerUso()<LIMITE_DIARIO}
-
-/* ================= IMAGE INTENT ================= */
-function esPedidoDeImagen(texto){const t=normalizeText(texto);const direct=["genera una imagen","generame una imagen","genera imagen","generame imagen","genera una foto","generame una foto","crea una imagen","creame una imagen","crea una foto","creame una foto","haz una imagen","hazme una imagen","haceme una imagen","haz una foto","hazme una foto","haceme una foto","quiero una imagen","quiero una foto","mostrame una imagen","mostrame una foto","muestrame una imagen","muestrame una foto","dibujame","renderiza","generate an image","generate a photo","create an image","create a photo"];if(direct.some(p=>t.includes(p)))return true;if(/^(foto|imagen|dibujo|render)\s+de\b/.test(t))return true;if(/\b(una|un)\s+(foto|imagen|render)\s+de\b/.test(t))return true;if(/\b(foto|imagen)\s+(realista|fotorealista|fotorrealista)\b/.test(t))return true;return false}
-function limpiarPromptImagen(texto){return String(texto||"").replace(/^(generame|genera|creame|crea|crear|hazme|haz|haceme|quiero|mostrame|muestrame)\s+(una\s+|un\s+)?(imagen|foto|render|dibujo)\s*(de)?\s*/i,"").replace(/^(foto|imagen|render|dibujo)\s+de\s+/i,"").trim()||String(texto||"").trim()}
-
-/* ================= WEB RESEARCH FOR IMAGES ================= */
-async function investigarAntesDeImagen(query,statusBubble){if(!getPrefs().research)return {used:false,summary:"",sources:[]};const endpoints=["/research","/search"];for(const endpoint of endpoints){try{statusBubble.textContent=`Investigando antes de crear la imagen… (${endpoint})`;const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),22000);const res=await fetch(API_URL+endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query,purpose:"image_reference",provider:"google",max_results:6}),signal:controller.signal});clearTimeout(timer);if(!res.ok)continue;const data=await res.json();const summary=data.summary||data.context||data.answer||data.response||"";const results=data.results||data.sources||data.links||[];const sources=Array.isArray(results)?results.map(x=>typeof x==="string"?x:{title:x.title||x.name||"Fuente",url:x.url||x.link||x.href||""}).filter(x=>typeof x==="string"||x.url):[];if(summary||sources.length)return {used:true,summary,sources,endpoint}}catch(e){if(e.name==="AbortError")console.warn("Research timeout",endpoint);else console.warn("Research failed",endpoint,e)}}statusBubble.textContent="Tu Worker todavía no tiene búsqueda web real. Voy a crear la imagen sin fingir que Googleé.";return {used:false,summary:"",sources:[],missingEndpoint:true}}
-
-async function buscarFotosRealesReferencia(query,statusBubble){
-  if(!getPrefs().references)return {used:false,images:[]};
-  const attempts=[
-    {endpoint:"/image-search",body:{query,provider:"google_images",max_results:8,safe_search:true,purpose:"visual_reference"}},
-    {endpoint:"/search-images",body:{query,provider:"google",max_results:8,safe_search:true}},
-    {endpoint:"/images/search",body:{query,provider:"google",max_results:8,safe_search:true}},
-    {endpoint:"/search",body:{query,type:"images",provider:"google",max_results:8,safe_search:true,purpose:"visual_reference"}}
-  ];
-  for(const a of attempts){
-    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
-    try{
-      statusBubble.textContent="Buscando fotos reales de referencia…";
-      const controller=new AbortController();activeController=controller;
-      const timer=setTimeout(()=>controller.abort(),45000);
-      const res=await fetch(API_URL+a.endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(a.body),signal:controller.signal});
-      clearTimeout(timer);if(!res.ok)continue;
-      const data=await res.json().catch(()=>({}));
-      const raw=data.images||data.results||data.items||data.photos||data.data||[];
-      if(!Array.isArray(raw))continue;
-      const images=[];
-      for(const x of raw){
-        let url="",thumb="",title="",source="",page="";
-        if(typeof x==="string"){url=safeUrl(x)||"";thumb=url}
-        else if(x&&typeof x==="object"){
-          const candidate=x.image_url||x.imageUrl||x.original||x.full||x.src||x.image||((x.type==="image"||x.kind==="image")?x.url:"");
-          url=safeUrl(candidate)||"";
-          thumb=safeUrl(x.thumbnail_url||x.thumbnailUrl||x.thumbnail||x.thumb||"")||url;
-          title=String(x.title||x.name||x.alt||"").slice(0,180);
-          source=String(x.source||x.site||x.domain||x.provider||"").slice(0,100);
-          page=safeUrl(x.page_url||x.context_url||x.source_url||x.link||"")||"";
-        }
-        if(url&&!images.some(i=>i.url===url))images.push({url,thumbnail:thumb,title,source,page});
-        if(images.length>=6)break;
-      }
-      if(images.length)return {used:true,images,endpoint:a.endpoint};
-    }catch(e){if(e.name==="AbortError"&&cancelacionSolicitada)throw e;console.warn("Real image reference search failed",a.endpoint,e)}
-  }
-  // Plan B directo desde el navegador: Wikimedia Commons permite CORS y ofrece fotos reales/licenciadas.
-  try{
-    statusBubble.textContent="Buscando fotos reales en Wikimedia Commons…";
-    const params=new URLSearchParams({
-      action:"query",generator:"search",gsrsearch:query+" photograph",gsrnamespace:"6",gsrlimit:"8",
-      prop:"imageinfo",iiprop:"url|mime",iiurlwidth:"1000",format:"json",origin:"*"
-    });
-    const controller=new AbortController();activeController=controller;
-    const timer=setTimeout(()=>controller.abort(),45000);
-    const res=await fetch("https://commons.wikimedia.org/w/api.php?"+params.toString(),{signal:controller.signal});
-    clearTimeout(timer);
-    if(res.ok){
-      const data=await res.json();const pages=Object.values(data?.query?.pages||{});const images=[];
-      for(const page of pages){
-        const info=page?.imageinfo?.[0];if(!info)continue;
-        const mime=String(info.mime||"");if(mime&&!/(jpeg|jpg|png|webp)/i.test(mime))continue;
-        const url=safeUrl(info.url||"");const thumb=safeUrl(info.thumburl||"")||url;if(!url)continue;
-        images.push({url,thumbnail:thumb,title:String(page.title||"").replace(/^File:/i,""),source:"Wikimedia Commons",page:"https://commons.wikimedia.org/wiki/"+encodeURIComponent(String(page.title||"").replace(/ /g,"_"))});
-        if(images.length>=6)break;
-      }
-      if(images.length)return {used:true,images,endpoint:"wikimedia-commons",fallback:true};
-    }
-  }catch(e){if(e.name==="AbortError"&&cancelacionSolicitada)throw e;console.warn("Wikimedia reference search failed",e)}
-  statusBubble.textContent="No encontré fotos reales utilizables. Voy a generar sin fingir referencias visuales.";
-  return {used:false,images:[],missingEndpoint:true};
-}
-
-function detectarFormatoImagen(texto){const t=String(texto||"").toLowerCase();if(/(vertical|retrato|portrait|story|historia de instagram|9:16)/i.test(t))return {size:"1024x1536",aspect:"2:3"};if(/(cuadrad|square|1:1|instagram post)/i.test(t))return {size:"1536x1536",aspect:"1:1"};return {size:"1536x1024",aspect:"3:2"}}
-
-async function optimizarPromptImagenConIA(original,research,statusBubble){
-  if(!getPrefs().extreme)return mejorarPromptImagen(original,research);
-  statusBubble.textContent="Diseñando el prompt fotográfico con IA…";
-  const contexto=research?.used?(research.summary||"").slice(0,7000):"";
-  const referencias=Array.isArray(research?.realImages)?research.realImages.slice(0,6).map((r,i)=>`${i+1}. ${r.title||r.source||"foto real"} — ${r.url}`).join("\n"):"";
-  const sys=`Sos un director de fotografía y prompt engineer de máximo nivel. Tu trabajo es convertir el pedido del usuario en UN ÚNICO prompt final para un generador de imágenes. Priorizá fidelidad al pedido, realismo fotográfico cuando se pide una foto, anatomía correcta, materiales naturales, iluminación creíble, lente/cámara coherentes, composición profesional y ausencia de artefactos. No cambies cantidades, colores, sujetos, acción ni lugar. Si hay contexto investigado, usalo solo para exactitud visual. Devolvé solamente el prompt final, sin títulos, sin markdown y sin explicaciones.`;
-  const user=`PEDIDO ORIGINAL:
-${original}
-
-CONTEXTO INVESTIGADO:
-${contexto||"No disponible"}
-
-FOTOS REALES DE REFERENCIA ENCONTRADAS:
-${referencias||"No disponibles"}
-
-Usá esas referencias para entender apariencia, anatomía, materiales, ambiente, iluminación y detalles reales. Si el usuario pidió una foto, priorizá que el resultado se vea lo más igual posible al aspecto real del tema o a las características compartidas por las referencias. Generá una imagen nueva, con variación mínima y fidelidad visual máxima, sin meter cambios innecesarios.
-
-Generá el mejor prompt posible para una imagen premium.`;
-  try{
-    const controller=new AbortController();activeController=controller;
-    const timer=setTimeout(()=>controller.abort(),120000);
-    const res=await fetch(API_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:sys,messages:[{role:"user",content:user}],max_output_tokens:8000,response_mode:"image_prompt_max"}),signal:controller.signal});
-    clearTimeout(timer);
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok)throw new Error(data?.error||"No se pudo optimizar el prompt");
-    const out=String(data?.response??data?.answer??data?.content??"").trim();
-    if(out.length>80)return out+"\n\n"+mejorarPromptImagen(original,research);
-  }catch(e){if(cancelacionSolicitada)throw e;console.warn("Prompt optimizer failed",e)}
-  return mejorarPromptImagen(original,research);
-}
-
-function obtenerDimensionesImagen(src){return new Promise(resolve=>{const im=new Image();const t=setTimeout(()=>resolve({w:0,h:0}),15000);im.onload=()=>{clearTimeout(t);resolve({w:im.naturalWidth||0,h:im.naturalHeight||0})};im.onerror=()=>{clearTimeout(t);resolve({w:0,h:0})};im.src=src})}
-
-async function pedirImagenCalidadMaxima(payload,statusBubble){
-  const intentos=getPrefs().extreme?3:1;
-  const candidatos=[];
-  let ultimoError=null;
-  for(let i=1;i<=intentos;i++){
-    if(cancelacionSolicitada)throw new DOMException("Cancelado","AbortError");
-    statusBubble.textContent=intentos>1?`Renderizando candidato ${i} de ${intentos} en calidad máxima…`:`Renderizando en calidad máxima…`;
-    const controller=new AbortController();activeController=controller;
-    const timeout=setTimeout(()=>controller.abort(),900000);
-    try{
-      const response=await fetch(API_URL+"/image",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...payload,quality:"max",priority:"quality",model_preference:"best_available",render_mode:"maximum_quality",detail:"maximum",reasoning_effort:"high",enhance:true,upsample:true,output_format:"png",compression:0,attempt:i}),signal:controller.signal});
-      clearTimeout(timeout);
-      if(!response.ok){let text="El servidor no pudo generar la imagen.";try{const d=await response.json();text=d?.error||text}catch{}throw new Error(text)}
-      let src="",serverScore=0;
-      const type=response.headers.get("content-type")||"";
-      if(type.includes("application/json")){const d=await response.json();src=d.image_url||d.url||d.image||d.data||"";serverScore=Number(d.quality_score||d.score||0);if(src&&!src.startsWith("data:")&&!safeUrl(src))throw new Error("El servidor devolvió una URL de imagen inválida.")}
-      else{const blob=await response.blob();if(!blob.size)throw new Error("La imagen está vacía.");src=await blobToDataURL(blob)}
-      const dim=await obtenerDimensionesImagen(src);
-      const pixelScore=(dim.w||0)*(dim.h||0);
-      candidatos.push({src,dim,score:serverScore>0?serverScore*1e12:pixelScore});
-    }catch(e){clearTimeout(timeout);ultimoError=e;if(cancelacionSolicitada||e.name==="AbortError")throw e;console.warn("Image attempt failed",i,e)}
-  }
-  if(!candidatos.length)throw ultimoError||new Error("No se pudo generar la imagen.");
-  candidatos.sort((a,b)=>b.score-a.score);
-  return candidatos[0];
-}
-
-/* ================= IMAGE PROMPT ================= */
-function mejorarPromptImagen(texto,research){const original=String(texto||"").replace(/\s+/g," ").trim();const p=getPrefs();const wantsStyle=/(anime|manga|lego|ilustracion|ilustración|dibujo|cartoon|3d|render|acuarela|oleo|óleo|pixel art)/i.test(original);const animal=/(perro|gato|caballo|animal|dog|cat|horse)/i.test(original);const person=/(persona|hombre|mujer|niño|niña|retrato|rostro|cara)/i.test(original);const place=/(ciudad|edificio|calle|paisaje|bosque|montaña|playa|casa|arquitectura)/i.test(original);let style;if(wantsStyle)style="Respetar exactamente el estilo artístico pedido por el usuario.";else if(p.realistic)style="FOTOGRAFÍA EXTREMADAMENTE REALISTA, aspecto de cámara real, máxima fidelidad visual, variación mínima, nada de apariencia de ilustración o CGI.";else style="Calidad visual profesional y estilo coherente con el pedido.";let specifics="";if(animal)specifics+=" Anatomía animal correcta, pelaje natural con hebras visibles, ojos húmedos con reflejos reales, patas correctas, proporciones naturales, movimiento creíble.";if(person)specifics+=" Anatomía humana natural, piel con textura real, manos y dedos correctos, ojos simétricos, expresión creíble.";if(place)specifics+=" Perspectiva arquitectónica correcta, escala coherente, materiales reales, luz y sombras físicamente plausibles.";const factual=research?.used&&research.summary?`\nCONTEXTO FACTUAL INVESTIGADO ANTES DE GENERAR:\n${research.summary.slice(0,5000)}\nUsá este contexto solo para mejorar exactitud visual. No agregues datos que contradigan el pedido.`:"";return `
-INDIA AI — IMAGE MASTER PROMPT
-
-PEDIDO ORIGINAL DEL USUARIO (MANDATORIO):
-${original}
-
-OBJETIVO VISUAL:
-${style}
-${specifics}
-
-CALIDAD:
-- altísimo detalle y microtexturas naturales
-- luz físicamente coherente
-- sombras y reflejos naturales
-- perspectiva correcta
-- profundidad realista
-- composición clara
-- rango dinámico amplio
-- detalle en altas luces y sombras
-- colores naturales
-- sin aspecto plástico salvo que el objeto realmente lo sea
-- calidad de producción premium
-
-CÁMARA (si es una foto):
-- lente y perspectiva creíbles
-- profundidad de campo óptica natural, no exagerada
-- exposición realista
-- nitidez de cámara de alta gama
-- bokeh natural cuando corresponda
-- evitar exceso de HDR o sharpening
-
-EVITAR:
-- deformaciones anatómicas
-- extremidades o dedos extra
-- objetos duplicados
-- ojos desalineados
-- geometría imposible
-- texturas derretidas
-- artefactos digitales
-- marcas de agua
-- texto ilegible
-- fondo incoherente
-- apariencia de IA genérica
-${factual}
-
-REFERENCIAS REALES:
-Si se proporcionan fotos reales de referencia, usalas como grounding visual fuerte para anatomía, materiales, proporciones, ambiente y características del mundo real. Intentá que el resultado se parezca al máximo posible al aspecto real y a las características compartidas por las referencias, con variación mínima y sin estilizar de más.
-
-REGLA ABSOLUTA:
-No cambies el sujeto, cantidad, colores, acción, lugar ni estilo pedido por el usuario. Si pidió una foto, debe parecer una fotografía real capturada con una cámara real.
-`}
-
-
-/* ================= MARVEL KNOWLEDGE ================= */
-function esPreguntaMarvel(texto){
-  const t=normalizeText(texto);
-  const terms=[
-    "marvel","mcu","earth-616","earth 616","earth-199999","earth 199999",
-    "avengers","x-men","xmen","spider-man","spiderman","peter parker","miles morales",
-    "iron man","tony stark","captain america","steve rogers","thor","hulk","bruce banner",
-    "wolverine","logan","deadpool","daredevil","punisher","fantastic four","4 fantasticos",
-    "doctor doom","dr doom","victor von doom","thanos","galactus","silver surfer",
-    "scarlet witch","wanda maximoff","vision","loki","magneto","professor x","charles xavier",
-    "venom","carnage","symbiote","simbionte","moon knight","ghost rider","blade",
-    "black panther","wakanda","doctor strange","stephen strange","kang","celestials",
-    "celestiales","eternals","eternos","infinity stones","gemas del infinito",
-    "secret wars","civil war","house of m","secret invasion","age of ultron",
-    "multiverse","multiverso","mutant","mutante","adamantium","vibranium"
-  ];
-  return terms.some(x=>t.includes(x));
-}
-
-function formatearFuentesMarvel(results=[]){
-  if(!Array.isArray(results)) return [];
-  return results.map(x=>{
-    if(typeof x==="string") return {title:"Marvel Database",url:x};
-    return {
-      title:String(x?.title||x?.name||"Marvel Database").slice(0,180),
-      url:String(x?.url||x?.link||x?.href||"").trim(),
-      snippet:String(x?.snippet||x?.description||x?.text||"").slice(0,1200)
-    };
-  }).filter(x=>x.url||x.snippet);
-}
-
-async function investigarMarvel(query){
-  const searchQuery=`site:marvel.fandom.com/wiki/ ${query}`;
-  const attempts=[
-    {endpoint:"/research",body:{query:searchQuery,purpose:"marvel_knowledge",provider:"google",max_results:12,preferred_domain:"marvel.fandom.com"}},
-    {endpoint:"/search",body:{query:searchQuery,purpose:"marvel_knowledge",provider:"google",max_results:12,preferred_domain:"marvel.fandom.com"}}
-  ];
-
-  for(const a of attempts){
-    try{
-      const controller=new AbortController();
-      activeController=controller;
-      const timer=setTimeout(()=>controller.abort(),30000);
-      const res=await fetch(API_URL+a.endpoint,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(a.body),
-        signal:controller.signal
-      });
-      clearTimeout(timer);
-      if(!res.ok) continue;
-      const data=await res.json().catch(()=>({}));
-      const summary=String(data.summary||data.context||data.answer||data.response||"").trim();
-      const sources=formatearFuentesMarvel(data.results||data.sources||data.links||[]);
-      if(summary||sources.length){
-        return {used:true,summary,sources,endpoint:a.endpoint};
-      }
-    }catch(e){
-      if(e.name==="AbortError" && cancelacionSolicitada) throw e;
-      console.warn("Marvel research failed",a.endpoint,e);
-    }
-  }
-  return {used:false,summary:"",sources:[]};
-}
-
-function contextoMarvelParaSistema(r){
-  if(!r?.used) return `
-MODO MARVEL ACTIVO:
-La pregunta es sobre Marvel. Respondé usando tu conocimiento especializado, separando correctamente continuidades y versiones. No presumas cuánto sabés. Si un dato extremadamente específico no es seguro, no lo inventes.
-`;
-  const fuentes=(r.sources||[]).slice(0,10).map((s,i)=>
-    `${i+1}. ${s.title||"Marvel Database"}${s.url?` — ${s.url}`:""}${s.snippet?`\n   ${s.snippet}`:""}`
-  ).join("\n");
-  return `
-MODO MARVEL ACTIVO — INVESTIGACIÓN PREVIA REALIZADA:
-Usá este contexto como grounding. Priorizá Marvel Database y no mezcles realidades.
-
-CONTEXTO:
-${(r.summary||"").slice(0,12000)}
-
-FUENTES:
-${fuentes||"Sin lista de URLs devuelta por el backend."}
-
-REGLAS:
-- Respondé directamente; no digas “investigué” salvo que sea útil mencionarlo.
-- No digas “sé mucho de Marvel” ni frases parecidas.
-- Si las fuentes contradicen conocimiento previo, priorizá el contexto recuperado.
-- No inventes hechos que no estén respaldados por el contexto o por conocimiento sólido.
-`;
-}
-
-/* ================= CHAT API ================= */
-function getMaxOutputTokens(){const mode=getPrefs().length;if(mode==="normal")return 12000;if(mode==="long")return 24000;return 48000}
-async function callChat(messages,extraSystem=""){activeController=new AbortController();const response=await fetch(API_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:obtenerSistema(extraSystem),messages,max_output_tokens:getMaxOutputTokens(),response_mode:getPrefs().length}),signal:activeController.signal});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data?.error||"Error del servidor.");const answer=data?.response??data?.answer??data?.content;if(!answer)throw new Error("La IA no devolvió una respuesta.");return String(answer)}
-async function enviar(){const texto=input.value.trim();if(!texto||generando)return;if(esPedidoDeImagen(texto)){input.value="";ajustarInput();await generarImagen(limpiarPromptImagen(texto));return}if(!puedePreguntar()){input.value="";mostrarMensaje("Llegaste al límite de preguntas de hoy.","ai");return}if(!chatActual)nuevoChat();const conversation=obtenerActual();input.value="";ajustarInput();setBusy(true);const userId=uid("msg");conversation.messages.push({id:userId,role:"user",content:texto});if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;guardarChats();renderHistorial();mostrarMensaje(texto,"user",userId);const aiId=uid("msg"),thinking=mostrarMensaje("Pensando…","ai",aiId);thinking.classList.add("thinking","typing-cursor");try{const mode=getPrefs().length;
+if(esPedidoDeImagen(texto)){input.value="";ajustarInput();await generarImagen(limpiarPromptImagen(texto));return}if(!puedePreguntar()){input.value="";mostrarMensaje("Llegaste al límite de preguntas de hoy.","ai");return}if(!chatActual)nuevoChat();const conversation=obtenerActual();input.value="";ajustarInput();setBusy(true);const userId=uid("msg");conversation.messages.push({id:userId,role:"user",content:texto});if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;guardarChats();renderHistorial();mostrarMensaje(texto,"user",userId);const aiId=uid("msg"),thinking=mostrarMensaje("Pensando…","ai",aiId);thinking.classList.add("thinking","typing-cursor");try{const mode=getPrefs().length;
       let combined="";
       let extraSystem=mode==="ultra"
         ?"La respuesta puede ser muy extensa. Entregá la primera parte completa y coherente; no resumas para ahorrar espacio."
@@ -1300,15 +661,16 @@ async function enviar(){const texto=input.value.trim();if(!texto||generando)retu
         extraSystem += "\n\n" + contextoMarvelParaSistema(marvelResearch);
         thinking.textContent="Pensando…";
       }
-      const first=await callChat(conversation.messages,extraSystem);
-      combined=first;
+      const first=await callChat(conversation.messages,extraSystem,texto);
+      combined=limpiarFugaMarvel(first,texto);
       thinking.classList.remove("thinking","typing-cursor");
       thinking.textContent=combined;
-      if(mode==="ultra"&&!/\[FIN\]\s*$/i.test(combined)){thinking.classList.add("typing-cursor");const temp=[...conversation.messages,{role:"assistant",content:combined},{role:"user",content:"CONTINUÁ EXACTAMENTE desde donde terminaste. No repitas nada. Completá lo pendiente con el mismo nivel de detalle. Si realmente terminaste, cerrá con [FIN]."}];try{const second=await callChat(temp,"Esto es una continuación automática de una respuesta larga. No reinicies, no resumas y no repitas.");combined += "\n\n"+second;thinking.textContent=combined}catch(e){if(e.name!=="AbortError")console.warn(e)}finally{thinking.classList.remove("typing-cursor")}}
+      if(mode==="ultra"&&!/\[FIN\]\s*$/i.test(combined)){thinking.classList.add("typing-cursor");const temp=[...conversation.messages,{role:"assistant",content:combined},{role:"user",content:"CONTINUÁ EXACTAMENTE desde donde terminaste. No repitas nada. Completá lo pendiente con el mismo nivel de detalle. Si realmente terminaste, cerrá con [FIN]."}];try{const second=await callChat(temp,"Esto es una continuación automática de una respuesta larga. No reinicies, no resumas y no repitas.",texto);combined += "\n\n"+limpiarFugaMarvel(second,texto);thinking.textContent=combined}catch(e){if(e.name!=="AbortError")console.warn(e)}finally{thinking.classList.remove("typing-cursor")}}
       combined=combined.replace(/\n?\[FIN\]\s*$/i,"").trim();thinking.textContent=combined;conversation.messages.push({id:aiId,role:"assistant",content:combined});reemplazarAccionesDeBurbuja(thinking,aiId);incrementarUso();guardarChats();
     }catch(error){thinking.classList.remove("thinking","typing-cursor");thinking.textContent=error.name==="AbortError"?"Generación detenida.":"No pude conectarme con Inda AI.\n\n"+error.message;console.error(error)}finally{activeController=null;setBusy(false);input.focus()}}
 
-async function continuarRespuesta(messageId,button){if(generando)return;const conversation=obtenerActual();if(!conversation)return;const idx=conversation.messages.findIndex(m=>m.id===messageId&&m.role==="assistant");if(idx<0)return;const target=conversation.messages[idx];const bubble=chatInner.querySelector(`[data-message-id="${CSS.escape(messageId)}"]`);if(!bubble)return;setBusy(true);button.disabled=true;bubble.classList.add("typing-cursor");try{const context=conversation.messages.slice(0,idx+1);context.push({role:"user",content:"CONTINUÁ exactamente desde la última frase de tu respuesta anterior. No repitas introducción ni contenido. Seguí con el mismo nivel de detalle y estilo. Si ya estaba completa, agregá nueva profundidad útil en vez de repetir."});const more=await callChat(context,"Esto es una continuación solicitada por el usuario. Pegala conceptualmente al final de la respuesta anterior, sin reiniciar.");target.content=(target.content.trim()+"\n\n"+more.replace(/\n?\[FIN\]\s*$/i,"").trim()).trim();bubble.textContent=target.content;guardarChats();toast("Parte agregada ✓")}catch(e){if(e.name!=="AbortError")toast("No se pudo continuar")}finally{bubble.classList.remove("typing-cursor");button.disabled=false;activeController=null;setBusy(false);scrollBottom()}}
+async function continuarRespuesta(messageId,button){if(generando)return;const conversation=obtenerActual();if(!conversation)return;const idx=conversation.messages.findIndex(m=>m.id===messageId&&m.role==="assistant");if(idx<0)return;const target=conversation.messages[idx];const bubble=chatInner.querySelector(`[data-message-id="${CSS.escape(messageId)}"]`);if(!bubble)return;setBusy(true);button.disabled=true;bubble.classList.add("typing-cursor");try{const context=conversation.messages.slice(0,idx+1);context.push({role:"user",content:"CONTINUÁ exactamente desde la última frase de tu respuesta anterior. No repitas introducción ni contenido. Seguí con el mismo nivel de detalle y estilo. Si ya estaba completa, agregá nueva profundidad útil en vez de repetir."});const lastUserForContinuation=[...conversation.messages.slice(0,idx+1)].reverse().find(m=>m.role==="user")?.content||"";
+const more=await callChat(context,"Esto es una continuación solicitada por el usuario. Pegala conceptualmente al final de la respuesta anterior, sin reiniciar.",lastUserForContinuation);target.content=(target.content.trim()+"\n\n"+more.replace(/\n?\[FIN\]\s*$/i,"").trim()).trim();bubble.textContent=target.content;guardarChats();toast("Parte agregada ✓")}catch(e){if(e.name!=="AbortError")toast("No se pudo continuar")}finally{bubble.classList.remove("typing-cursor");button.disabled=false;activeController=null;setBusy(false);scrollBottom()}}
 
 /* ================= IMAGE API ================= */
 async function blobToDataURL(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(blob)})}
