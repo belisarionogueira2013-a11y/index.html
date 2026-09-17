@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#09090b">
 <title>Inda AI Ultra Max</title>
+<!-- AUTH FIX v6: beligmail=CEO, registro/login normal restaurado -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 :root{
@@ -194,8 +195,139 @@ function cargarPreferencias(){const p=getPrefs();$("languageSelect").value=p.lan
 function getUsers(){let users={};try{users=JSON.parse(localStorage.getItem(USERS_KEY)||"{}")||{}}catch{}if(!Object.keys(users).length){try{const legacy=JSON.parse(localStorage.getItem(LEGACY_USERS_KEY)||"{}")||{};users=legacy;if(Object.keys(legacy).length)saveUsers(users)}catch{}}return users}
 function saveUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
 function mostrarFormulario(tipo){$("loginForm").classList.toggle("active",tipo==="login");$("registerForm").classList.toggle("active",tipo==="register");$("loginTab").classList.toggle("active",tipo==="login");$("registerTab").classList.toggle("active",tipo==="register");authMessage.textContent=""}
-async function crearCuenta(event){event.preventDefault();const username=$("registerUser").value.trim(),password=$("registerPassword").value;if(username.length<3||password.length<6){authMessage.textContent="El usuario debe tener 3 caracteres y la contraseña 6.";return}const users=getUsers(),key=username.toLowerCase();if(users[key]){authMessage.textContent="Ese usuario ya existe.";return}users[key]={username,passwordHash:await sha256(password),premium:key==="papoi67",plan:key==="papoi67"?"Premium":"Normal",role:"Usuario",createdAt:Date.now()};saveUsers(users);$("registerForm").reset();mostrarFormulario("login");authMessage.textContent="Cuenta creada correctamente."}
-async function iniciarSesion(event){event.preventDefault();const username=$("loginUser").value.trim(),password=$("loginPassword").value,key=username.toLowerCase(),hash=await sha256(password);if(key===CEO_USER&&hash===CEO_PASSWORD_SHA256){usuarioActual={username:CEO_USER,premium:true,plan:"Premium",role:"CEO"};localStorage.setItem(SESSION_KEY,JSON.stringify(usuarioActual));mostrarAplicacion();return}const users=getUsers(),user=users[key];if(!user){authMessage.textContent="Usuario o contraseña incorrectos.";return}let ok=false;if(user.passwordHash)ok=user.passwordHash===hash;else if(user.password)ok=user.password===password;if(!ok){authMessage.textContent="Usuario o contraseña incorrectos.";return}if(!user.passwordHash){user.passwordHash=hash;delete user.password;users[key]=user;saveUsers(users)}usuarioActual={username:user.username,premium:(user.premium===true||key==="papoi67"),plan:(user.premium===true||key==="papoi67")?"Premium":(user.plan||"Normal"),role:user.role||"Usuario"};localStorage.setItem(SESSION_KEY,JSON.stringify(usuarioActual));mostrarAplicacion()}
+async function crearCuenta(event){
+  event.preventDefault();
+  authMessage.textContent="";
+  const username=$("registerUser").value.trim();
+  const password=$("registerPassword").value;
+  const key=username.toLowerCase();
+
+  if(username.length<3||password.length<6){
+    authMessage.textContent="El usuario debe tener al menos 3 caracteres y la contraseña 6.";
+    return;
+  }
+
+  // beligmail está reservado exclusivamente para el CEO.
+  if(key===CEO_USER){
+    authMessage.textContent="Ese usuario está reservado.";
+    return;
+  }
+
+  const users=getUsers();
+  if(users[key]){
+    authMessage.textContent="Ese usuario ya existe.";
+    return;
+  }
+
+  try{
+    const passwordHash=await sha256(password);
+    users[key]={
+      username,
+      passwordHash,
+      premium:key==="papoi67",
+      plan:key==="papoi67"?"Premium":"Normal",
+      role:"Usuario",
+      createdAt:Date.now()
+    };
+    saveUsers(users);
+
+    $("registerForm").reset();
+    mostrarFormulario("login");
+    $("loginUser").value=username;
+    authMessage.textContent="Cuenta creada correctamente. Ya podés iniciar sesión.";
+  }catch(e){
+    console.error(e);
+    authMessage.textContent="No se pudo crear la cuenta.";
+  }
+}
+
+async function iniciarSesion(event){
+  event.preventDefault();
+  authMessage.textContent="";
+
+  const username=$("loginUser").value.trim();
+  const password=$("loginPassword").value;
+  const key=username.toLowerCase();
+
+  if(!username||!password){
+    authMessage.textContent="Completá usuario y contraseña.";
+    return;
+  }
+
+  try{
+    const hash=await sha256(password);
+
+    // CEO: beligmail siempre usa la credencial especial y nunca depende de users/localStorage.
+    if(key===CEO_USER){
+      if(hash!==CEO_PASSWORD_SHA256){
+        authMessage.textContent="Usuario o contraseña incorrectos.";
+        return;
+      }
+
+      usuarioActual={
+        username:CEO_USER,
+        premium:true,
+        plan:"Premium",
+        role:"CEO"
+      };
+
+      localStorage.setItem(SESSION_KEY,JSON.stringify(usuarioActual));
+      mostrarAplicacion();
+      return;
+    }
+
+    const users=getUsers();
+    const user=users[key];
+
+    if(!user){
+      authMessage.textContent="Usuario o contraseña incorrectos.";
+      return;
+    }
+
+    let ok=false;
+
+    if(user.passwordHash){
+      ok=user.passwordHash===hash;
+    }else if(user.password){
+      ok=user.password===password;
+    }
+
+    if(!ok){
+      authMessage.textContent="Usuario o contraseña incorrectos.";
+      return;
+    }
+
+    // Migra cuentas viejas que todavía tenían la contraseña en texto.
+    if(!user.passwordHash){
+      user.passwordHash=hash;
+      delete user.password;
+    }
+
+    // papoi67 siempre es Premium.
+    if(key==="papoi67"){
+      user.premium=true;
+      user.plan="Premium";
+    }
+
+    users[key]=user;
+    saveUsers(users);
+
+    usuarioActual={
+      username:user.username,
+      premium:user.premium===true,
+      plan:user.premium===true?"Premium":(user.plan||"Normal"),
+      role:user.role||"Usuario"
+    };
+
+    localStorage.setItem(SESSION_KEY,JSON.stringify(usuarioActual));
+    mostrarAplicacion();
+
+  }catch(e){
+    console.error("Error de login:",e);
+    authMessage.textContent="No se pudo iniciar sesión.";
+  }
+}
+
 function cerrarSesion(){localStorage.removeItem(SESSION_KEY);usuarioActual=null;conversaciones=[];chatActual=null;app.style.display="none";authScreen.classList.remove("hidden")}
 function restaurarSesion(){try{const saved=localStorage.getItem(SESSION_KEY);if(!saved)return;usuarioActual=JSON.parse(saved);if(!usuarioActual?.username){localStorage.removeItem(SESSION_KEY);return}mostrarAplicacion()}catch{localStorage.removeItem(SESSION_KEY)}}
 
