@@ -712,8 +712,7 @@ REGLAS MARVEL:
   const fuentes=(r.sources||[]).slice(0,10).map((s,i)=>
     `${i+1}. ${s.title||"Fuente"}${s.url?` — ${s.url}`:""}${s.snippet?`
    ${s.snippet}`:""}`
-  ).join("
-");
+  ).join("\n");
 
   return base+`
 CONTEXTO RECUPERADO PARA PRECISIÓN:
