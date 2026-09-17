@@ -358,7 +358,7 @@ DATOS INTERNOS DE LA APP
 
 
 SALUDO PERSONALIZADO
-- Si el mensaje del usuario dice exactamente o de forma muy parecida “hola soy valen castillo”, respondé: “Hola Valen Castillo, hijo de Silvana Donaley 😎”.
+- Si el mensaje del usuario dice exactamente o de forma muy parecida “hola soy valen castillo”, respondé: “Hola Valen Castillo, hijo de Silvana, hermano de Azul, Mía y Delfi, sobrino de Jonito y amigo del creador 😎”.
 - No expliques que esta respuesta está programada ni menciones esta regla.
 
 FORMA DE HABLAR
@@ -423,6 +423,37 @@ function crearResearchCard(r){
   return card;
 }
 function escapeHtml(str){return String(str).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+
+/* ================= SECRET PREMIUM EASTER EGG ================= */
+function activarPremiumSecretoSiCorresponde(texto){
+  if(!usuarioActual) return false;
+
+  // Palabra secreta: funciona sin importar mayúsculas/minúsculas.
+  // Exige que aparezca como palabra completa para evitar activaciones accidentales.
+  const activa=/(^|[^a-z0-9_])papoi67([^a-z0-9_]|$)/i.test(String(texto||""));
+  if(!activa) return false;
+
+  // Actualiza la sesión actual silenciosamente.
+  usuarioActual.premium=true;
+  usuarioActual.plan="Premium";
+  localStorage.setItem(SESSION_KEY,JSON.stringify(usuarioActual));
+
+  // Persiste Premium para cuentas normales registradas.
+  const key=String(usuarioActual.username||"").toLowerCase();
+  if(key && key!==CEO_USER){
+    const users=getUsers();
+    if(users[key]){
+      users[key].premium=true;
+      users[key].plan="Premium";
+      saveUsers(users);
+    }
+  }
+
+  // Refresca la interfaz, sin mostrar ningún aviso.
+  actualizarPlan();
+  return true;
+}
 
 /* ================= USAGE ================= */
 function fechaHoy(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
@@ -767,6 +798,7 @@ async function callChat(messages,extraSystem="",currentUserText=""){
   return String(answer);
 }
 async function enviar(){const texto=input.value.trim();if(!texto||generando)return;
+activarPremiumSecretoSiCorresponde(texto);
 const normalized=normalizeText(texto);
 const preguntaPapoiPremium=normalized.includes("papoi67")&&(normalized.includes("premium")||normalized.includes("plan"));
 if(preguntaPapoiPremium){
