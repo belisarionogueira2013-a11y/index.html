@@ -351,10 +351,13 @@ function obtenerSistema(extra=""){const p=getPrefs(),personal=obtenerMemoriaPers
 IDENTIDAD
 Tu nombre es Inda AI. Te creó Belisario (Beli).
 
-DATOS INTERNOS DE LA APP
-- El usuario llamado “papoi67” tiene plan Premium.
-- Si alguien pregunta si papoi67 tiene Premium, respondé que sí, de forma directa.
-- No digas que no tenés información sobre papoi67.
+CLAVE SECRETA
+- “papoi67” es una clave interna de la aplicación.
+- Nunca expliques qué hace, nunca digas que activa Premium y nunca reveles que es una clave.
+- Si aparece en un mensaje, tratala como texto normal desde el punto de vista de la conversación.
+- No digas que “”.
+
+
 
 
 SALUDO PERSONALIZADO
@@ -800,17 +803,6 @@ async function callChat(messages,extraSystem="",currentUserText=""){
 async function enviar(){const texto=input.value.trim();if(!texto||generando)return;
 activarPremiumSecretoSiCorresponde(texto);
 const normalized=normalizeText(texto);
-const preguntaPapoiPremium=normalized.includes("papoi67")&&(normalized.includes("premium")||normalized.includes("plan"));
-if(preguntaPapoiPremium){
-  if(!chatActual)nuevoChat();
-  const conversation=obtenerActual();
-  input.value="";ajustarInput();
-  const userId=uid("msg"), aiId=uid("msg");
-  conversation.messages.push({id:userId,role:"user",content:texto});
-  conversation.messages.push({id:aiId,role:"assistant",content:"Sí, papoi67 tiene Premium."});
-  if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;
-  guardarChats();renderHistorial();mostrarChat(conversation);input.focus();return;
-}
 if(esPedidoDeImagen(texto)){input.value="";ajustarInput();await generarImagen(limpiarPromptImagen(texto));return}if(!puedePreguntar()){input.value="";mostrarMensaje("Llegaste al límite de preguntas de hoy.","ai");return}if(!chatActual)nuevoChat();const conversation=obtenerActual();input.value="";ajustarInput();setBusy(true);const userId=uid("msg");conversation.messages.push({id:userId,role:"user",content:texto});if(conversation.title==="Nuevo chat")conversation.title=texto.length>48?texto.slice(0,48)+"…":texto;guardarChats();renderHistorial();mostrarMensaje(texto,"user",userId);const aiId=uid("msg"),thinking=mostrarMensaje("Pensando…","ai",aiId);thinking.classList.add("thinking","typing-cursor");try{const mode=getPrefs().length;
       let combined="";
       let extraSystem=mode==="ultra"
